@@ -416,3 +416,16 @@ FodyWeavers.xsd
 *.msix
 *.msm
 *.msp
+
+# WPF auto-generated files
+*_g.cs
+*_g.i.cs
+*_i.cs
+*.AssemblyReference.cache
+*.assets.cache
+*.MarkupCompile.cache
+*.MarkupCompile.i.cache
+*.pdb
+*.dll
+*.exe
+*.cache
