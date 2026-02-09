@@ -7,6 +7,6 @@
         mc:Ignorable="d"
         Title="MainWindow" Height="450" Width="800">
     <Grid>
-
+        <Button Name ="click_me" Width= "100" Height="50" Click="click_event1">Click Me!</Button>
     </Grid>
 </Window>

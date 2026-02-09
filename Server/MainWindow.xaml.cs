@@ -20,5 +20,10 @@ namespace Server
         {
             InitializeComponent();
         }
+
+        void click_event1(object sender, RoutedEventArgs e)
+        {
+            MessageBox.Show("Hello, World!");
+        }
     }
 }
