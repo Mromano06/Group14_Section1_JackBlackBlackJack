@@ -1,0 +1,98 @@
+[33mcommit ecb29ea73ee41ced3b5f3c4d43382892c884047a[m[33m ([m[1;36mHEAD[m[33m -> [m[1;32mfeature/add-gamelogic-project[m[33m, [m[1;31morigin/feature/add-gamelogic-project[m[33m)[m
+Author: Etrav05 <Etravis9851@conestogac.on.ca>
+Date:   Tue Feb 10 13:07:41 2026 -0500
+
+    Created the GameLogic Class Library
+
+ GameLogic/Core/Game.cs            | 8 [32m++++++++[m
+ GameLogic/Core/GameState.cs       | 8 [32m++++++++[m
+ GameLogic/Core/GameStateEnum.cs   | 8 [32m++++++++[m
+ GameLogic/GameLogic.csproj        | 9 [32m+++++++++[m
+ GameLogic/Logic/ActionLogic.cs    | 8 [32m++++++++[m
+ GameLogic/Logic/BettingLogic.cs   | 8 [32m++++++++[m
+ GameLogic/Logic/DealerLogic.cs    | 8 [32m++++++++[m
+ GameLogic/Logic/HandEvaluation.cs | 8 [32m++++++++[m
+ GameLogic/Models/Card.cs          | 8 [32m++++++++[m
+ GameLogic/Models/Dealer.cs        | 8 [32m++++++++[m
+ GameLogic/Models/Hand.cs          | 8 [32m++++++++[m
+ GameLogic/Models/Player.cs        | 8 [32m++++++++[m
+ GameLogic/Models/Shoe.cs          | 8 [32m++++++++[m
+ 13 files changed, 105 insertions(+)
+
+[33mcommit a4249a75b7b884f767f9c43741b3746a06c0cd7d[m[33m ([m[1;31morigin/main[m[33m, [m[1;31morigin/HEAD[m[33m, [m[1;32mmain[m[33m)[m
+Merge: 5d82cb6 adaf45a
+Author: Mromano06 <matbat2205@gmail.com>
+Date:   Mon Feb 9 16:50:19 2026 -0500
+
+    Merge branch 'main' of https://github.com/Mromano06/Group14_Section1_JackBlackBlackJack
+
+[33mcommit 5d82cb63082280340ac269ea7bf2d5541695a8fe[m
+Author: Mromano06 <matbat2205@gmail.com>
+Date:   Mon Feb 9 16:50:04 2026 -0500
+
+    WPF testing
+
+ Server/MainWindow.xaml    | 2 [32m+[m[31m-[m
+ Server/MainWindow.xaml.cs | 5 [32m+++++[m
+ 2 files changed, 6 insertions(+), 1 deletion(-)
+
+[33mcommit adaf45ac4a56d7474c537c7d8e4cb7d3dbf533f0[m
+Merge: a8c5a19 8cb38b9
+Author: Matthew Romano <matbat2205@gmail.com>
+Date:   Mon Feb 9 10:58:39 2026 -0500
+
+    Merge pull request #1 from Mromano06/Etrav05-readme
+    
+    Add initial README.md with project details
+
+[33mcommit 8cb38b9ac7a4c3d9ed3d2fcd48fe67b17e17c852[m
+Author: Etrav05 <Etravis9851@conestogac.on.ca>
+Date:   Mon Feb 9 10:57:13 2026 -0500
+
+    Add initial README.md with project details
+
+ README.md | 248 [32m++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++[m
+ 1 file changed, 248 insertions(+)
+
+[33mcommit a8c5a19a4d67a67992e253ff84b37ea02223b9dd[m
+Author: Mromano06 <matbat2205@gmail.com>
+Date:   Sun Feb 8 16:22:42 2026 -0500
+
+    Initial Commit
+    
+    The first commit ;)
+
+ BlackJack.slnx                         |  5 [32m+++++[m
+ Client/App.xaml                        |  9 [32m+++++++++[m
+ Client/App.xaml.cs                     | 14 [32m++++++++++++++[m
+ Client/AssemblyInfo.cs                 | 10 [32m++++++++++[m
+ Client/Client.csproj                   | 11 [32m+++++++++++[m
+ Client/MainWindow.xaml                 | 12 [32m++++++++++++[m
+ Client/MainWindow.xaml.cs              | 24 [32m++++++++++++++++++++++++[m
+ Jables_Protocol/Class1.cs              |  7 [32m+++++++[m
+ Jables_Protocol/Jables_Protocol.csproj |  9 [32m+++++++++[m
+ Server/App.xaml                        |  9 [32m+++++++++[m
+ Server/App.xaml.cs                     | 14 [32m++++++++++++++[m
+ Server/AssemblyInfo.cs                 | 10 [32m++++++++++[m
+ Server/MainWindow.xaml                 | 12 [32m++++++++++++[m
+ Server/MainWindow.xaml.cs              | 24 [32m++++++++++++++++++++++++[m
+ Server/Server.csproj                   | 11 [32m+++++++++++[m
+ 15 files changed, 181 insertions(+)
+
+[33mcommit 6e8bc45c42f87df32e19bd37caebc7f6d69094b7[m
+Author: Matthew Romano <matbat2205@gmail.com>
+Date:   Sun Feb 8 16:00:32 2026 -0500
+
+    Add WPF auto-generated files to .gitignore
+
+ .gitignore | 13 [32m+++++++++++++[m
+ 1 file changed, 13 insertions(+)
+
+[33mcommit 3a7c9e617e29de12ad5da65f687f2ebcca3fdec0[m
+Author: Matthew Romano <matbat2205@gmail.com>
+Date:   Sun Feb 8 15:57:41 2026 -0500
+
+    Initial commit
+
+ .gitignore | 418 [32m+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++[m
+ 1 file changed, 418 insertions(+)

@@ -1,8 +1,15 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace GameLogic.Core {
-    internal class GameStateEnum {
+﻿namespace GameLogic.Core 
+{
+    public enum GameStateEnum 
+    {
+        Idle,
+        Waiting,
+        StartingGame,
+        Playing,
+        Processing,
+        Saving,
+        Restarting,
+        EndGame,
+        Exiting
     }
 }
