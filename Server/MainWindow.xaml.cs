@@ -9,6 +9,8 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
+// Matthew Romano - Feb 11th, 2026 - Main Menu for Server Application
+
 namespace Server
 {
     /// <summary>
@@ -21,9 +23,5 @@ namespace Server
             InitializeComponent();
         }
 
-        void click_event1(object sender, RoutedEventArgs e)
-        {
-            MessageBox.Show("Hello, World!");
-        }
     }
 }
