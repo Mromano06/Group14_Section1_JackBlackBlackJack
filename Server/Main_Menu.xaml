@@ -7,10 +7,13 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Server"
         mc:Ignorable="d"
-        Title="Main_Menu" Height="450" Width="800">
-    <Grid>
-        <Button Name ="Rules" Width= "125" Height="175" Click="rules_clicked" Margin="176,120,499,139">RULES</Button>
-        <Button Name ="Play" Width= "125" Height="175" Click="play_clicked" Margin="338,120,338,139">PLAY</Button>
-        <Button Name ="Exit" Width= "125" Height="175" Click="exit_clicked" Margin="497,120,178,139">EXIT</Button>
-    </Grid>
+        Title="Main Menu" Height="720" Width="1280">
+    <Viewbox Stretch="Uniform">
+        <Grid>
+            <TextBlock Name="JackBlackBlackJack" FontSize="50" FontWeight="Bold" HorizontalAlignment="Center" VerticalAlignment="Top" Margin="0,65,0,0">Jack Black Blackjack</TextBlock>
+            <Button Name="Rules" Width="200" Height="300" Click="rules_clicked" Margin="246,203,784,151" FontSize="20">RULES</Button>
+            <Button Name="Play" Width="200" Height="300" Click="play_clicked" Margin="515,203,515,151" FontSize="20">PLAY</Button>
+            <Button Name="Exit" Width="200" Height="300" Click="exit_clicked" Margin="785,203,246,151" FontSize="20">EXIT</Button>
+        </Grid>
+    </Viewbox>
 </Window>

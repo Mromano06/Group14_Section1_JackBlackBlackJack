@@ -25,17 +25,21 @@ namespace Server
 
         private void rules_clicked(object sender, RoutedEventArgs e)
         {
-            MessageBox.Show("Rules, To Be Implemented.");
+            // TODO: Implement the rules display logic here
+            MessageBox.Show("Rules, to be implemented.");
         }
 
         private void play_clicked(object sender, RoutedEventArgs e)
         {
-            MessageBox.Show("Play, To Be Implemented.");
+            // TODO: Implement the game/UI logic here
+            MessageBox.Show("Play, coming soon!");
         }
 
         private void exit_clicked(object sender, RoutedEventArgs e)
         {
-            MessageBox.Show("Exit, To Be Implemented.");
+            // TODO: Add any necessary cleanup code here before exiting the application
+            Console.WriteLine("Application shutting down...");
+            System.Environment.Exit(0);
         }
     }
 }
