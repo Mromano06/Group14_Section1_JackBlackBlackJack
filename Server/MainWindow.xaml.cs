@@ -9,7 +9,9 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace Client
+// Matthew Romano - Feb 11th, 2026 - Main Menu for Server Application
+
+namespace Server
 {
     /// <summary>
     /// Interaction logic for MainWindow.xaml
@@ -20,5 +22,6 @@ namespace Client
         {
             InitializeComponent();
         }
+
     }
 }

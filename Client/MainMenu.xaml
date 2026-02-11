@@ -1,0 +1,29 @@
+﻿<!-- Matthew Romano - Feb 11th, 2026 - xmal file for main menu -->
+<!-- This is where the class name is defined. -->
+<Window x:Class="Client.MainMenu"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Client"
+        mc:Ignorable="d"
+        Title="Main Menu" Height="720" Width="1280">
+    <Viewbox Stretch="UniformToFill">
+        <Grid>
+            <Grid.Background>
+                <ImageBrush
+                    ImageSource="/Assets/MainMenu.jpg"
+                    Stretch="UniformToFill" />
+            </Grid.Background>
+            <Rectangle Canvas.Left="0" Canvas.Top="0"
+                       Width="575" Height="100"
+                       Fill="#008000" Margin="0,-450,0,0" />
+            <TextBlock Name="JackBlackBlackJack" FontSize="50"
+                       FontWeight="Bold" HorizontalAlignment="Center"
+                       VerticalAlignment="Top" Margin="0,65,0,0">Jack Black Blackjack</TextBlock>
+            <Button Name="Rules" Width="200" Height="300" Click="RulesClicked" Margin="246,203,784,151" FontSize="20">RULES</Button>
+            <Button Name="Play" Width="200" Height="300" Click="PlayClicked" Margin="515,203,515,151" FontSize="20">PLAY</Button>
+            <Button Name="Exit" Width="200" Height="300" Click="ExitClicked" Margin="785,203,246,151" FontSize="20">EXIT</Button>
+        </Grid>
+    </Viewbox>
+</Window>
