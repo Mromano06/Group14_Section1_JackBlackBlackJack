@@ -2,14 +2,14 @@
 {
     public enum GameStateEnum 
     {
-        Idle,
-        Waiting,
-        StartingGame,
-        Playing,
-        Processing,
-        Saving,
-        Restarting,
-        EndGame,
-        Exiting
+        IDLE,
+        WAITING,
+        STARTINGGAME,
+        PLAYING,
+        PROCESSING,
+        SAVING,
+        RESTARTING,
+        ENDGAME,
+        EXITING
     }
 }

@@ -8,18 +8,8 @@ namespace GameLogic.Models
     [Serializable]
     public class Card 
     {
-        private char _suit; // H, D, C, S
         private char _rank; // K, Q, J, T, 2-9, A
-
-        public char Suit
-        {
-            get => _suit;
-            set {
-                if (!"HDCS".Contains(value))
-                    throw new ArgumentException("Invalid suit. Must be H, D, C, or S");
-                _suit = value;
-            }
-        }
+        private char _suit; // H, D, C, S
 
         public char Rank
         {
@@ -28,6 +18,17 @@ namespace GameLogic.Models
                 if (!"A23456789TJQK".Contains(value))
                     throw new ArgumentException("Invalid rank");
                 _rank = value;
+            }
+        }
+
+        public char Suit
+        {
+            get => _suit;
+            set
+            {
+                if (!"HDCS".Contains(value))
+                    throw new ArgumentException("Invalid suit. Must be H, D, C, or S");
+                _suit = value;
             }
         }
 

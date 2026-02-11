@@ -10,7 +10,7 @@ namespace GameLogic.Models
     {
         private string _name;
         private Hand _hand;
-        private double _currency;
+        private double _balance;
 
         public string Name
         {
@@ -32,13 +32,13 @@ namespace GameLogic.Models
             }
         }
 
-        public double Currency
+        public double Balance
         {
-            get => _currency;
+            get => _balance;
             set {
                 if (value < 0)
-                    throw new ArgumentException("Currency cannot be negative");
-                _currency = value;
+                    throw new ArgumentException("Balance cannot be negative");
+                _balance = value;
             }
         }
     }
