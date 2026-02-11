@@ -9,6 +9,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\GameLogic\GameLogic.csproj" />
     <None Remove="MainMenu.jpg" />
   </ItemGroup>
 
