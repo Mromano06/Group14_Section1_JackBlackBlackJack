@@ -3,4 +3,5 @@
   <Project Path="GameLogic/GameLogic.csproj" Id="0e9ba893-2c88-43ca-91fb-4eed2fa85de8" />
   <Project Path="Jables_Protocol/Jables_Protocol.csproj" />
   <Project Path="Server/Server.csproj" />
+  <Project Path="SharedModels/SharedModels.csproj" Id="82d9b83e-9e92-4db1-91fe-deb704022f18" />
 </Solution>

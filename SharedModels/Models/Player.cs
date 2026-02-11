@@ -2,15 +2,26 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace GameLogic.Models 
+namespace SharedModels.Models 
 {
 
     [Serializable]
     public class Player 
     {
         private string _name;
-        private Hand _hand;
+        public Hand Hand { get; set; }
         private double _balance;
+
+        public Player()
+        {
+            Hand = new Hand();
+        }
+        public Player(string name, double startingBalance = 100.00)
+        {
+            Name = name;
+            Balance = startingBalance;
+            Hand = new Hand();
+        }
 
         public string Name
         {
@@ -19,16 +30,6 @@ namespace GameLogic.Models
                 if (string.IsNullOrWhiteSpace(value))
                     throw new ArgumentException("Player name cannot be empty");
                 _name = value;
-            }
-        }
-
-        public Hand Hand
-        {
-            get => _hand;
-            set {
-                if (value == null)
-                    throw new ArgumentNullException("Hand cannot be null");
-                _hand = value;
             }
         }
 
