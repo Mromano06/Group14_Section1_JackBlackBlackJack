@@ -17,11 +17,5 @@ namespace GameLogic.Logic
                 _ => card.Rank - '0' // For numbers, removing the char '0' gets the int value
             };
         }
-
-        // Overriding ToString to simplify the display of the cards (For testing)
-        public string ToString(Card card)
-        {
-            return $"{card.Rank}{card.Suit}";
-        }
     }
 }

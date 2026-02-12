@@ -31,5 +31,11 @@ namespace SharedModels.Models
                 _suit = value;
             }
         }
+
+        // Overriding ToString to simplify the display of the cards (For testing)
+        public string ToString(Card card)
+        {
+            return $"{card.Rank}{card.Suit}";
+        }
     }
 }
