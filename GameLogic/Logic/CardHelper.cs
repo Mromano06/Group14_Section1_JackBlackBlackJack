@@ -5,10 +5,13 @@ using SharedModels.Models;
 
 namespace GameLogic.Logic
 {
-    public class CardHelper
+    public static class CardHelper
     {
-        public int GetValue(Card card)
+        public static int GetCardValue(Card card)
         {
+            if (card == null)
+                throw new ArgumentNullException(nameof(card));
+
             return card.Rank switch {
                 'A' => 11,
 
