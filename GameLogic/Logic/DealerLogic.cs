@@ -3,6 +3,9 @@ using System.Collections.Generic;
 using System.Text;
 
 namespace GameLogic.Logic {
-    internal class DealerLogic {
+    public static class DealerLogic 
+    {
+
+
     }
 }

@@ -70,5 +70,14 @@ namespace GameLogic.Logic
             hand.Cards.Clear();
         }
 
+        public static void AddCardToHand(Hand hand, Card card)
+        {
+            if (card == null) {
+                throw new ArgumentNullException(nameof(card), "Card cannot be null");
+            }
+
+            hand.Cards.Add(card);
+        }
+
     }
 }
