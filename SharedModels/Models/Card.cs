@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace GameLogic.Models 
+namespace SharedModels.Models 
 {
     
     [Serializable]
@@ -32,22 +32,10 @@ namespace GameLogic.Models
             }
         }
 
-        public int GetValue()
-        {
-            return Rank switch 
-            {
-                'A' => 11,
-
-                'K' or 'Q' or 'J' or 'T' => 10,
-
-                _ => Rank - '0' // For numbers, removing the char '0' gets the int value
-            };
-        }
-
         // Overriding ToString to simplify the display of the cards (For testing)
-        public override string ToString()
+        public string ToString(Card card)
         {
-            return $"{Rank}{Suit}";
+            return $"{card.Rank}{card.Suit}";
         }
     }
 }
