@@ -12,7 +12,6 @@ namespace GameLogic.Core {
         }
         public void TransitionTo(GameStateEnum newState) 
         {
-            // Here you could add validation logic to ensure valid state transitions
             State = newState;
         }
     }
