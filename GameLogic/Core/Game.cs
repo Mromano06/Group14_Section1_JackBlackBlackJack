@@ -127,11 +127,11 @@ namespace GameLogic.Core {
             }
             Dealer.Hand.Cards.Clear();
 
-            // TODO: Implement Shoe functionality
-            // if (Shoe.CardsRemanining < 52) {
-            //    Shoe.ResetShoe(3);
-            //    Shoe.Shuffle();
-            // }
+            
+            if (Shoe.CardsRemaining() < 52) {
+                Shoe.ResetShoe(3);
+                Shoe.Shuffle();
+            }
 
             CurrentPlayerIndex = 0;
             RoundNumber++;
