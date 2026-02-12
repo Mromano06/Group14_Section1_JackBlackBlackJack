@@ -7,7 +7,7 @@
         STARTINGGAME,
         PLAYING,
         PROCESSING,
-        SAVING,
+        // SAVING,
         RESTARTING,
         ENDGAME,
         EXITING
