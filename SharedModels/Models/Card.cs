@@ -33,9 +33,9 @@ namespace SharedModels.Models
         }
 
         // Overriding ToString to simplify the display of the cards (For testing)
-        public string ToString(Card card)
+        public override string ToString()
         {
-            return $"{card.Rank}{card.Suit}";
+            return $"{Rank}{Suit}";
         }
     }
 }
