@@ -8,7 +8,7 @@ namespace SharedModels.Models
     [Serializable]
     public class Player 
     {
-        private string _name;
+        private string _name = "Anonymous";
         public Hand Hand { get; set; }
         private double _balance;
 

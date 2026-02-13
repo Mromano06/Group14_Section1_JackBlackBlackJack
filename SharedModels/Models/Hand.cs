@@ -18,7 +18,18 @@ namespace SharedModels.Models
 
         public override string ToString()
         {
-            return string.Join(", ", Cards);
+            string result = "";
+
+            foreach (Card card in Cards)
+            {
+                if (Cards.IndexOf(card) != 1) {
+                    result += ", ";
+                }
+
+                result += card.ToString();
+            }
+
+            return result;
         }
     }
 }
