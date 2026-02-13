@@ -1,7 +1,12 @@
 <Solution>
+  <Project Path="Client.Tests/Client.Tests.csproj" />
   <Project Path="Client/Client.csproj" />
+  <Project Path="GameLogic.Tests/GameLogic.Tests.csproj" />
   <Project Path="GameLogic/GameLogic.csproj" Id="0e9ba893-2c88-43ca-91fb-4eed2fa85de8" />
+  <Project Path="Jables_Protocol.Tests/Jables_Protocol.Tests.csproj" />
   <Project Path="Jables_Protocol/Jables_Protocol.csproj" />
+  <Project Path="Server.Tests/Server.Tests.csproj" />
   <Project Path="Server/Server.csproj" />
+  <Project Path="SharedModels.Tests/SharedModels.Tests.csproj" Id="1991f2b0-e7b6-471d-83bd-363f3ccbc9f9" />
   <Project Path="SharedModels/SharedModels.csproj" Id="82d9b83e-9e92-4db1-91fe-deb704022f18" />
 </Solution>
