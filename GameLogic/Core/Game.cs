@@ -79,8 +79,7 @@ namespace GameLogic.Core {
             }
             Dealer.Hand.Cards.Clear();
 
-            // TODO: Implement Shoe functionality
-            // Shoe.Shuffle();
+            Shoe.Shuffle();
 
             CurrentPlayerIndex = 0;
             RoundNumber = 1;
