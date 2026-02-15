@@ -108,6 +108,16 @@ namespace GameLogic.Core {
 
             CurrentPlayerIndex++;
         }
+        
+        // Since we're making everyone enter unique names we can just get a player by their name
+        public Player GetPlayer(string playerName)
+        {
+            foreach (Player player in Players) {
+                if (player.Name == playerName) return player;
+            }
+            
+            throw new ArgumentException("Player cannot be found");
+        }
 
         public Player GetCurrentPlayer()
         {
