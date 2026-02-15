@@ -20,6 +20,25 @@ public class BettingLogicTests
 
     }
 
-    ///TODO: Add more tests for betting logic
-    /// Then continue on to Action Logic And then Core Game Logic
+    [TestMethod]
+    public void PlaceBet_ThrowsException_PlayerBalanceTooLow()
+    {
+        Game game = new Game(10, new Shoe(2));
+        Player player = new Player("Test Player", 5);
+        
+        Assert.Throws<InvalidOperationException>(() => BettingLogic.PlaceBet(player, game, 20));
+    }
+
+    [TestMethod]
+    public void PlaceBet_SuccessfulBet()
+    {
+        Game game = new Game(10, new Shoe(2));
+        Player player = new Player("Test Player", 100);
+        
+        double betAmount = BettingLogic.PlaceBet(player, game, 20);
+        
+        Assert.AreEqual(20, betAmount);
+        Assert.AreEqual(80, player.Balance);
+    }
+
 }
