@@ -2,10 +2,9 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace GameLogic.Logic {
-    public class ActionLogic 
+namespace GameLogic.Actions.ActionTypes
+{
+    internal class Insure
     {
-
-
     }
 }
