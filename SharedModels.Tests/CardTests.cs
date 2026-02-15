@@ -32,7 +32,7 @@ public class CardTests
     public void CheckToString_ReturnsCorrectFormat()
     {
         Card card = new Card { Rank = 'A', Suit = 'S' };
-        string result = card.ToString(card);
+        string result = card.ToString();
         Assert.AreEqual("AS", result);
     }
 }
