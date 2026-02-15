@@ -1,4 +1,6 @@
-﻿using System.Text;
+﻿using System;
+using System.Collections.Generic;
+using System.Text;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
@@ -9,18 +11,18 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-// Matthew Romano - Feb 11th, 2026 - Main Menu for Server Application
-
-namespace Client
+namespace Client.Views
 {
     /// <summary>
-    /// Interaction logic for MainWindow.xaml
+    /// Interaction logic for MainMenu.xaml
     /// </summary>
-    public partial class MainMenu : Window
+    public partial class MainMenu : UserControl
     {
-        public MainMenu()
+        private Blackjack _mainWindow;
+        public MainMenu(Blackjack mainWindow)
         {
             InitializeComponent();
+            _mainWindow = mainWindow;
         }
 
         private static ImageBrush SetupBackground()
@@ -52,10 +54,10 @@ namespace Client
             MessageBox.Show("Rules, to be implemented.");
         }
 
+        // TODO: Implement navigation when PlayClicked is called
         private void PlayClicked(object sender, RoutedEventArgs e)
         {
-            // TODO: Implement the game/UI logic here
-            MessageBox.Show("Play, coming soon!");
+            // _mainWindow.Navigate(new GameView(_mainWindow));
         }
 
         private void ExitClicked(object sender, RoutedEventArgs e)
