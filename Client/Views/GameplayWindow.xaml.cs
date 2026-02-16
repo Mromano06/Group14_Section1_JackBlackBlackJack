@@ -14,12 +14,13 @@ using System.Windows.Shapes;
 namespace Client.Views
 {
     /// <summary>
-    /// Interaction logic for MainMenu.xaml
+    /// Interaction logic for GameplayWindow.xaml
     /// </summary>
-    public partial class MainMenu : UserControl
+    public partial class GameplayWindow : UserControl
     {
         private Blackjack _mainWindow;
-        public MainMenu(Blackjack mainWindow)
+
+        public GameplayWindow(Blackjack mainWindow)
         {
             InitializeComponent();
             _mainWindow = mainWindow;
@@ -35,7 +36,7 @@ namespace Client.Views
             // And map it to the URI for the image
             BitmapImage backgroundBitmap = new BitmapImage();
             backgroundBitmap.BeginInit();
-            backgroundBitmap.UriSource = new Uri("/Assets/MainMenu.jpg", UriKind.Relative);
+            backgroundBitmap.UriSource = new Uri("/Assets/Gameboard.jpg", UriKind.Relative);
 
             // DO THIS TO SAVE MEMORY
             backgroundBitmap.DecodePixelHeight = 720;
@@ -53,18 +54,5 @@ namespace Client.Views
             // TODO: Implement the rules display logic here
             MessageBox.Show("Rules, to be implemented.");
         }
-
-        private void PlayClicked(object sender, RoutedEventArgs e)
-        {
-            _mainWindow.Navigate(new GameplayWindow(_mainWindow));
-        }
-
-        private void ExitClicked(object sender, RoutedEventArgs e)
-        {
-            // TODO: Add any necessary cleanup code here before exiting the application
-            Console.WriteLine("Application shutting down...");
-            System.Environment.Exit(0);
-        }
-
     }
 }

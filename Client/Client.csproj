@@ -9,7 +9,16 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="Assets\BackOfCard.png" />
+    <None Remove="Assets\Gameboard.jpg" />
     <None Remove="Assets\MainMenu.jpg" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Resource Include="Assets\BackOfCard.png" />
+    <Resource Include="Assets\Gameboard.jpg">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Resource>
   </ItemGroup>
 
   <ItemGroup>
