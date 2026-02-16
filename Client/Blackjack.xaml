@@ -1,0 +1,8 @@
+﻿<!-- Matthew Romano - Feb 11th, 2026 - xmal file for main menu -->
+<!-- This is where the class name is defined. -->
+<Window x:Class="Client.Blackjack"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="Blackjack" Width="1280" Height="720">
+    <ContentControl x:Name="ScreenHost" />
+</Window>

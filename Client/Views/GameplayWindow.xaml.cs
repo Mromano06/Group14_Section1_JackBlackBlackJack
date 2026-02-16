@@ -1,4 +1,6 @@
-﻿using System.Text;
+﻿using System;
+using System.Collections.Generic;
+using System.Text;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
@@ -9,18 +11,19 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-// Matthew Romano - Feb 11th, 2026 - Main Menu for Server Application
-
-namespace Client
+namespace Client.Views
 {
     /// <summary>
-    /// Interaction logic for MainWindow.xaml
+    /// Interaction logic for GameplayWindow.xaml
     /// </summary>
-    public partial class MainMenu : Window
+    public partial class GameplayWindow : UserControl
     {
-        public MainMenu()
+        private Blackjack _mainWindow;
+
+        public GameplayWindow(Blackjack mainWindow)
         {
             InitializeComponent();
+            _mainWindow = mainWindow;
         }
 
         private static ImageBrush SetupBackground()
@@ -33,7 +36,7 @@ namespace Client
             // And map it to the URI for the image
             BitmapImage backgroundBitmap = new BitmapImage();
             backgroundBitmap.BeginInit();
-            backgroundBitmap.UriSource = new Uri("/Resources/MainMenu.jpg", UriKind.Relative);
+            backgroundBitmap.UriSource = new Uri("/Assets/Gameboard.jpg", UriKind.Relative);
 
             // DO THIS TO SAVE MEMORY
             backgroundBitmap.DecodePixelHeight = 720;
@@ -51,19 +54,5 @@ namespace Client
             // TODO: Implement the rules display logic here
             MessageBox.Show("Rules, to be implemented.");
         }
-
-        private void PlayClicked(object sender, RoutedEventArgs e)
-        {
-            // TODO: Implement the game/UI logic here
-            MessageBox.Show("Play, coming soon!");
-        }
-
-        private void ExitClicked(object sender, RoutedEventArgs e)
-        {
-            // TODO: Add any necessary cleanup code here before exiting the application
-            Console.WriteLine("Application shutting down...");
-            System.Environment.Exit(0);
-        }
-
     }
 }
