@@ -124,7 +124,7 @@ namespace GameLogic.Core {
             if (CurrentPlayerIndex >= 0 && CurrentPlayerIndex < Players.Count)
                 return Players[CurrentPlayerIndex];
 
-            return null; // if we return null, it means it's (probably) dealer's turn
+            return null; // if we return null, it means it's (probably) the dealer's turn
         }
 
         public void ResetGame()

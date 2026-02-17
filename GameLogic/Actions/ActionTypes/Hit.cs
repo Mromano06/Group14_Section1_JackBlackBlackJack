@@ -61,9 +61,7 @@ namespace GameLogic.Actions.ActionTypes
                 );
             }
 
-            return ActionResult.Successful($"{_playerName} drew {card}, hand value: {handValue}";
+            return ActionResult.Successful($"{_playerName} drew {card}, hand value: {handValue}");
         }
-
-        string Description { get; }
     }
 }
