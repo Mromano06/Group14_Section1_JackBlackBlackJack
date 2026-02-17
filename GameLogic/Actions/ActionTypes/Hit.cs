@@ -60,6 +60,8 @@ namespace GameLogic.Actions.ActionTypes
                 return ActionResult.Successful($"{_playerName} drew {card} and busted with {handValue}");
             }
 
+            player.ActionCount++;
+
             return ActionResult.Successful($"{_playerName} drew {card}, hand value: {handValue}");
         }
     }

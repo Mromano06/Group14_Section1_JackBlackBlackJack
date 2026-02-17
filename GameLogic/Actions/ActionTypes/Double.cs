@@ -39,6 +39,10 @@ namespace GameLogic.Actions.ActionTypes
             if (HandHelper.IsBust(player.Hand))
                 return false;
 
+            // Player can't double if they have already completed an action
+            if (player.ActionCount <= 0)
+                return false;
+
             // Player can't double if they dont have a high enough balance
             if (player.Balance < player.CurrentBet)
                 return false;
@@ -76,6 +80,7 @@ namespace GameLogic.Actions.ActionTypes
                 return ActionResult.Successful($"{_playerName} doubled, drew {card} and busted with {handValue}");
             }
 
+            player.ActionCount++;
             game.NextPlayer();
 
             return ActionResult.Successful($"{_playerName} doubled, drew {card}, and hand value is now: {handValue}");
