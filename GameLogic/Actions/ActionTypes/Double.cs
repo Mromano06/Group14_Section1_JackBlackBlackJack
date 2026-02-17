@@ -53,7 +53,7 @@ namespace GameLogic.Actions.ActionTypes
         public ActionResult Execute(Game game)
         {
             if (!IsExecutable(game)) {
-                return ActionResult.Failed("Cannot hit at this time");
+                return ActionResult.Failed("Cannot double at this time");
             }
 
             Player player = game.GetPlayer(_playerName);

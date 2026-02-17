@@ -35,7 +35,7 @@ namespace GameLogic.Actions.ActionTypes
                 return false;
             }
 
-            // PLayer can't stand if they've already busted
+            // Player can't stand if they've already busted
             if (HandHelper.IsBust(player.Hand))
                 return false;
 

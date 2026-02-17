@@ -7,7 +7,7 @@ using GameLogic.Core;
 
 namespace GameLogic.Actions.ActionTypes
 {
-    public class Bet
+    public class Bet : IAction
     {
         private string _playerName;
         private double _amount;
