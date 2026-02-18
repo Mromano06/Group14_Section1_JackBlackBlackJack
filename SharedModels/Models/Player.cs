@@ -10,6 +10,10 @@ namespace SharedModels.Models
     {
         private string _name = "Anonymous";
         public Hand Hand { get; set; }
+        public double CurrentBet { get; set; }
+        public bool HasDoubled { get; set; }
+        public bool HasInsured { get; set; }
+        public int ActionCount { get; set; }
         private double _balance;
 
         public Player()

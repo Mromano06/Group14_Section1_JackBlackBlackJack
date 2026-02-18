@@ -34,7 +34,7 @@ namespace GameLogic.Actions.ActionTypes
                 return false; 
             }
 
-            // PLayer can't hit if they've already busted
+            // Player can't hit if they've already busted
             if (HandHelper.IsBust(player.Hand))
                 return false;
 
@@ -57,13 +57,12 @@ namespace GameLogic.Actions.ActionTypes
 
             if (isBust) {
                 game.NextPlayer();
-                return ActionResult.Successful($"{_playerName} drew {card} and busted with {handValue}"
-                );
+                return ActionResult.Successful($"{_playerName} drew {card} and busted with {handValue}");
             }
 
-            return ActionResult.Successful($"{_playerName} drew {card}, hand value: {handValue}";
-        }
+            player.ActionCount++;
 
-        string Description { get; }
+            return ActionResult.Successful($"{_playerName} drew {card}, hand value: {handValue}");
+        }
     }
 }
