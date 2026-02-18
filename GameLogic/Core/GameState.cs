@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using SharedModels.Core;
 
 namespace GameLogic.Core {
     public class GameState 

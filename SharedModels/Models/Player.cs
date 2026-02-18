@@ -5,7 +5,6 @@ using System.Text;
 namespace SharedModels.Models 
 {
 
-    [Serializable]
     public class Player 
     {
         private string _name = "Anonymous";
