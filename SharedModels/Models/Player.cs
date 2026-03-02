@@ -7,8 +7,8 @@ namespace SharedModels.Models
 
     public class Player 
     {
-        private string _name = "Anonymous";
-        public Hand Hand { get; set; }
+        private string _name;
+        private Hand _hand;
         public double CurrentBet { get; set; }
         public bool HasDoubled { get; set; }
         public bool HasInsured { get; set; }
@@ -17,13 +17,15 @@ namespace SharedModels.Models
 
         public Player()
         {
-            Hand = new Hand();
+            _name = "Anonymous";
+            _balance = 100;
+            _hand = new Hand();
         }
         public Player(string name, double startingBalance = 100.00)
         {
             Name = name;
             Balance = startingBalance;
-            Hand = new Hand();
+            _hand = new Hand();
         }
 
         public string Name
@@ -33,6 +35,16 @@ namespace SharedModels.Models
                 if (string.IsNullOrWhiteSpace(value))
                     throw new ArgumentException("Player name cannot be empty");
                 _name = value;
+            }
+        }
+
+        public Hand Hand
+        {
+            get => _hand;
+            set {
+                if (value == null)
+                    throw new ArgumentNullException("Hand cannot be null");
+                _hand = value;
             }
         }
 
