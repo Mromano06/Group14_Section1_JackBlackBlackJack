@@ -27,4 +27,10 @@
     </Resource>
   </ItemGroup>
 
+  <ItemGroup>
+    <Compile Update="Views\BetPlacingWindow.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+  </ItemGroup>
+
 </Project>

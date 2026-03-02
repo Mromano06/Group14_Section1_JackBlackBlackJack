@@ -16,11 +16,11 @@ namespace Client.Views
     /// <summary>
     /// Interaction logic for GameplayWindow.xaml
     /// </summary>
-    public partial class GameplayWindow : UserControl
+    public partial class BetPlacingWindow : UserControl
     {
         private Blackjack _mainWindow;
 
-        public GameplayWindow(Blackjack mainWindow)
+        public BetPlacingWindow(Blackjack mainWindow)
         {
             InitializeComponent();
             _mainWindow = mainWindow;
@@ -49,7 +49,6 @@ namespace Client.Views
             };
         }
 
-        // TODO: Properly implement buttons and thier actions
         private void RulesClicked(object sender, RoutedEventArgs e)
         {
             // TODO: Implement the rules display logic here
