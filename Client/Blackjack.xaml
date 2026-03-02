@@ -4,5 +4,7 @@
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         Title="Blackjack" Width="1280" Height="720">
-    <ContentControl x:Name="ScreenHost" />
+    <ContentControl x:Name="ScreenHost"
+                    HorizontalContentAlignment="Stretch"
+                    VerticalContentAlignment="Stretch"/>
 </Window>

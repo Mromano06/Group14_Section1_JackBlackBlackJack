@@ -3,15 +3,22 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006">
-    <Viewbox Stretch="Fill">
-        <Grid>
-            <Grid.Background>
-                <ImageBrush
+    <Grid>
+        <Grid.Background>
+            <ImageBrush
                     ImageSource="/Assets/Gameboard.jpg"
                     Stretch="Fill" />
-            </Grid.Background>
-            <Rectangle Canvas.Left="0" Canvas.Top="0"
-           Fill="#008000" Margin="328,98,466,502" />
-        </Grid>
-    </Viewbox>
+        </Grid.Background>
+        <Button Name="IncrementBet" Width="30" Height="30" Click="RulesClicked" Margin="481,206,658,154" 
+        FontSize="20" FontWeight="Bold" Content="+"></Button>
+        <Button Name="DecreaseBet" Width="30" Height="30" Click="RulesClicked" Margin="481,245,658,115" 
+        FontSize="20" FontWeight="Bold" Content="-"></Button>
+        <Button Name="MaxBet" Width="30" Height="30" Click="RulesClicked" Margin="658,206,481,154" 
+        FontSize="10" FontWeight="Bold" Content="Max"></Button>
+        <Button x:Name="ConfirmBet" Width="30" Height="30" Click="RulesClicked" Margin="658,245,481,115" 
+        FontSize="8" FontWeight="Bold" Content="Ready"/>
+        <TextBox Name="Instructions" Margin="524,257,524,115" >Please place your bet.</TextBox>
+        <TextBox Name="Bet" Text="Current Bet: 0" HorizontalContentAlignment="Center" 
+                 VerticalContentAlignment="Center" Margin="524,206,524,138"></TextBox>
+    </Grid>
 </UserControl>
