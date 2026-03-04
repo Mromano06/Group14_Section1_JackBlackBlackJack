@@ -45,7 +45,7 @@ namespace Client.Views
             return new ImageBrush(backgroundBitmap)
             {
                 Stretch = Stretch.UniformToFill
-            };
+            }; 
         }
 
         private void RulesClicked(object sender, RoutedEventArgs e)

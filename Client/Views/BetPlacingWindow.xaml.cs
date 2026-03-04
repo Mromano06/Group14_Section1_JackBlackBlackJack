@@ -21,10 +21,15 @@ namespace Client.Views
         private Blackjack _mainWindow;
         private int currentBet = 0;
 
+        // TODO: Implement proper balancing sending and setting
+        private int totalBalance = 100;
+
         public BetPlacingWindow(Blackjack mainWindow)
         {
             InitializeComponent();
             _mainWindow = mainWindow;
+            // FOR TESTING ONLY RIGHT NOW!!!
+            Balance.Text = $"Balance: {totalBalance}";
         }
 
         private static ImageBrush SetupBackground()
@@ -52,26 +57,30 @@ namespace Client.Views
 
         private void IncBet(object sender, RoutedEventArgs e)
         {
-            currentBet += 10;
+            if ((currentBet + 10) <= totalBalance) 
+                currentBet += 10;
             Bet.Text = $"Current Bet: {currentBet}"; // To display the bet amount
         }
 
         private void DecBet(object sender, RoutedEventArgs e)
         {
-            currentBet -= 10;
-            Bet.Text = $"Current Bet: {currentBet}"; // To display the bet amount
+            if ((currentBet - 10) >= 0)
+                currentBet -= 10;
+            Bet.Text = $"Current Bet: {currentBet}";
         }
 
-        // TODO: Make a displayed money amount that acts as the upper limit for the max
         private void MaxBet(object sender, RoutedEventArgs e)
         {
-            MessageBox.Show("Max to be implemented.");
+            currentBet = totalBalance;
+            Bet.Text = $"Current Bet: {currentBet}";
         }
 
-        // TODO: Make have this rout to and send relevent info for the actual turn screen
+        // TODO: Make this route send relevent info to the actual gameplay screen
         private void PlaceBet(object sender, RoutedEventArgs e)
         {
-            MessageBox.Show("Place Bet to be implemented.");
+            totalBalance -= currentBet;
+            MessageBox.Show("Bet Placed!");
+            _mainWindow.Navigate(new GameplayWindow(_mainWindow));
         }
     }
 }

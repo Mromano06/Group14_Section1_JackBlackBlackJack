@@ -21,8 +21,10 @@
                     Canvas.Top="455" FontSize="11" FontWeight="Bold" Content="Ready" HorizontalAlignment="Center" VerticalAlignment="Top"></Button>
                 <Rectangle Canvas.Left="553" Canvas.Top="366" Width="180" Height="37" Fill="White" HorizontalAlignment="Center" VerticalAlignment="Top"/>
                 <Rectangle Canvas.Left="553" Canvas.Top="411" Width="180" Height="37" Fill="White" HorizontalAlignment="Center" VerticalAlignment="Top"/>
+                <Rectangle Width="110" Height="37" Fill="White" HorizontalAlignment="Left" VerticalAlignment="Center"/>
                 <TextBlock Name="Instructions" FontSize="14" Text="Please place your bet." Canvas.Left="573" Canvas.Top="375" HorizontalAlignment="Center" VerticalAlignment="Top" ></TextBlock>
-                <TextBlock Name="Bet" FontSize="14" Text="Current Bet: 0" Canvas.Left="601" Canvas.Top="420" HorizontalAlignment="Center" VerticalAlignment="Top"/>
+                <TextBlock Name="Bet" FontSize="14" Text="Current Bet: 0" Canvas.Left="598" Canvas.Top="420" HorizontalAlignment="Left" VerticalAlignment="Center"/>
+                <TextBlock Name="Balance" FontSize="14" Text="Balance: 0" Canvas.Left="16" Canvas.Top="9" HorizontalAlignment="Left" VerticalAlignment="Center"/>
             </Canvas>
         </Grid>
     </Viewbox>
