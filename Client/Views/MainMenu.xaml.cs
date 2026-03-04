@@ -56,7 +56,8 @@ namespace Client.Views
 
         private void PlayClicked(object sender, RoutedEventArgs e)
         {
-            _mainWindow.Navigate(new GameplayWindow(_mainWindow));
+            // TODO: Use this to route to the beginning of the game
+            _mainWindow.Navigate(new BetPlacingWindow(_mainWindow));
         }
 
         private void ExitClicked(object sender, RoutedEventArgs e)

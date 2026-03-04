@@ -3,22 +3,27 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006">
-    <Grid>
-        <Grid.Background>
-            <ImageBrush
+    <Viewbox Stretch="Uniform">
+        <Grid Width="1300" Height="720">
+            <Grid.Background>
+                <ImageBrush
                     ImageSource="/Assets/Gameboard.jpg"
                     Stretch="Fill" />
-        </Grid.Background>
-        <Button Name="IncrementBet" Width="30" Height="30" Click="RulesClicked" Margin="481,206,658,154" 
-        FontSize="20" FontWeight="Bold" Content="+"></Button>
-        <Button Name="DecreaseBet" Width="30" Height="30" Click="RulesClicked" Margin="481,245,658,115" 
-        FontSize="20" FontWeight="Bold" Content="-"></Button>
-        <Button Name="MaxBet" Width="30" Height="30" Click="RulesClicked" Margin="658,206,481,154" 
-        FontSize="10" FontWeight="Bold" Content="Max"></Button>
-        <Button x:Name="ConfirmBet" Width="30" Height="30" Click="RulesClicked" Margin="658,245,481,115" 
-        FontSize="8" FontWeight="Bold" Content="Ready"/>
-        <TextBox Name="Instructions" Margin="524,257,524,115" >Please place your bet.</TextBox>
-        <TextBox Name="Bet" Text="Current Bet: 0" HorizontalContentAlignment="Center" 
-                 VerticalContentAlignment="Center" Margin="524,206,524,138"></TextBox>
-    </Grid>
+            </Grid.Background>
+            <Canvas Background="Transparent">
+                <Button Name="IncrementBet" Width="40" Height="40" Click="IncBet" Canvas.Left="600"
+                    Canvas.Top="455" FontSize="28" FontWeight="Bold" Content="+" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" HorizontalAlignment="Center" VerticalAlignment="Top"></Button>
+                <Button Name="DecreaseBet" Width="40" Height="40" Click="DecBet" Canvas.Left="553"
+                    Canvas.Top="455" FontSize="28" FontWeight="Bold" Content="-" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" HorizontalAlignment="Center" VerticalAlignment="Top"></Button>
+                <Button Name="BetMax" Width="40" Height="40" Click="MaxBet" Canvas.Left="646"
+                    Canvas.Top="455" FontSize="15" FontWeight="Bold" Content="Max" HorizontalAlignment="Center" VerticalAlignment="Top"></Button>
+                <Button x:Name="ConfirmBet" Width="40" Height="40" Click="PlaceBet" Canvas.Left="693"
+                    Canvas.Top="455" FontSize="11" FontWeight="Bold" Content="Ready" HorizontalAlignment="Center" VerticalAlignment="Top"></Button>
+                <Rectangle Canvas.Left="553" Canvas.Top="366" Width="180" Height="37" Fill="White" HorizontalAlignment="Center" VerticalAlignment="Top"/>
+                <Rectangle Canvas.Left="553" Canvas.Top="411" Width="180" Height="37" Fill="White" HorizontalAlignment="Center" VerticalAlignment="Top"/>
+                <TextBlock Name="Instructions" FontSize="14" Text="Please place your bet." Canvas.Left="573" Canvas.Top="375" HorizontalAlignment="Center" VerticalAlignment="Top" ></TextBlock>
+                <TextBlock Name="Bet" FontSize="14" Text="Current Bet: 0" Canvas.Left="601" Canvas.Top="420" HorizontalAlignment="Center" VerticalAlignment="Top"/>
+            </Canvas>
+        </Grid>
+    </Viewbox>
 </UserControl>

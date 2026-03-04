@@ -19,6 +19,7 @@ namespace Client.Views
     public partial class BetPlacingWindow : UserControl
     {
         private Blackjack _mainWindow;
+        private int currentBet = 0;
 
         public BetPlacingWindow(Blackjack mainWindow)
         {
@@ -49,10 +50,28 @@ namespace Client.Views
             };
         }
 
-        private void RulesClicked(object sender, RoutedEventArgs e)
+        private void IncBet(object sender, RoutedEventArgs e)
         {
-            // TODO: Implement the rules display logic here
-            MessageBox.Show("Rules, to be implemented.");
+            currentBet += 10;
+            Bet.Text = $"Current Bet: {currentBet}"; // To display the bet amount
+        }
+
+        private void DecBet(object sender, RoutedEventArgs e)
+        {
+            currentBet -= 10;
+            Bet.Text = $"Current Bet: {currentBet}"; // To display the bet amount
+        }
+
+        // TODO: Make a displayed money amount that acts as the upper limit for the max
+        private void MaxBet(object sender, RoutedEventArgs e)
+        {
+            MessageBox.Show("Max to be implemented.");
+        }
+
+        // TODO: Make have this rout to and send relevent info for the actual turn screen
+        private void PlaceBet(object sender, RoutedEventArgs e)
+        {
+            MessageBox.Show("Place Bet to be implemented.");
         }
     }
 }
