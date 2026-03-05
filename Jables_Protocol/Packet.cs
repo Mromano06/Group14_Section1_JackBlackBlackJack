@@ -1,6 +1,7 @@
 ﻿using System.ComponentModel;
 using System.Numerics;
-
+using SharedModels.Models;
+using SharedModels.Core;
 using GameLogic.Core;
 
 // Sam Pelot

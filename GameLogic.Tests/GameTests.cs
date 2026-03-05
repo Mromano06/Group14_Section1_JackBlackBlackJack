@@ -1,6 +1,7 @@
 using GameLogic.Core;
 using GameLogic.Models;
 using SharedModels.Models;
+using SharedModels.Core;
 
 namespace GameLogic.Tests;
 
