@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 using GameLogic.Models;
+using SharedModels.Core;
 using SharedModels.Models;
 
 namespace GameLogic.Core {
