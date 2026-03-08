@@ -50,10 +50,30 @@ namespace Client.Views
         }
 
         // TODO: Properly implement buttons and thier actions
-        private void RulesClicked(object sender, RoutedEventArgs e)
+        private void HitClicked(object sender, RoutedEventArgs e)
         {
-            // TODO: Implement the rules display logic here
-            MessageBox.Show("Rules, to be implemented.");
+            // Give the player another card (match the card read from the server)
+            // Use dynamic routing to match the card with the key
+        }
+
+        private void StandClicked(object sender, RoutedEventArgs e)
+        {
+            // End the round for the player
+            // Compare and handle winnings/losings
+            // Send the user to the next round/main screem
+        }
+
+        private void DoubleClicked(object sender, RoutedEventArgs e)
+        {
+            // Give the player one more card and dissallow them to hit again
+            // Acts as a final hit+stand combined into one turn
+        }
+
+        private void SplitClicked(object sender, RoutedEventArgs e)
+        {
+            // Split players hand into seperate ones
+            // Server handles the actual logic jsut keep proper hands together
+            // Allow the user to now play two hands one after another
         }
     }
 }
