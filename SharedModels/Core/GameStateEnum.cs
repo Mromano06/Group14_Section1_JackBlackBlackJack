@@ -10,6 +10,7 @@
         // SAVING,
         RESTARTING,
         ENDGAME,
+        ENDROUND, // New state
         EXITING
     }
 }
