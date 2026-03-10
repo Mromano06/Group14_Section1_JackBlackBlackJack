@@ -1,4 +1,4 @@
-﻿namespace GameLogic.Core 
+﻿namespace SharedModels.Core 
 {
     public enum GameStateEnum 
     {

@@ -6,7 +6,6 @@ using System.Text;
 namespace SharedModels.Models 
 {
 
-    [Serializable]
     public class Hand 
     {
         public List<Card> Cards { get; set; }

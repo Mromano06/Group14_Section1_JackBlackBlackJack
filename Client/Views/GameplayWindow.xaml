@@ -1,0 +1,26 @@
+﻿<UserControl x:Class="Client.Views.GameplayWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006">
+    <Viewbox Stretch="Uniform">
+        <Grid Width="1300" Height="720">
+            <Grid.Background>
+                <ImageBrush
+                    ImageSource="/Assets/Gameboard.jpg"
+                    Stretch="Fill" />
+            </Grid.Background>
+            <Canvas Background="Transparent">
+                <Button x:Name="Hit" Width="40" Height="40" Click="HitClicked" Canvas.Left="547"
+            Canvas.Top="672" FontSize="14" FontWeight="Bold" Content="Hit" HorizontalAlignment="Center" VerticalAlignment="Top"></Button>
+                <Button x:Name="Stand" Width="40" Height="40" Click="StandClicked" Canvas.Left="602"
+            Canvas.Top="672" FontSize="12" FontWeight="Bold" Content="Stand" HorizontalAlignment="Center" VerticalAlignment="Top"></Button>
+                <Button x:Name="Double" Width="40" Height="40" Click="DoubleClicked" FontSize="10"
+            FontWeight="Bold" Content="Double" Canvas.Left="658" Canvas.Top="672" HorizontalAlignment="Center" VerticalAlignment="Top"/>
+                <Button x:Name="Split" Width="40" Height="40" Click="SplitClicked" FontSize="11"
+            FontWeight="Bold" Content="Split" Canvas.Left="713" Canvas.Top="672" HorizontalAlignment="Center" VerticalAlignment="Top"/>
+            </Canvas>
+        </Grid>
+    </Viewbox>
+
+</UserControl>

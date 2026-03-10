@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 using GameLogic.Models;
+using SharedModels.Core;
 using SharedModels.Models;
 
 namespace GameLogic.Core {
@@ -79,8 +80,7 @@ namespace GameLogic.Core {
             }
             Dealer.Hand.Cards.Clear();
 
-            // TODO: Implement Shoe functionality
-            // Shoe.Shuffle();
+            Shoe.Shuffle();
 
             CurrentPlayerIndex = 0;
             RoundNumber = 1;
@@ -109,13 +109,23 @@ namespace GameLogic.Core {
 
             CurrentPlayerIndex++;
         }
+        
+        // Since we're making everyone enter unique names we can just get a player by their name
+        public Player GetPlayer(string playerName)
+        {
+            foreach (Player player in Players) {
+                if (player.Name == playerName) return player;
+            }
+            
+            throw new ArgumentException("Player cannot be found");
+        }
 
         public Player GetCurrentPlayer()
         {
             if (CurrentPlayerIndex >= 0 && CurrentPlayerIndex < Players.Count)
                 return Players[CurrentPlayerIndex];
 
-            return null; // if we return null, it means it's (probably) dealer's turn
+            return null; // if we return null, it means it's (probably) the dealer's turn
         }
 
         public void ResetGame()

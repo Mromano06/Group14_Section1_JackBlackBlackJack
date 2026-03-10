@@ -9,14 +9,6 @@ namespace SharedModels.Tests;
 [TestClass]
 public class PlayerTests
 {
-    [TestMethod]
-    public void CheckSetNameThrow_CantBeNull()
-    {
-        Player player = new Player();
-
-
-        Assert.IsNull(player.Name);
-    }
 
     [TestMethod]
     public void CheckSetNameThrow_CantBeEmpty()

@@ -30,8 +30,8 @@ public class CardHelperTests
 
         foreach (var card in deck)
         {
-            StringAssert.Contains("HDSC", card.Rank.ToString());
-            StringAssert.Contains("A23456789TJQK", card.Suit.ToString());
+            StringAssert.Contains("HDSC", card.Suit.ToString());
+            StringAssert.Contains("A23456789TJQK", card.Rank.ToString());
 
         }
     }
