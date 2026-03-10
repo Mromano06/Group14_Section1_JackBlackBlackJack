@@ -16,14 +16,20 @@ namespace Client.Views
     /// <summary>
     /// Interaction logic for GameplayWindow.xaml
     /// </summary>
-    public partial class GameplayWindow : UserControl
+    public partial class BetPlacingWindow : UserControl
     {
         private Blackjack _mainWindow;
+        private int currentBet = 0;
 
-        public GameplayWindow(Blackjack mainWindow)
+        // TODO: Implement proper balancing sending and setting
+        private int totalBalance = 100;
+
+        public BetPlacingWindow(Blackjack mainWindow)
         {
             InitializeComponent();
             _mainWindow = mainWindow;
+            // FOR TESTING ONLY RIGHT NOW!!!
+            Balance.Text = $"Balance: {totalBalance}";
         }
 
         private static ImageBrush SetupBackground()
@@ -49,31 +55,32 @@ namespace Client.Views
             };
         }
 
-        // TODO: Properly implement buttons and thier actions
-        private void HitClicked(object sender, RoutedEventArgs e)
+        private void IncBet(object sender, RoutedEventArgs e)
         {
-            // Give the player another card (match the card read from the server)
-            // Use dynamic routing to match the card with the key
+            if ((currentBet + 10) <= totalBalance) 
+                currentBet += 10;
+            Bet.Text = $"Current Bet: {currentBet}"; // To display the bet amount
         }
 
-        private void StandClicked(object sender, RoutedEventArgs e)
+        private void DecBet(object sender, RoutedEventArgs e)
         {
-            // End the round for the player
-            // Compare and handle winnings/losings
-            // Send the user to the next round/main screem
+            if ((currentBet - 10) >= 0)
+                currentBet -= 10;
+            Bet.Text = $"Current Bet: {currentBet}";
         }
 
-        private void DoubleClicked(object sender, RoutedEventArgs e)
+        private void MaxBet(object sender, RoutedEventArgs e)
         {
-            // Give the player one more card and dissallow them to hit again
-            // Acts as a final hit+stand combined into one turn
+            currentBet = totalBalance;
+            Bet.Text = $"Current Bet: {currentBet}";
         }
 
-        private void SplitClicked(object sender, RoutedEventArgs e)
+        // TODO: Make this route send relevent info to the actual gameplay screen
+        private void PlaceBet(object sender, RoutedEventArgs e)
         {
-            // Split players hand into seperate ones
-            // Server handles the actual logic jsut keep proper hands together
-            // Allow the user to now play two hands one after another
+            totalBalance -= currentBet;
+            MessageBox.Show("Bet Placed!");
+            _mainWindow.Navigate(new GameplayWindow(_mainWindow));
         }
     }
 }
