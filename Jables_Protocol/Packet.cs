@@ -18,6 +18,15 @@ using GameLogic.Core;
 // Ask team about message types to make sure we're all on the same page.
 // Deserialization
 
+// should header be an interface implemented by a packet superclass?
+// - would allow for more flexible packet types and easier deserialization
+// - would also allow for more efficient serialization by only writing the fields that are relevant to the packet type
+// - would also allow for more efficient deserialization by only reading the fields that are relevant to the packet type
+// - would allow for packet subclasses to have their own specific fields without bloating the base packet class
+// should we use a BinaryReader for deserialization?
+// should we use a BinaryWriter or just write to a byte array directly?
+
+
 
 namespace Jables_Protocol
 {
@@ -31,11 +40,17 @@ namespace Jables_Protocol
     }
     public class Packet
     {
-        // Packet Header
-        public PacketType Type { get; set; }
-        public GameStateEnum GameState { get; set; } 
+        // Main Packet Header
+        private PacketType _type;
+        public PacketType Type { get => _type; set => _type = value; }
+
+        private int _payloadSize;
+        public int PayloadSize { get => _payloadSize; set => _payloadSize = value; }
+
+        // Other Header Fields
+        public GameStateEnum GameState { get; set; }
         public byte NumCards { get; set; }
-        public int PayloadSize { get; set; }
+        
 
         // Packet Body
         public byte[]? DataField { get; set; }
@@ -81,7 +96,7 @@ namespace Jables_Protocol
             using var ms = new MemoryStream();
             using var bw = new BinaryWriter(ms);    // BinaryWriter writes little-endian as an FYI
 
-            // I still change payload.Length to PayloadSize - that's why I wrote it..
+            // I still need to change payload.Length to PayloadSize - that's why I wrote it..
             payload ??= Array.Empty<byte>();
             int payloadSize = payload.Length;
 
@@ -93,8 +108,14 @@ namespace Jables_Protocol
             bw.Write((int)state);
             bw.Write(numCards);
             bw.Write(payload);
-            
+
             return ms.ToArray();
+        }
+
+        public static byte[] SerializeData(Packet packet)
+        {
+            using
+            return SerializeData(packet.Type, packet.GameState, packet.NumCards, packet.DataField);
         }
 
         // Deserialization
