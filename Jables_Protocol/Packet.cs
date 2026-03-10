@@ -30,14 +30,7 @@ using GameLogic.Core;
 
 namespace Jables_Protocol
 {
-    public enum PacketType : byte   // set the size of enum to byte
-    {
-        Error,
-        PlayerAction,
-        StateUpdate,
-        CardsDealt,
-        JoinRequest
-    }
+    
     public class Packet
     {
         // Main Packet Header
@@ -46,22 +39,22 @@ namespace Jables_Protocol
 
         private int _payloadSize;
         public int PayloadSize { get => _payloadSize; set => _payloadSize = value; }
-
-        // Other Header Fields
-        public GameStateEnum GameState { get; set; }
-        public byte NumCards { get; set; }
         
 
         // Packet Body
         public byte[]? DataField { get; set; }
 
 
-        // Default Constructor
+        // Default-safe Constructor
         public Packet()
         {
-            GameState = GameStateEnum.IDLE;
-            NumCards = 0;
+            // keep
+            // header
+            Type = PacketType.Error;
+            PayloadSize = 0;
+            //body
             DataField = null;
+            
         }
 
         // Constructor
@@ -120,5 +113,22 @@ namespace Jables_Protocol
 
         // Deserialization
 
+    }
+
+    public class PlayerCommandPacket : Packet
+    {
+        // Fields
+
+
+        // Default-safe Constructor
+        public PlayerCommandPacket() { }
+
+        public PlayerCommandPacket(byte[] srcData)
+        {
+            using var ms = new MemoryStream(srcData);
+            using var br = new BinaryReader(ms);
+
+
+        }
     }
 }
