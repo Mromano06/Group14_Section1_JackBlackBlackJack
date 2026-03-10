@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Numerics;
 using System.Text;
+using GameLogic.Logic;
 using GameLogic.Models;
 using SharedModels.Core;
 using SharedModels.Models;
@@ -21,8 +23,8 @@ namespace GameLogic.Core {
         // Game settings
         public double MinBet { get; set; }
         public int MaxPlayers { get; set; } = 5;
-        public double PayoutRatio { get; set; } = 1.5;
-        public double InsurancePayoutRatio { get; set; } = 2.0;
+        public double PayoutRatio { get; set; } = 2.0;
+        public double InsurancePayoutRatio { get; set; } = 1.5;
 
         public Game() : this(5, new Shoe(3)) { }
 
@@ -87,16 +89,73 @@ namespace GameLogic.Core {
             GameState.TransitionTo(GameStateEnum.PLAYING);
         }
 
-        public void EndGame()
+        public void Loss(Player player, int dealerValue)
         {
-            GameState.TransitionTo(GameStateEnum.ENDGAME);
+            // The players balance is already decreased in the betting logic
+
+            // Insurance detection
+            if (player.HasInsured && dealerValue == 21) {
+                player.Balance += player.CurrentBet / InsurancePayoutRatio; // Regain original bet - insurance
+            }
+        }
+        public void Win(Player player)
+        {
+            player.Balance += player.CurrentBet * PayoutRatio;
+        }
+        public void Push(Player player)
+        {
+            player.Balance += player.CurrentBet;
+        }
+
+        public void GameResult(Player player)
+        {
+            Hand dealerHand = Dealer.Hand;
+            int dealerValue = HandHelper.CalculateHandValue(dealerHand);
+            int playerValue = HandHelper.CalculateHandValue(player.Hand);
+
+            // Player busted
+            if (HandHelper.IsBust(player.Hand)) {
+                Loss(player, dealerValue);
+            }
+
+            // Dealer busted
+            else if (HandHelper.IsBust(dealerHand)) {
+                Win(player);
+            }
+
+            // Neither busted
+            else {
+                if (playerValue < dealerValue) {
+                    Loss(player, dealerValue);
+                }
+
+                else if (playerValue == dealerValue) {
+                    Push(player);
+                }
+
+                if (playerValue > dealerValue) {
+                    Win(player);
+                }
+            }
+        }
+
+        public void EndRound()
+        {
+            GameState.TransitionTo(GameStateEnum.ENDROUND);
 
             foreach (Player player in Players) {
+                GameResult(player);
+            }
+
+            // Reset the round to a base state
+            foreach (Player player in Players) {
                 player.Hand.Cards.Clear();
+                PlayerHelper.PlayerRoundReset(player);
             }
             Dealer.Hand.Cards.Clear();
 
             CurrentPlayerIndex = 0;
+            RoundNumber++;
             GameState.TransitionTo(GameStateEnum.IDLE);
         }
 
