@@ -11,13 +11,13 @@
                     Stretch="Fill" />
             </Grid.Background>
             <Canvas Background="Transparent">
-                <Button x:Name="Hit" Width="40" Height="40" Click="HitClicked" Canvas.Left="547"
+                <Button x:Name="Hit" Width="40" Height="40" Canvas.Left="547"
             Canvas.Top="672" FontSize="14" FontWeight="Bold" Content="Hit" HorizontalAlignment="Center" VerticalAlignment="Top"></Button>
-                <Button x:Name="Stand" Width="40" Height="40" Click="StandClicked" Canvas.Left="602"
+                <Button x:Name="Stand" Width="40" Height="40" Canvas.Left="602"
             Canvas.Top="672" FontSize="12" FontWeight="Bold" Content="Stand" HorizontalAlignment="Center" VerticalAlignment="Top"></Button>
-                <Button x:Name="Double" Width="40" Height="40" Click="DoubleClicked" FontSize="10"
+                <Button x:Name="Double" Width="40" Height="40" FontSize="10"
             FontWeight="Bold" Content="Double" Canvas.Left="658" Canvas.Top="672" HorizontalAlignment="Center" VerticalAlignment="Top"/>
-                <Button x:Name="Split" Width="40" Height="40" Click="SplitClicked" FontSize="11"
+                <Button x:Name="Split" Width="40" Height="40" FontSize="11"
             FontWeight="Bold" Content="Split" Canvas.Left="713" Canvas.Top="672" HorizontalAlignment="Center" VerticalAlignment="Top"/>
             </Canvas>
         </Grid>

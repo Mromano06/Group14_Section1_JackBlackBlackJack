@@ -4,11 +4,10 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Windows.Input;
-using Client.ViewModels;
 
-namespace Client.Views
+namespace Client.ViewModels
 {
-    public class MainWindowViewModel
+    public class MainWindowViewModel : BaseModel
     {
         public object CurrentViewModel { get; set; }
 
@@ -24,7 +23,7 @@ namespace Client.Views
             _client = new NetworkClient();
 
             MainMenuVM = new MainMenuModel(_client);
-           // GameVM = new GameViewModel(this);
+            // GameVM = new GameViewModel(this);
 
             CurrentViewModel = MainMenuVM;
         }

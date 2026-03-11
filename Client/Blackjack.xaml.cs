@@ -8,6 +8,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using Client.ViewModels;
 
 // Matthew Romano - Feb 11th, 2026 - Main Menu for Server Application
 
@@ -21,13 +22,7 @@ namespace Client
         public Blackjack()
         {
             InitializeComponent();
-
-            ScreenHost.Content = new Views.MainMenu(this);
-        }
-
-        public void Navigate(UserControl screen)
-        {
-            ScreenHost.Content = screen;
+            DataContext = new MainModel();
         }
 
     }
