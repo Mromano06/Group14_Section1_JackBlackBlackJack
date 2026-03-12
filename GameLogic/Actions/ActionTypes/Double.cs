@@ -24,7 +24,13 @@ namespace GameLogic.Actions.ActionTypes
 
         public bool IsExecutable(Game game)
         {
-            Player player = game.GetPlayer(_playerName);
+            Player player;
+            try {
+                player = game.GetPlayer(_playerName);
+            }
+            catch (ArgumentException) {
+                return false;
+            }
 
             if (player == null) {
                 return false;
@@ -35,20 +41,12 @@ namespace GameLogic.Actions.ActionTypes
                 return false;
             }
 
-            // Player can't double if they've already busted
-            if (HandHelper.IsBust(player.Hand))
-                return false;
-
             // Player can't double if they have already completed an action
-            if (player.ActionCount <= 0)
+            if (player.ActionCount > 0)
                 return false;
 
             // Player can't double if they dont have a high enough balance
-            if (player.Balance < player.CurrentBet)
-                return false;
-
-            // Player can't double if they have already doubled this round
-            if (player.HasDoubled)
+            if (player.Balance < (player.CurrentBet * 2))
                 return false;
 
             return true;

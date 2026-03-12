@@ -22,7 +22,7 @@ public class BetTests
         _game = new Game(10, new Shoe(3));
 
         _player = new Player("John", 100);
-        _game.AddPlayer(_player);
+        _game.Players.Add(_player);
     }
 
     [TestMethod]
@@ -60,17 +60,27 @@ public class BetTests
 
 
     [TestMethod]
+    public void CheckIfThrowsError_BetIsNegative()
+    {
+        // Arrange
+        double betVal = -100;
+
+        // Act & Assert
+        Assert.Throws<ArgumentException>(() => new Bet(_player.Name, betVal, _game));
+    }
+
+
+    [TestMethod]
     public void IsExecutable_PlayerDoesNotExist_ReturnsFalse()
     {
         // Arrange
         Bet bet = new Bet("NonExistentPlayer", 20, _game);
-        bool expected = false;
 
         // Act
         bool actual = bet.IsExecutable(_game);
 
         // Assert
-        Assert.AreEqual(expected, actual);
+        Assert.IsFalse(actual);
     }
 
     [TestMethod]
@@ -81,9 +91,7 @@ public class BetTests
         Bet bet = new Bet(_player.Name, betVal, _game);
 
         Player player2 = new Player("notJohn", 100);
-        _game.AddPlayer(player2);
-
-        bool expected = false;
+        _game.Players.Add(player2);
 
         _game.CurrentPlayerIndex = 1; // _player = 0, player2 = 1
 
@@ -91,7 +99,7 @@ public class BetTests
         bool actual = bet.IsExecutable(_game);
 
         // Assert
-        Assert.AreEqual(expected, actual);
+        Assert.IsFalse(actual);
     }
 
     [TestMethod]
@@ -107,7 +115,7 @@ public class BetTests
         bool actual = bet.IsExecutable(_game);
 
         // Assert
-        Assert.AreEqual(expected, actual);
+        Assert.IsFalse(actual);
     }
 
     [TestMethod]
@@ -116,13 +124,12 @@ public class BetTests
         // Arrange
         double betVal = 100;
         Bet bet = new Bet(_player.Name, betVal, _game);
-        bool expected = true;
 
         // Act
         bool actual = bet.IsExecutable(_game);
 
         // Assert
-        Assert.AreEqual(expected, actual);
+        Assert.IsTrue(actual);
     }
 
     [TestMethod]
@@ -132,13 +139,12 @@ public class BetTests
         double initialBalance = _player.Balance;
         double betVal = _game.MinBet;
         Bet bet = new Bet(_player.Name, betVal, _game);
-        bool expected = true;
 
         // Act
         bool actual = bet.IsExecutable(_game);
 
         // Assert
-        Assert.AreEqual(expected, actual);
+        Assert.IsTrue(actual);
     }
 
     [TestMethod]
@@ -167,32 +173,29 @@ public class BetTests
         int betVal = 1000;
         Bet bet = new Bet(_player.Name, betVal, _game);
 
-        bool expected = false;
-
         // Act
         ActionResult actual = bet.Execute(_game);
 
         // Assert
-        Assert.AreEqual(expected, actual.Success);
+        Assert.IsFalse(actual.Success);
         Assert.AreEqual(initialBalance, _player.Balance);
         Assert.AreEqual(0, _player.CurrentBet);
     }
 
     [TestMethod]
-    public void Execute_ActionIsNotExectutable_ReturnsActionResultSuccess()
+    public void Execute_ActionIsExectutable_ReturnsActionResultSuccess()
     {
         // Arrange
         int betVal = 10;
         Bet bet = new Bet(_player.Name, betVal, _game);
 
-        bool expected = true;
         double expectedVal = _player.Balance - betVal;
 
         // Act
         ActionResult actual = bet.Execute(_game);
 
         // Assert
-        Assert.AreEqual(expected, actual.Success);
+        Assert.IsTrue(actual.Success);
         Assert.AreEqual(expectedVal, _player.Balance);
         Assert.AreEqual(betVal, _player.CurrentBet);
     }
