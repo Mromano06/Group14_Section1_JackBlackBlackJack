@@ -67,7 +67,8 @@ namespace Client.ViewModels
 
         private void Confirm()
         {
-
+            // Send the bet amount to the server
+            // Create new gameplay window
         }
     }
 }
