@@ -6,6 +6,9 @@ using System.Text;
 using System.Windows;
 using System.Windows.Input;
 
+// Matthew Romano - March 12th, 2026 - MainMenuViewModel implementation
+// Hnadles the logic of the main menu
+
 namespace Client.ViewModels
 {
     public class MainMenuModel : BaseModel
@@ -44,7 +47,7 @@ namespace Client.ViewModels
 
         private void Rules()
         {
-            _showRules();
+            _showRules?.Invoke();
         }
 
         // Exit's the application from the main meny

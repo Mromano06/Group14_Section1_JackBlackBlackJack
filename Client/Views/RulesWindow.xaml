@@ -1,143 +1,144 @@
 ﻿<UserControl x:Class="Client.Views.RulesWindow"
-        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        mc:Ignorable="d">
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             mc:Ignorable="d">
 
     <Viewbox Stretch="Uniform">
         <Grid Width="1300" Height="720">
             <Grid.Background>
-                <ImageBrush ImageSource="/Assets/Gameboard.jpg" Stretch="Fill"/>
+                <ImageBrush ImageSource="/Assets/MainMenu.jpg"
+                            Stretch="Fill" />
             </Grid.Background>
 
             <Canvas Background="Transparent">
 
-                <!-- Title background -->
-                <Rectangle Canvas.Left="400" Canvas.Top="30"
-                           Width="500" Height="70"
-                           RadiusX="12" RadiusY="12"
-                           Fill="White"/>
+                <!-- Title -->
+                <Rectangle Canvas.Left="375"
+                           Canvas.Top="30"
+                           Width="550"
+                           Height="70"
+                           RadiusX="10"
+                           RadiusY="10"
+                           Fill="White" />
 
-                <TextBlock Canvas.Left="520" Canvas.Top="45"
+                <TextBlock Canvas.Left="510"
+                           Canvas.Top="44"
                            FontSize="34"
                            FontWeight="Bold"
-                           Text="Blackjack Rules"/>
+                           Text="Blackjack Rules" />
 
                 <!-- Main rules panel -->
-                <Border Canvas.Left="180" Canvas.Top="130"
-                        Width="940" Height="500"
+                <Border Canvas.Left="130"
+                        Canvas.Top="125"
+                        Width="1040"
+                        Height="520"
                         Background="#F5F5F5"
                         BorderBrush="Black"
                         BorderThickness="2"
-                        CornerRadius="15">
+                        CornerRadius="14">
 
                     <ScrollViewer VerticalScrollBarVisibility="Auto">
-                        <StackPanel Margin="25">
+                        <StackPanel Margin="28">
 
-                            <TextBlock FontSize="20"
+                            <TextBlock Text="Objective"
+                                       FontSize="22"
                                        FontWeight="Bold"
-                                       Margin="0,0,0,12"
-                                       Text="Objective"/>
-                            <TextBlock FontSize="16"
+                                       Margin="0,0,0,10" />
+                            <TextBlock Text="Beat the dealer by getting closer to 21 without going over. If your hand goes above 21, you bust and lose the round."
+                                       FontSize="16"
                                        TextWrapping="Wrap"
-                                       Margin="0,0,0,20"
-                                       Text="Beat the dealer by getting closer to 21 without going over. If your hand goes above 21, you bust and lose the round."/>
+                                       Margin="0,0,0,18" />
 
-                            <TextBlock FontSize="20"
+                            <TextBlock Text="Deck Setup"
+                                       FontSize="22"
                                        FontWeight="Bold"
-                                       Margin="0,0,0,12"
-                                       Text="Deck Setup"/>
-                            <TextBlock FontSize="16"
+                                       Margin="0,0,0,10" />
+                            <TextBlock Text="This game uses a three-deck shoe. The shoe is reset and reshuffled before every hand."
+                                       FontSize="16"
                                        TextWrapping="Wrap"
-                                       Margin="0,0,0,20"
-                                       Text="This game uses a three-deck shoe. The shoe is reshuffled and reset before every hand."/>
+                                       Margin="0,0,0,18" />
 
-                            <TextBlock FontSize="20"
+                            <TextBlock Text="Card Values"
+                                       FontSize="22"
                                        FontWeight="Bold"
-                                       Margin="0,0,0,12"
-                                       Text="Card Values"/>
-                            <TextBlock FontSize="16"
+                                       Margin="0,0,0,10" />
+                            <TextBlock Text="Cards 2 through 10 are worth their face value. Jacks, Queens, and Kings are worth 10. Aces count as either 1 or 11, depending on which value helps the hand most."
+                                       FontSize="16"
                                        TextWrapping="Wrap"
-                                       Margin="0,0,0,20"
-                                       Text="Number cards are worth their face value. Jacks, Queens, and Kings are worth 10. Aces count as 1 or 11, whichever helps the hand most."/>
+                                       Margin="0,0,0,18" />
 
-                            <TextBlock FontSize="20"
+                            <TextBlock Text="Player Actions"
+                                       FontSize="22"
                                        FontWeight="Bold"
-                                       Margin="0,0,0,12"
-                                       Text="Player Actions"/>
-                            <TextBlock FontSize="16"
+                                       Margin="0,0,0,10" />
+                            <TextBlock Text="• Hit: Take another card."
+                                       FontSize="16"
+                                       Margin="0,0,0,6" />
+                            <TextBlock Text="• Stand: Keep your current hand and end your turn."
+                                       FontSize="16"
+                                       Margin="0,0,0,6" />
+                            <TextBlock Text="• Double Down: Double your bet, take exactly one more card, and then end your turn."
+                                       FontSize="16"
                                        TextWrapping="Wrap"
-                                       Margin="0,0,0,8"
-                                       Text="• Hit: Take another card."/>
-                            <TextBlock FontSize="16"
+                                       Margin="0,0,0,6" />
+                            <TextBlock Text="• Split: Not currently implemented, but it may be added later. Standard blackjack allows splitting when your first two cards have the same value."
+                                       FontSize="16"
                                        TextWrapping="Wrap"
-                                       Margin="0,0,0,8"
-                                       Text="• Stand: Keep your current total and end your turn."/>
-                            <TextBlock FontSize="16"
-                                       TextWrapping="Wrap"
-                                       Margin="0,0,0,8"
-                                       Text="• Double Down: Double your bet, take exactly one more card, and end your turn."/>
-                            <TextBlock FontSize="16"
-                                       TextWrapping="Wrap"
-                                       Margin="0,0,0,20"
-                                       Text="• Split: Not currently implemented, but may be added later. In standard Blackjack, splitting is used when the first two cards have the same value."/>
+                                       Margin="0,0,0,18" />
 
-                            <TextBlock FontSize="20"
+                            <TextBlock Text="Dealer Rules"
+                                       FontSize="22"
                                        FontWeight="Bold"
-                                       Margin="0,0,0,12"
-                                       Text="Dealer Rules"/>
-                            <TextBlock FontSize="16"
+                                       Margin="0,0,0,10" />
+                            <TextBlock Text="The dealer follows standard blackjack rules exactly. The dealer must hit on 16 or less and stand on 17 or more."
+                                       FontSize="16"
                                        TextWrapping="Wrap"
-                                       Margin="0,0,0,20"
-                                       Text="The dealer must hit on 16 or less and stand on 17 or more."/>
+                                       Margin="0,0,0,18" />
 
-                            <TextBlock FontSize="20"
+                            <TextBlock Text="Winning"
+                                       FontSize="22"
                                        FontWeight="Bold"
-                                       Margin="0,0,0,12"
-                                       Text="Winning"/>
-                            <TextBlock FontSize="16"
+                                       Margin="0,0,0,10" />
+                            <TextBlock Text="• If you bust, you lose."
+                                       FontSize="16"
+                                       Margin="0,0,0,6" />
+                            <TextBlock Text="• If the dealer busts, you win."
+                                       FontSize="16"
+                                       Margin="0,0,0,6" />
+                            <TextBlock Text="• If your hand is higher than the dealer’s, you win."
+                                       FontSize="16"
+                                       Margin="0,0,0,6" />
+                            <TextBlock Text="• If the dealer’s hand is higher, you lose."
+                                       FontSize="16"
+                                       Margin="0,0,0,6" />
+                            <TextBlock Text="• If both hands are equal, the round is a push and your bet is returned."
+                                       FontSize="16"
                                        TextWrapping="Wrap"
-                                       Margin="0,0,0,8"
-                                       Text="• If you bust, you lose."/>
-                            <TextBlock FontSize="16"
-                                       TextWrapping="Wrap"
-                                       Margin="0,0,0,8"
-                                       Text="• If the dealer busts, you win."/>
-                            <TextBlock FontSize="16"
-                                       TextWrapping="Wrap"
-                                       Margin="0,0,0,8"
-                                       Text="• If your total is higher than the dealer’s, you win."/>
-                            <TextBlock FontSize="16"
-                                       TextWrapping="Wrap"
-                                       Margin="0,0,0,8"
-                                       Text="• If the dealer’s total is higher, you lose."/>
-                            <TextBlock FontSize="16"
-                                       TextWrapping="Wrap"
-                                       Margin="0,0,0,20"
-                                       Text="• If both totals are the same, the result is a push and your bet is returned."/>
+                                       Margin="0,0,0,18" />
 
-                            <TextBlock FontSize="20"
+                            <TextBlock Text="Blackjack"
+                                       FontSize="22"
                                        FontWeight="Bold"
-                                       Margin="0,0,0,12"
-                                       Text="Blackjack"/>
-                            <TextBlock FontSize="16"
-                                       TextWrapping="Wrap"
-                                       Text="A Blackjack is an Ace plus any 10-value card on the initial deal, for a total of 21."/>
+                                       Margin="0,0,0,10" />
+                            <TextBlock Text="A blackjack is an Ace plus any 10-value card on the initial deal, for a total of 21."
+                                       FontSize="16"
+                                       TextWrapping="Wrap" />
 
                         </StackPanel>
                     </ScrollViewer>
                 </Border>
 
                 <!-- Back button -->
-                <Button x:Name="BackButton"
-                        Canvas.Left="575"
-                        Canvas.Top="650"
-                        Width="150"
-                        Height="45"
-                        FontSize="18"
+                <Button Width="160"
+                        Height="50"
+                        Canvas.Left="570"
+                        Canvas.Top="660"
+                        FontSize="20"
                         FontWeight="Bold"
-                        Content="Back"/>
+                        Content="Back"
+                        Command="{Binding BackCommand}" />
             </Canvas>
         </Grid>
     </Viewbox>

@@ -1,22 +1,15 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using System.Windows;
+﻿using Client.ViewModels;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
+
+// Matthew Romano - March 12th, 2026 - Code behind for the rules
+// Irrelevant for this project
 
 namespace Client.Views
 {
     /// <summary>
     /// Interaction logic for RulesWindow.xaml
     /// </summary>
-    public partial class RulesWindow : UserControl
+    public partial class RulesWindow : UserControl // I wonder if anybody else will ever read this?
     {
         public RulesWindow()
         {

@@ -72,7 +72,8 @@ namespace Client.ViewModels
         private void Confirm()
         {
             // TODO: Send the bet amount to the server
-            _showGame(CurrentBet);
+            _showGame?.Invoke(CurrentBet);
+
         }
     }
 }

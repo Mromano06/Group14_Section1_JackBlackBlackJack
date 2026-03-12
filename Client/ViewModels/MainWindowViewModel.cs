@@ -5,6 +5,9 @@ using System.Collections.Generic;
 using System.Text;
 using System.Windows.Input;
 
+// Matthew Romano - March 12th, 2026 - MainWindowViewModel implementation
+// Hnadles the logic of the main view model
+
 namespace Client.ViewModels
 {
     public class MainWindowViewModel : BaseModel
@@ -73,8 +76,6 @@ namespace Client.ViewModels
         {
             CurrentViewModel = new RulesViewModel(ShowMenu);
         }
-
-
 
     }
 }
