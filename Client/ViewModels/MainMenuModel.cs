@@ -11,14 +11,16 @@ namespace Client.ViewModels
     public class MainMenuModel : BaseModel
     {
         private readonly NetworkClient _client;
+        private readonly Action _showGame;
 
         public ICommand PlayCommand { get; }
         public ICommand RulesCommand { get; }
         public ICommand ExitCommand { get; }
 
-        public MainMenuModel(NetworkClient client)
+        public MainMenuModel(NetworkClient client, Action ShowGame)
         {
             this._client = client;
+            _showGame = ShowGame;
 
             PlayCommand = new CommandRelay(Play);
             ExitCommand = new CommandRelay(Exit);
@@ -33,7 +35,9 @@ namespace Client.ViewModels
             // var playCommand = new PlayCommand();
             //_client.EnqueueCommand(playCommand);
 
-        
+            // FOR TESTING!!!
+            _showGame?.Invoke();
+    
         }
 
         private void Rules()

@@ -11,13 +11,15 @@
                     Stretch="Fill" />
             </Grid.Background>
             <Canvas Background="Transparent">
-                <Button Name="IncrementBet" Width="40" Height="40" Canvas.Left="600"
-                    Canvas.Top="455" FontSize="28" FontWeight="Bold" Content="+" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" HorizontalAlignment="Center" VerticalAlignment="Top"></Button>
-                <Button Name="DecreaseBet" Width="40" Height="40" Canvas.Left="553"
-                    Canvas.Top="455" FontSize="28" FontWeight="Bold" Content="-" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" HorizontalAlignment="Center" VerticalAlignment="Top"></Button>
-                <Button Name="BetMax" Width="40" Height="40" Canvas.Left="646"
+                <Button Name="IncrementBet" Width="40" Height="40" Canvas.Left="600" Command="{Binding IncreaseBetCommand}" 
+                    Canvas.Top="455" FontSize="28" FontWeight="Bold" Content="+" HorizontalContentAlignment="Center"
+                        VerticalContentAlignment="Center" HorizontalAlignment="Center" VerticalAlignment="Top"></Button>
+                <Button Name="DecreaseBet" Width="40" Height="40" Canvas.Left="553" Command="{Binding DecreaseBetCommand}"
+                    Canvas.Top="455" FontSize="28" FontWeight="Bold" Content="-" HorizontalContentAlignment="Center"
+                        VerticalContentAlignment="Center" HorizontalAlignment="Center" VerticalAlignment="Top"></Button>
+                <Button Name="BetMax" Width="40" Height="40" Canvas.Left="646" Command="{Binding MaxBetCommand}"
                     Canvas.Top="455" FontSize="15" FontWeight="Bold" Content="Max" HorizontalAlignment="Center" VerticalAlignment="Top"></Button>
-                <Button x:Name="ConfirmBet" Width="40" Height="40" Canvas.Left="693"
+                <Button x:Name="ConfirmBet" Width="40" Height="40" Canvas.Left="693" Command="{Binding ConfirmBetCommand}"
                     Canvas.Top="455" FontSize="11" FontWeight="Bold" Content="Ready" HorizontalAlignment="Center" VerticalAlignment="Top"></Button>
                 <Rectangle Canvas.Left="553" Canvas.Top="366" Width="180" Height="37" Fill="White" HorizontalAlignment="Center" VerticalAlignment="Top"/>
                 <Rectangle Canvas.Left="553" Canvas.Top="411" Width="180" Height="37" Fill="White" HorizontalAlignment="Center" VerticalAlignment="Top"/>

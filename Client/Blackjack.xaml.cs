@@ -22,7 +22,7 @@ namespace Client
         public Blackjack()
         {
             InitializeComponent();
-            DataContext = new MainModel();
+            DataContext = new MainWindowViewModel();
         }
 
     }

@@ -11,6 +11,10 @@
         <DataTemplate DataType="{x:Type viewModels:MainMenuModel}">
             <views:MainMenu />
         </DataTemplate>
+        
+        <DataTemplate DataType="{x:Type viewModels:BetPlacingViewModel}">
+            <views:BetPlacingWindow />
+        </DataTemplate>
     </Window.Resources>
     <Grid>
         <ContentControl Content="{Binding CurrentViewModel}" />

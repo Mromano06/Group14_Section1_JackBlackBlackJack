@@ -9,33 +9,34 @@ namespace Client.ViewModels
 {
     public class MainWindowViewModel : BaseModel
     {
-        public object CurrentViewModel { get; set; }
-
+        private BaseModel _currentViewModel;
         // Client shared across all screens
         private readonly NetworkClient _client;
 
-        public MainMenuModel MainMenuVM { get; }
-        //public GameViewModel GameVM { get; }
+        public BaseModel CurrentViewModel
+        {
+            get => _currentViewModel;
+            set
+            {
+                _currentViewModel = value;
+                OnPropertyChanged();
+            }
+        }
 
         public MainWindowViewModel()
         {
-            // create the client
             _client = new NetworkClient();
-
-            MainMenuVM = new MainMenuModel(_client);
-            // GameVM = new GameViewModel(this);
-
-            CurrentViewModel = MainMenuVM;
-        }
+            CurrentViewModel = new MainMenuModel(_client, ShowMenu);
+;        }
 
         public void ShowGame()
         {
-            //CurrentViewModel = GameVM;
+            CurrentViewModel = new BetPlacingViewModel(_client);
         }
 
         public void ShowMenu()
         {
-            CurrentViewModel = MainMenuVM;
+            CurrentViewModel = new MainMenuModel(_client, ShowGame);
         }
 
 
