@@ -27,8 +27,7 @@ namespace Client.ViewModels
         {
             _client = client;
             _showGame = showGame;
-            // _playerMoney = playerMoney;
-            _playerMoney = 100;             // TODO: Remove the default 100 money for testing
+            _playerMoney = playerMoney;
             IncreaseBetCommand = new CommandRelay(IncBet);
             DecreaseBetCommand = new CommandRelay(DecBet);
             MaxBetCommand = new CommandRelay(MaxBet);

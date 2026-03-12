@@ -1,27 +1,36 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
 using Client.Networking;
-using Client.ViewModels;
-using Client;
+using System;
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.Text;
+using System.Windows.Input;
 
 namespace Client.ViewModels
 {
-    internal class GameplayViewModel : BaseModel
+    public class GameplayViewModel : BaseModel
     {
         private readonly int _wager;
+        private readonly int _playerMoney;
         private readonly NetworkClient _client;
 
-        public GameplayViewModel(NetworkClient client, int wager) {
+        public GameplayViewModel(NetworkClient client, int wager, int playerMoney) {
             _wager = wager;
             _client = client;
+            _playerMoney = playerMoney;
+
         }
 
-        // Readonly so no setter
+        // Readonly so no setters
         public int Wager
         {
             get => _wager;
+
         }
 
+        public int PlayerMoney
+        {
+            get => _playerMoney;
+        }
     }
 }

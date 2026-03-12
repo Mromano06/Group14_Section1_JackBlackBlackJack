@@ -54,13 +54,12 @@ namespace Client.ViewModels
 
         public void ShowGame(int betAmount)
         {
-            if (betAmount <= PlayerMoney)
-                LatestBet = betAmount;
-
-            CurrentViewModel = new GameplayViewModel(_client, LatestBet);
+            CurrentViewModel = new GameplayViewModel(_client, betAmount, _playerMoney);
         }
+
         public void ShowBetting()
         {
+            PlayerMoney = 100; // TODO: Have server get the info and send it here
             CurrentViewModel = new BetPlacingViewModel(_client, _playerMoney, ShowGame);
         }
 
