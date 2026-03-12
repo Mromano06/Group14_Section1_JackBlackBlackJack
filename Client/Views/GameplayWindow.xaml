@@ -11,14 +11,18 @@
                     Stretch="Fill" />
             </Grid.Background>
             <Canvas Background="Transparent">
-                <Button x:Name="Hit" Width="40" Height="40" Canvas.Left="547"
-            Canvas.Top="672" FontSize="14" FontWeight="Bold" Content="Hit" HorizontalAlignment="Center" VerticalAlignment="Top"></Button>
-                <Button x:Name="Stand" Width="40" Height="40" Canvas.Left="602"
-            Canvas.Top="672" FontSize="12" FontWeight="Bold" Content="Stand" HorizontalAlignment="Center" VerticalAlignment="Top"></Button>
-                <Button x:Name="Double" Width="40" Height="40" FontSize="10"
-            FontWeight="Bold" Content="Double" Canvas.Left="658" Canvas.Top="672" HorizontalAlignment="Center" VerticalAlignment="Top"/>
-                <Button x:Name="Split" Width="40" Height="40" FontSize="11"
-            FontWeight="Bold" Content="Split" Canvas.Left="713" Canvas.Top="672" HorizontalAlignment="Center" VerticalAlignment="Top"/>
+                <Rectangle Width="110" Height="37" Fill="White" HorizontalAlignment="Center" VerticalAlignment="Center" Stroke="Black" StrokeThickness="2" />
+                <Rectangle Width="128" Height="37" Fill="White" HorizontalAlignment="Left" VerticalAlignment="Center" Canvas.Left="108" Stroke="Black" StrokeThickness="2"/>
+                <Rectangle Canvas.Left="588" Canvas.Top="394" Width="124" Height="37" Fill="White" HorizontalAlignment="Left" VerticalAlignment="Center"/>
+                <Button x:Name="Hit" Width="50" Height="50" Canvas.Left="564" Command="{Binding HitCommand}"
+                Canvas.Top="454" FontSize="13" FontWeight="Bold" Content="Hit" HorizontalAlignment="Center" VerticalAlignment="Top"></Button>
+                <Button x:Name="Stand" Width="50" Height="50" Canvas.Left="624" Command="{Binding StandCommand}"
+                Canvas.Top="454" FontSize="13" FontWeight="Bold" Content="Stand" HorizontalAlignment="Center" VerticalAlignment="Top"></Button>
+                <Button x:Name="Double" Width="50" Height="50" FontSize="12" Command="{Binding DoubleDownCommand}"
+                FontWeight="Bold" Content="Double" Canvas.Left="684" Canvas.Top="454" HorizontalAlignment="Center" VerticalAlignment="Top"/>
+                <TextBlock Name="Instructions" FontSize="14" Text="It is your turn!" Canvas.Left="607" Canvas.Top="403" HorizontalAlignment="Left" VerticalAlignment="Center"/>
+                <TextBlock Name="Balance" FontSize="14" Text="{Binding PlayerMoney, StringFormat=Balance: ${0}}" Canvas.Left="16" Canvas.Top="9" HorizontalAlignment="Left" VerticalAlignment="Center"/>
+                <TextBlock Name="Bet" FontSize="14" Text="{Binding Wager, StringFormat=Current Bet: ${0}}" Canvas.Left="120" Canvas.Top="9" HorizontalAlignment="Left" VerticalAlignment="Center"/>
             </Canvas>
         </Grid>
     </Viewbox>

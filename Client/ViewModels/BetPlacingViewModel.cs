@@ -6,11 +6,15 @@ using System.Collections.ObjectModel;
 using System.Text;
 using System.Windows.Input;
 
+// Matthew Romano - March 12th, 2026 - BetPlacingViewModel implementation
+// Hnadles the logic of the bet placing view model
+
 namespace Client.ViewModels
 {
     public class BetPlacingViewModel : BaseModel
     {
         private readonly NetworkClient _client;
+        private readonly Action<int> _showGame;
         private readonly int _playerMoney;
         private int _currentBet;
 
@@ -19,12 +23,11 @@ namespace Client.ViewModels
         public ICommand MaxBetCommand { get; }
         public ICommand ConfirmBetCommand { get; }
 
-        public BetPlacingViewModel(NetworkClient client, int playerMoney)
+        public BetPlacingViewModel(NetworkClient client, int playerMoney, Action<int> showGame)
         {
-            // TODO: Remove the default 100 money for testing
             _client = client;
-            // this._playerMoney = playerMoney;
-            _playerMoney = 100;
+            _showGame = showGame;
+            _playerMoney = playerMoney;
             IncreaseBetCommand = new CommandRelay(IncBet);
             DecreaseBetCommand = new CommandRelay(DecBet);
             MaxBetCommand = new CommandRelay(MaxBet);
@@ -39,9 +42,10 @@ namespace Client.ViewModels
                 if (value <= _playerMoney && value >= 0)
                     _currentBet = value;
                 OnPropertyChanged();
-
             }
         }
+        
+
         // No Setter because it's readonly
         public int PlayerMoney
         {
@@ -67,8 +71,9 @@ namespace Client.ViewModels
 
         private void Confirm()
         {
-            // Send the bet amount to the server
-            // Create new gameplay window
+            // TODO: Send the bet amount to the server
+            _showGame?.Invoke(CurrentBet);
+
         }
     }
 }

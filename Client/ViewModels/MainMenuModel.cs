@@ -6,21 +6,26 @@ using System.Text;
 using System.Windows;
 using System.Windows.Input;
 
+// Matthew Romano - March 12th, 2026 - MainMenuViewModel implementation
+// Hnadles the logic of the main menu
+
 namespace Client.ViewModels
 {
     public class MainMenuModel : BaseModel
     {
         private readonly NetworkClient _client;
         private readonly Action _showGame;
+        private readonly Action _showRules;
 
         public ICommand PlayCommand { get; }
         public ICommand RulesCommand { get; }
         public ICommand ExitCommand { get; }
 
-        public MainMenuModel(NetworkClient client, Action ShowGame)
+        public MainMenuModel(NetworkClient client, Action ShowGame, Action ShowRules)
         {
             this._client = client;
             _showGame = ShowGame;
+            _showRules = ShowRules;
 
             PlayCommand = new CommandRelay(Play);
             ExitCommand = new CommandRelay(Exit);
@@ -42,7 +47,7 @@ namespace Client.ViewModels
 
         private void Rules()
         {
-            // TODO: Implement rules screen
+            _showRules?.Invoke();
         }
 
         // Exit's the application from the main meny

@@ -15,6 +15,14 @@
         <DataTemplate DataType="{x:Type viewModels:BetPlacingViewModel}">
             <views:BetPlacingWindow />
         </DataTemplate>
+
+        <DataTemplate DataType="{x:Type viewModels:GameplayViewModel}">
+            <views:GameplayWindow />
+        </DataTemplate>
+
+        <DataTemplate DataType="{x:Type viewModels:RulesViewModel}">
+            <views:RulesWindow />
+        </DataTemplate>
     </Window.Resources>
     <Grid>
         <ContentControl Content="{Binding CurrentViewModel}" />

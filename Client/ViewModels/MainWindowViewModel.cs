@@ -5,6 +5,9 @@ using System.Collections.Generic;
 using System.Text;
 using System.Windows.Input;
 
+// Matthew Romano - March 12th, 2026 - MainWindowViewModel implementation
+// Hnadles the logic of the main view model
+
 namespace Client.ViewModels
 {
     public class MainWindowViewModel : BaseModel
@@ -29,7 +32,7 @@ namespace Client.ViewModels
         public MainWindowViewModel()
         {
             _client = new NetworkClient();
-            CurrentViewModel = new MainMenuModel(_client, ShowMenu);
+            CurrentViewModel = new MainMenuModel(_client, ShowMenu, ShowRules);
 ;        }
 
         public int PlayerMoney
@@ -52,16 +55,27 @@ namespace Client.ViewModels
             }
         }
 
-        public void ShowGame()
+        public void ShowGame(int betAmount)
         {
-            CurrentViewModel = new BetPlacingViewModel(_client, _playerMoney);
+            // TODO: Decide if this makes sense
+            PlayerMoney -= betAmount;
+            CurrentViewModel = new GameplayViewModel(_client, betAmount, _playerMoney);
+        }
+
+        public void ShowBetting()
+        {
+            PlayerMoney = 100; // TODO: Have server get the info and send it here
+            CurrentViewModel = new BetPlacingViewModel(_client, _playerMoney, ShowGame);
         }
 
         public void ShowMenu()
         {
-            CurrentViewModel = new MainMenuModel(_client, ShowGame);
+            CurrentViewModel = new MainMenuModel(_client, ShowBetting, ShowRules);
         }
-
+        public void ShowRules()
+        {
+            CurrentViewModel = new RulesViewModel(ShowMenu);
+        }
 
     }
 }
