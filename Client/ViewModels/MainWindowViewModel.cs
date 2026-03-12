@@ -52,14 +52,21 @@ namespace Client.ViewModels
             }
         }
 
-        public void ShowGame()
+        public void ShowGame(int betAmount)
         {
-            CurrentViewModel = new BetPlacingViewModel(_client, _playerMoney);
+            if (betAmount <= PlayerMoney)
+                LatestBet = betAmount;
+
+            CurrentViewModel = new GameplayViewModel(_client, LatestBet);
+        }
+        public void ShowBetting()
+        {
+            CurrentViewModel = new BetPlacingViewModel(_client, _playerMoney, ShowGame);
         }
 
         public void ShowMenu()
         {
-            CurrentViewModel = new MainMenuModel(_client, ShowGame);
+            CurrentViewModel = new MainMenuModel(_client, ShowBetting);
         }
 
 
