@@ -29,7 +29,7 @@ namespace Client.ViewModels
         public MainWindowViewModel()
         {
             _client = new NetworkClient();
-            CurrentViewModel = new MainMenuModel(_client, ShowMenu);
+            CurrentViewModel = new MainMenuModel(_client, ShowMenu, ShowRules);
 ;        }
 
         public int PlayerMoney
@@ -54,6 +54,8 @@ namespace Client.ViewModels
 
         public void ShowGame(int betAmount)
         {
+            // TODO: Decide if this makes sense
+            PlayerMoney -= betAmount;
             CurrentViewModel = new GameplayViewModel(_client, betAmount, _playerMoney);
         }
 
@@ -65,8 +67,13 @@ namespace Client.ViewModels
 
         public void ShowMenu()
         {
-            CurrentViewModel = new MainMenuModel(_client, ShowBetting);
+            CurrentViewModel = new MainMenuModel(_client, ShowBetting, ShowRules);
         }
+        public void ShowRules()
+        {
+            CurrentViewModel = new RulesViewModel(ShowMenu);
+        }
+
 
 
     }
