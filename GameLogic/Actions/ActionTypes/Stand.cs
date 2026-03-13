@@ -24,7 +24,13 @@ namespace GameLogic.Actions.ActionTypes
 
         public bool IsExecutable(Game game)
         {
-            Player player = game.GetPlayer(_playerName);
+            Player player;
+            try {
+                player = game.GetPlayer(_playerName);
+            }
+            catch (ArgumentException) {
+                return false;
+            }
 
             if (player == null) {
                 return false;

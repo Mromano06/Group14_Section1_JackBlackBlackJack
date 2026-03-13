@@ -5,7 +5,6 @@ using System.Text;
 namespace SharedModels.Models 
 {
     
-    [Serializable]
     public class Card 
     {
         private char _rank; // K, Q, J, T, 2-9, A
