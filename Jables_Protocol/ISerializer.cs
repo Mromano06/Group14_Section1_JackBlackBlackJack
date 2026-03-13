@@ -8,9 +8,9 @@ namespace Jables_Protocol
     /// Defines methods for serializing and deserializing objects to and from byte arrays.
     /// </summary>
     /// <typeparam name="T">The type of object to deserialize from a byte array.</typeparam>
-    public interface Serializable<T>
+    public interface ISerializer<T>
     {
-        byte[] Serialize(Type dto);
+        byte[] Serialize(T dto);
         T Deserialize(byte[] data);
     }
 }
