@@ -10,7 +10,6 @@ namespace GameLogic.Actions.ActionTypes
     public class Insure : IAction
     {
         private string _playerName;
-
         public string Description => $"{_playerName} insures";
 
         public Insure(string playerName)
@@ -24,7 +23,13 @@ namespace GameLogic.Actions.ActionTypes
 
         public bool IsExecutable(Game game)
         {
-            Player player = game.GetPlayer(_playerName);
+            Player player;
+            try {
+                player = game.GetPlayer(_playerName);
+            }
+            catch (ArgumentException) {
+                return false;
+            }
 
             if (player == null) {
                 return false;
@@ -35,21 +40,19 @@ namespace GameLogic.Actions.ActionTypes
                 return false;
             }
 
-            // Player can't insure if they've already busted
-            if (HandHelper.IsBust(player.Hand))
-                return false;
+            if (game.Dealer.Hand.Cards.Count() > 0) {
+                // Dealer must be showing an Ace
+                if (game.Dealer.Hand.Cards[0].Rank != 'A')
+                    return false;
+            }
 
             // Player can't insure if they have already played an action
-            if (player.ActionCount <= 0)
+            if (player.ActionCount > 0)
                 return false;
 
             // Player can't insure if they dont have a high enough balance
-            if (player.Balance < (player.CurrentBet * 1.5))
-                return false;
-
-            // Player can't insure if they have already insure this round
-            if (player.HasInsured)
-                return false;
+            if (player.Balance < (player.CurrentBet * 0.5))
+                return false; 
 
             return true;
         }

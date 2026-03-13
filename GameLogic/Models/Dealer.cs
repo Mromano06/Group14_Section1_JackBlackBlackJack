@@ -12,6 +12,16 @@ namespace GameLogic.Models
         private string _name;
         private Hand _hand;
 
+        public Dealer()
+        {
+            _name = "Dealer";
+            _hand = new Hand();
+        }
+        public Dealer(string name)
+        {
+            Name = name;
+            _hand = new Hand();
+        }
         public string Name
         {
             get => _name;

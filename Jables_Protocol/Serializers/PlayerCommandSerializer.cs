@@ -1,6 +1,8 @@
-﻿using System;
+﻿using Jables_Protocol.DTOs;
+using System;
 using System.Collections.Generic;
 using System.Text;
+using SharedModels.Core;
 
 // TODO: Write the PlayerCommand DTO
 
@@ -9,7 +11,7 @@ namespace Jables_Protocol.Serializers
     /// <summary>
     ///     Serializes and deserializes PlayerCommandDto objects to and from byte arrays for network transmission.
     /// </summary>
-    internal class PlayerCommandSerializer : Serializable<PlayerCommandDto>
+    internal class PlayerCommandSerializer : ISerializer<PlayerCommandDto>
     {
         public byte[] Serialize(PlayerCommandDto dto)
         {
@@ -22,7 +24,7 @@ namespace Jables_Protocol.Serializers
             return ms.ToArray();
         }
 
-        public PlayerCommandDto Deserializer(byte[] data)
+        public PlayerCommandDto Deserialize(byte[] data)
         {
             using var ms = new MemoryStream(data);
             using var br = new BinaryReader(ms);
