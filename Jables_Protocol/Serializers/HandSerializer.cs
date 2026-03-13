@@ -9,22 +9,16 @@ namespace Jables_Protocol.Serializers
     {
         public byte[] Serialize(HandDto dto)
         {
-            if(dto.Cards == null)
+            if(dto.Cards == null || dto.Count == 0)
                 return new byte[] { 0 };    // return a byte array with a single byte indicating zero cards
-
-            //var bytes = new List<byte> { (byte)dto.Cards.Count };
-            //foreach (var card in dto.Cards)
-            //{
-            //    var cardBytes = new CardSerializer().Serialize(card);
-            //    bytes.AddRange(cardBytes);
-            //}
-            //return bytes.ToArray();
 
             using var ms = new MemoryStream();
             using var bw = new BinaryWriter(ms);
 
+            bw.Write(dto.Count);
+
             foreach (var  card in dto.Cards)
-            {                 
+            {
                 var cardBytes = new CardSerializer().Serialize(card);
                 bw.Write(cardBytes);        // Write the card bytes
             }
@@ -38,8 +32,10 @@ namespace Jables_Protocol.Serializers
             using var br = new BinaryReader(ms);
 
             var handDto = new HandDto { Cards = new List<CardDto>() };
+            handDto.Count = br.ReadInt32();
 
-            if (ms.Length == 0) // because technically, it's possible to have an empty hand.
+            // I think this is going to cause some problems
+            if (ms.Length == 0 || handDto.Count == 0) // because technically, it's possible to have an empty hand.
                 return handDto; // Return an empty hand if there are no bytes
 
             while (ms.Position < ms.Length)
