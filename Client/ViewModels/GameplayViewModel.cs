@@ -16,22 +16,44 @@ namespace Client.ViewModels
 {
     public class GameplayViewModel : BaseModel
     {
+        private readonly NetworkClient _client;
         private readonly int _wager;
         private readonly int _playerMoney;
-        private readonly NetworkClient _client;
+        private bool _isFirstCard;
+        public ObservableCollection<CardViewModel> DealtPlayerCards { get; } =
+            new ObservableCollection<CardViewModel>();
+        public ObservableCollection<CardViewModel> DealtDealerCards { get; } =
+            new ObservableCollection<CardViewModel>();
 
         public ICommand HitCommand { get; }
         public ICommand StandCommand { get; }
         public ICommand DoubleDownCommand { get; }
 
-
-        public GameplayViewModel(NetworkClient client, int wager, int playerMoney) {
+        public GameplayViewModel(NetworkClient client, int wager, int playerMoney)
+        {
             _wager = wager;
             _client = client;
             _playerMoney = playerMoney;
             HitCommand = new CommandRelay(Hit);
             StandCommand = new CommandRelay(Stand);
             DoubleDownCommand = new CommandRelay(DoubleDown);
+            _isFirstCard = true;
+        }
+
+        public void DealCardToPlayer(string cardCode)
+        {
+            if (IsFirstCard)
+            {
+                DealtPlayerCards.Add(new CardViewModel("BACK"));
+                IsFirstCard = false;
+            }
+
+            DealtPlayerCards.Add(new CardViewModel(cardCode));
+        }
+
+        public void DealCardToDealer(string cardCode)
+        {
+            DealtPlayerCards.Add(new CardViewModel(cardCode));
         }
 
         // Readonly so no setters
@@ -46,9 +68,21 @@ namespace Client.ViewModels
             get => _playerMoney;
         }
 
+        public bool IsFirstCard
+        {
+            get 
+            {
+                return _isFirstCard;
+            }
+            set
+            {
+                _isFirstCard = value;
+            }
+        }
+
         private void Hit()
         {
-
+            // Get the card from the 
         }
 
         private void Stand()
