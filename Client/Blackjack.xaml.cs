@@ -23,6 +23,8 @@ namespace Client
         {
             InitializeComponent();
             DataContext = new MainWindowViewModel();
+
+            
         }
 
     }

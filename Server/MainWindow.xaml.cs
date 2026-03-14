@@ -1,4 +1,6 @@
-﻿using System.Text;
+﻿using Server.Networking;
+using System.Diagnostics;
+using System.Text;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
@@ -18,9 +20,21 @@ namespace Server
     /// </summary>
     public partial class MainWindow : Window
     {
+        private NetworkServer _server;
         public MainWindow()
         {
             InitializeComponent();
+
+            StartServer();
+        }
+
+        private async void StartServer()
+        {
+            Debug.WriteLine("Starting Server");
+            _server = new NetworkServer();
+
+            // avoid blocking UI
+            _ = Task.Run(() => _server.Start(27000));
         }
 
     }
