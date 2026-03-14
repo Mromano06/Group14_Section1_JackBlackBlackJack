@@ -32,7 +32,7 @@ namespace Client.ViewModels
         public MainWindowViewModel()
         {
             _client = new NetworkClient();
-            CurrentViewModel = new MainMenuModel(_client, ShowMenu, ShowRules);
+            _currentViewModel = new MainMenuModel(_client, ShowMenu, ShowRules);
 ;        }
 
         public int PlayerMoney
