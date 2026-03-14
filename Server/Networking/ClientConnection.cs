@@ -49,7 +49,7 @@ namespace Server.Networking
                     if (message == null)
                         continue;
 
-                    byte[] data = Encoding.UTF8.GetBytes(message);
+                    byte[] data = Encoding.UTF8.GetBytes(message + "\n");
 
                     await stream.WriteAsync(data, 0, data.Length);
                 }

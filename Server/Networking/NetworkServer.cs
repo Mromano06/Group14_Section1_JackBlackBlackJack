@@ -4,6 +4,7 @@ using System.Net.Sockets;
 using System.Text;
 using System.Threading.Tasks;
 using System.Collections.Concurrent;
+using System.Diagnostics;
 
 namespace Server.Networking
 {
@@ -11,14 +12,14 @@ namespace Server.Networking
     {
         private TcpListener _listener;
 
-        private List<ClientConnection> clients = new List<ClientConnection>();
+        private ConcurrentBag<ClientConnection> clients = new();
 
         public async Task Start(int port)
         {
             _listener = new TcpListener(IPAddress.Any, port);
             _listener.Start();
 
-            Console.WriteLine("Server listening...");
+            Debug.WriteLine("Server listening...");
         
             while (true)
             {
@@ -30,10 +31,15 @@ namespace Server.Networking
 
                 client.Start();
 
-                Console.WriteLine("Client Connected");
+                Debug.WriteLine("Client Connected");
                 
             }
         
+        }
+
+        public void Stop()
+        {
+            _listener.Stop();
         }
     }
 }
