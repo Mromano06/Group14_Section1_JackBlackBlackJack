@@ -16,8 +16,8 @@ namespace Client.ViewModels
         // Client shared across all screens
         private readonly NetworkClient _client;
 
-        private int _playerMoney;
-        private int _latestBet;
+        private double _playerMoney;
+        private double _latestBet;
 
         public BaseModel CurrentViewModel
         {
@@ -35,7 +35,7 @@ namespace Client.ViewModels
             _currentViewModel = new MainMenuModel(_client, ShowMenu, ShowRules);
 ;        }
 
-        public int PlayerMoney
+        public double PlayerMoney
         {
             get => _playerMoney;
             set
@@ -45,7 +45,7 @@ namespace Client.ViewModels
             }
         }
 
-        public int LatestBet
+        public double LatestBet
         {
             get => _latestBet;
             set
@@ -55,7 +55,7 @@ namespace Client.ViewModels
             }
         }
 
-        public void ShowGame(int betAmount)
+        public void ShowGame(double betAmount)
         {
             // TODO: Decide if this makes sense
             PlayerMoney -= betAmount;

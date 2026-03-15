@@ -8,6 +8,6 @@ namespace Jables_Protocol.DTOs
     public class PlayerCommandDto
     {
         public PlayerAction Action { get; set; }
-        public int BetAmount { get; set; }
+        public double BetAmount { get; set; }
     }
 }
