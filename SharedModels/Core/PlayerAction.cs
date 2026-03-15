@@ -3,9 +3,10 @@
     public enum PlayerAction
     {
         Bet,
+        Hit,
         Stand,
         Split,
-        DoubleDown,
-        Insurance
+        Double,
+        Insure
     }
 }
