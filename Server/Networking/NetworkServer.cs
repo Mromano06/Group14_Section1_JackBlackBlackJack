@@ -12,8 +12,7 @@ namespace Server.Networking
     public class NetworkServer
     {
         private TcpListener _listener;
-        private ConcurrentBag<ClientConnection> clients = new();
-        private GameManager _session;
+        private Dictionary<ClientConnection, GameManager> _clients = new();
 
         public async Task Start(int port)
         {
@@ -22,23 +21,38 @@ namespace Server.Networking
 
             Debug.WriteLine("Server listening...");
 
-            _session = new GameManager();
         
             while (true)
             {
                 TcpClient tcpClient = await _listener.AcceptTcpClientAsync();
+                Debug.WriteLine("Client Connected");
 
-                ClientConnection connection = new ClientConnection(tcpClient, _session.HandleMessage);
+                // create connection with a callback
+                ClientConnection connection = new ClientConnection(tcpClient, HandleClientMessage);
 
-                clients.Add(connection);
-                _session.AddClient(connection);
-
+                // start send receive
                 connection.Start();
 
-                Debug.WriteLine("Client Connected");
-                
+                GameManager _session = new GameManager(connection); // create a game manager for this connection
+                _clients[connection] = _session; // add connection to pool
+
+                Debug.WriteLine("Game Session created for Client");
             }
         
+        }
+
+        private void HandleClientMessage(ClientConnection client, byte[] data)
+        {
+            if (_clients.TryGetValue(client, out var session)) {
+
+                session.OnMessageReceived(client, data); // send message to game manager
+
+            }
+            else
+            {
+                Debug.WriteLine("No session found for client");
+            }
+
         }
 
         public void Stop()
