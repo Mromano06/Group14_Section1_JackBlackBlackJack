@@ -5,7 +5,7 @@ using System.Text;
 
 namespace Jables_Protocol.Serializers
 {
-    internal class CardSerializer : ISerializer<CardDto>
+    public class CardSerializer : ISerializer<CardDto>
     {
         public byte[] Serialize(CardDto dto)
         {

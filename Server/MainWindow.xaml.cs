@@ -34,7 +34,7 @@ namespace Server
             _server = new NetworkServer();
 
             // avoid blocking UI
-            _ = Task.Run(() => _server.Start(27000));
+            _ = Task.Run(() => _server.Start(27000)); 
         }
 
     }

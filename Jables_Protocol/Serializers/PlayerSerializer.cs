@@ -8,7 +8,7 @@ using System.Text;
 
 namespace Jables_Protocol.Serializers
 {
-    internal class PlayerSerializer : ISerializer<DTOs.PlayerDto>
+    public class PlayerSerializer : ISerializer<DTOs.PlayerDto>
     {
         public byte[] Serialize(PlayerDto dto)
         {

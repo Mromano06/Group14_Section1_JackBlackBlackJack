@@ -6,7 +6,7 @@ using System.Text;
 
 namespace Jables_Protocol.Serializers
 {
-    internal class GameStateSerializer : ISerializer<GameStateDto>
+    public class GameStateSerializer : ISerializer<GameStateDto>
     {
         public byte[] Serialize(GameStateDto dto)
         {

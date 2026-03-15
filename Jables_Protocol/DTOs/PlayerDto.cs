@@ -5,7 +5,7 @@ using SharedModels.Models;
 
 namespace Jables_Protocol.DTOs
 {
-    internal class PlayerDto
+    public class PlayerDto
     {
         public string? Name { get; set; }   // Made it nullable
         public int CardCount { get; set; }

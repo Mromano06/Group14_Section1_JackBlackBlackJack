@@ -11,7 +11,7 @@ namespace Jables_Protocol.Serializers
     /// <summary>
     ///     Serializes and deserializes PlayerCommandDto objects to and from byte arrays for network transmission.
     /// </summary>
-    internal class PlayerCommandSerializer : ISerializer<PlayerCommandDto>
+    public class PlayerCommandSerializer : ISerializer<PlayerCommandDto>
     {
         public byte[] Serialize(PlayerCommandDto dto)
         {

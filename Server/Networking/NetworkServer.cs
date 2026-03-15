@@ -5,14 +5,14 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Collections.Concurrent;
 using System.Diagnostics;
+using Server.GameControl;
 
 namespace Server.Networking
 {
     public class NetworkServer
     {
         private TcpListener _listener;
-
-        private ConcurrentBag<ClientConnection> clients = new();
+        private Dictionary<ClientConnection, GameManager> _clients = new();
 
         public async Task Start(int port)
         {
@@ -20,21 +20,39 @@ namespace Server.Networking
             _listener.Start();
 
             Debug.WriteLine("Server listening...");
+
         
             while (true)
             {
                 TcpClient tcpClient = await _listener.AcceptTcpClientAsync();
-
-                ClientConnection client = new ClientConnection(tcpClient);
-
-                clients.Add(client);
-
-                client.Start();
-
                 Debug.WriteLine("Client Connected");
-                
+
+                // create connection with a callback
+                ClientConnection connection = new ClientConnection(tcpClient, HandleClientMessage);
+
+                // start send receive
+                connection.Start();
+
+                GameManager _session = new GameManager(connection); // create a game manager for this connection
+                _clients[connection] = _session; // add connection to pool
+
+                Debug.WriteLine("Game Session created for Client");
             }
         
+        }
+
+        private void HandleClientMessage(ClientConnection client, byte[] data)
+        {
+            if (_clients.TryGetValue(client, out var session)) {
+
+                session.OnMessageReceived(client, data); // send message to game manager
+
+            }
+            else
+            {
+                Debug.WriteLine("No session found for client");
+            }
+
         }
 
         public void Stop()
