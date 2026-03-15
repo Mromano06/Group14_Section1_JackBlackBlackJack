@@ -20,7 +20,6 @@ using System.Text;
 // Must be strictly defined as it can be "ambigous" with the primitive double 
 using Double = GameLogic.Actions.ActionTypes.Double;
 
-
 namespace Server.GameControl
 {
     public class GameManager
@@ -108,7 +107,7 @@ namespace Server.GameControl
         }
 
         /// TODO: I think all of these will need some sort of continue/update to tell the process to start again for the next player
-        /// (Side note: they already move the player forware but they gotta tell the server with some sort of function)
+        /// (Side note: they already move the player forward but they gotta tell the server with some sort of function)
         private void ExecuteBet(double betAmount)
         {
             Bet action = new Bet(_player.Name, betAmount, _game);
@@ -125,6 +124,8 @@ namespace Server.GameControl
             if (_player.Name == _game.Players[_game.MaxPlayers - 1].Name) {
                 DealerLogic.DealInitialCards(_game);
             }
+
+            updateGame(PlayerAction.Bet, _player.CurrentBet);
         }
 
         private void ExecuteHit()
@@ -150,9 +151,8 @@ namespace Server.GameControl
                     _game.EndRound();
                 }
             }
-            else {
-                // TODO: some sort of continue/update 
-            }
+
+            updateGame(PlayerAction.Hit, _player.CurrentBet);
         }
 
         private void ExecuteStand()
@@ -173,6 +173,8 @@ namespace Server.GameControl
 
                 _game.EndRound();
             }
+
+            updateGame(PlayerAction.Stand, _player.CurrentBet);
         }
 
         private void ExecuteDouble()
@@ -198,9 +200,8 @@ namespace Server.GameControl
                     _game.EndRound();
                 }
             }
-            else {
-                // TODO: some sort of continue/update 
-            }
+
+            updateGame(PlayerAction.Double, _player.CurrentBet);
         }
 
         private void ExecuteInsure()
@@ -214,7 +215,44 @@ namespace Server.GameControl
             }
 
             Debug.WriteLine($"Insure: {_player.Name}");
+
+            updateGame(PlayerAction.Insure, _player.CurrentBet);
         }
+
+        private void updateGame(PlayerAction action, double betAmount)
+        {
+            SendGameState();
+            SendPlayerCommand(action, betAmount);
+        }
+
+        private void SendGameState()
+        {
+            GameStateDto dto = new GameStateDto() {
+                GameState = _game.GameState.State
+            };
+
+            SendPacket(PacketType.StateUpdate, _gameStateSerializer.Serialize(dto));
+        }
+
+        private void SendPlayerCommand(PlayerAction action, double betAmount)
+        {
+            PlayerCommandDto dto = new PlayerCommandDto() {
+                Action = action,
+                BetAmount = betAmount
+            };
+
+            SendPacket(PacketType.PlayerAction, _commandSerializer.Serialize(dto));
+        }
+
+        private void SendPacket(PacketType type, byte[] payload)
+        {
+            Packet packet = new Packet {
+                Type = type,
+                PayloadSize = payload.Length,
+                Payload = payload
+            };
+        }
+
 
         public void HandleMesssage(ClientConnection sender, byte[] data)
         {
