@@ -5,7 +5,7 @@ using System.Text;
 
 namespace Jables_Protocol.Serializers
 {
-    internal class HandSerializer : ISerializer<HandDto>
+    public class HandSerializer : ISerializer<HandDto>
     {
         public byte[] Serialize(HandDto dto)
         {

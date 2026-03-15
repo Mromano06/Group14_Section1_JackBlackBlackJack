@@ -5,7 +5,7 @@ using SharedModels.Core;
 
 namespace Jables_Protocol.DTOs
 {
-    internal class GameStateDto
+    public class GameStateDto
     {
         public GameStateEnum GameState { get; set; }
     }
