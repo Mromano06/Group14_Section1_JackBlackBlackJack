@@ -57,6 +57,10 @@ namespace Client.ViewModels
 
         public void ShowGame(double betAmount)
         {
+            
+            /// TODO: create command objects so we can enqueue them here
+            // var playCommand = new PlayCommand();
+            //_client.EnqueueCommand(playCommand);
             // TODO: Decide if this makes sense
             PlayerMoney -= betAmount;
             CurrentViewModel = new GameplayViewModel(_client, betAmount, _playerMoney);
@@ -72,6 +76,7 @@ namespace Client.ViewModels
         {
             CurrentViewModel = new MainMenuModel(_client, ShowBetting, ShowRules);
         }
+
         public void ShowRules()
         {
             CurrentViewModel = new RulesViewModel(ShowMenu);

@@ -73,7 +73,7 @@ namespace Client.ViewModels
         {
             // TODO: CurrentBet is now a double and Invoke is saying it cant be used
             // TODO: Send the bet amount to the server
-            // _showGame?.Invoke(CurrentBet);
+            _showGame?.Invoke(CurrentBet);
 
         }
     }

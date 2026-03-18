@@ -39,9 +39,6 @@ namespace Client.ViewModels
             {
                 await _client.Connect("127.0.0.1", 27000);
             }
-            /// TODO: create command objects so we can enqueue them here
-            // var playCommand = new PlayCommand();
-            //_client.EnqueueCommand(playCommand);
 
             // FOR TESTING!!!
             _showGame?.Invoke();
