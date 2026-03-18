@@ -7,7 +7,7 @@ using System.Collections.ObjectModel;
 using System.Text;
 using System.Windows.Input;
 
-// Matthew Romano - March 12th, 2026 - GamplayViewModel Implementation
+// Matthew Romano & Brodie Arkell - March 12th, 2026 - GamplayViewModel Implementation
 // The actual gameplay loop/aspects
 
 // TODO: Figure out the actual gameplay logic and loop
