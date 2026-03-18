@@ -1,12 +1,13 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
 using System.Collections.Concurrent;
+using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Net.Sockets;
+using System.Security.Policy;
+using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
-using System.Security.Policy;
 
 
 
@@ -24,7 +25,7 @@ namespace Client.Networking
 
         // Queue to hold outgoing commands/messages (thread-safe)
         // will change from string to command object once command object is implemented
-        private readonly ConcurrentQueue<string> sendQueue = new();
+        private readonly ConcurrentQueue<byte[]> sendQueue = new();
 
         // Token used to cancel the send/receive loops
         private readonly CancellationTokenSource cancellation = new();
@@ -58,22 +59,27 @@ namespace Client.Networking
             _ = Task.Run(ReceiveLoop);
         }
 
-        /// TODO: Change to command object eventually
-        public void EnqueueCommand(string command)
-        {
-            /// Change to command object eventually
-            sendQueue.Enqueue(command);
-        }
-
-
         /// <summary>
         /// Enqueues a message/command to be sent to the server.
         /// </summary>
-        public void Send(string message)
+        public void Send(byte[] data)
         {
-            sendQueue.Enqueue(message);
+            sendQueue.Enqueue(data);
         }
 
+        /// <summary>
+        /// Handles a single message received from the server.
+        /// Currently, just raises MessageReceived event.
+        /// Later, you can parse your custom protocol here.
+        /// </summary>
+        private void HandleMessage(byte[] data)
+        {
+            Console.WriteLine("Server:" + data); /// add better logging here
+
+             /// TODO:
+            /// parse message from server to handle message and update the UI
+            /// Example: if message starts with "Player_Hit", update player state
+        }
 
         /// <summary>
         /// Continuously sends messages from the queue to the server.
@@ -81,20 +87,31 @@ namespace Client.Networking
         /// </summary>
         private async Task SendLoop()
         {
-            while (!cancellation.Token.IsCancellationRequested)
+            try
             {
 
-                /// This is where we would add our custom protocol instead of just queuing and sending string decoded
-                if (sendQueue.TryDequeue(out string message))
+                while (!cancellation.Token.IsCancellationRequested && IsConnected)
                 {
-                    byte[] data = Encoding.UTF8.GetBytes(message + "\n");
-
-                    await stream.WriteAsync(data, 0, data.Length); // placeholder async write
+                    if (sendQueue.TryDequeue(out byte[]? data))
+                    {
+                        if (data == null || data.Length == 0)
+                            continue;
+                        // send() to the client
+                        await stream.WriteAsync(data, 0, data.Length, cancellation.Token);
+                    }
+                    else
+                    {
+                        await Task.Delay(5, cancellation.Token); // delay if nothing to send
+                    }
                 }
-                else
-                {
-                    await Task.Delay(5);
-                }
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine(ex.ToString());
+            }
+            finally
+            {
+                Disconnect();
             }
 
         }
@@ -105,31 +122,32 @@ namespace Client.Networking
         /// </summary>
         private async Task ReceiveLoop()
         {
-            var reader = new StreamReader(stream, Encoding.UTF8);
-
-            while (!cancellation.Token.IsCancellationRequested)
+            byte[] buffer = new byte[4096]; // adjust size later
+            try
             {
-                string line = await reader.ReadLineAsync();
 
-                if (line == null)
-                    break;
+                while (!cancellation.Token.IsCancellationRequested && IsConnected) 
+                {
+                    int bytesRead = await stream.ReadAsync(buffer, 0, buffer.Length, cancellation.Token);
+                    if (bytesRead == 0)
+                        break; // connection closed
 
-                HandleMessage(line);
+                    // reduce buffer to size read
+                    byte[] data = new byte[bytesRead];
+                    Array.Copy(buffer, data, bytesRead);
+
+                    // forward message to the game session handler
+                    HandleMessage(data);
+                }
             }
-        }
-
-        /// <summary>
-        /// Handles a single message received from the server.
-        /// Currently, just raises MessageReceived event.
-        /// Later, you can parse your custom protocol here.
-        /// </summary>
-        private void HandleMessage(string message)
-        {
-            Console.WriteLine("Server:" + message); /// add better logging here
-            
-            /// TODO:
-            /// parse message from server to handle message and update the UI
-            /// Example: if message starts with "Player_Hit", update player state
+            catch (Exception ex)
+            {
+                Debug.WriteLine(ex.ToString());
+            }
+            finally
+            {
+                Disconnect();
+            }
         }
 
 
