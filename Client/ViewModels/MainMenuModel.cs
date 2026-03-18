@@ -6,7 +6,7 @@ using System.Text;
 using System.Windows;
 using System.Windows.Input;
 
-// Matthew Romano - March 12th, 2026 - MainMenuViewModel implementation
+// Matthew Romano & Brodie Arkell - March 12th, 2026 - MainMenuViewModel implementation
 // Hnadles the logic of the main menu
 
 namespace Client.ViewModels

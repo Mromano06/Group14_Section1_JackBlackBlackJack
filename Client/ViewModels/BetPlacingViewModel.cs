@@ -14,7 +14,7 @@ namespace Client.ViewModels
     public class BetPlacingViewModel : BaseModel
     {
         private readonly NetworkClient _client;
-        private readonly Action<int> _showGame;
+        private readonly Action<double> _showGame;
         private readonly double _playerMoney;
         private double _currentBet;
 
@@ -23,7 +23,7 @@ namespace Client.ViewModels
         public ICommand MaxBetCommand { get; }
         public ICommand ConfirmBetCommand { get; }
 
-        public BetPlacingViewModel(NetworkClient client, double playerMoney, Action<int> showGame)
+        public BetPlacingViewModel(NetworkClient client, double playerMoney, Action<double> showGame)
         {
             _client = client;
             _showGame = showGame;
