@@ -62,8 +62,8 @@ namespace Server.GameControl
                 HandleCommand(packet.Payload);
             }
 
-            catch (Exception e) {
-                Debug.WriteLine($"Error: {e.Message}");
+            catch (Exception ex) {
+                Debug.WriteLine($"Error: {ex.Message}");
             }
             
             Debug.WriteLine("Client meassage received, size of: " +  data.Length + " bytes.");
@@ -77,7 +77,7 @@ namespace Server.GameControl
             // Deserialize the payloads command
             PlayerCommandDto playerCommand = _commandSerializer.Deserialize(payload);
 
-            Debug.WriteLine($"[GAME] Command: {playerCommand.Action}, Bet: {playerCommand.BetAmount}");
+            Debug.WriteLine($"Game Command: {playerCommand.Action}, Bet: {playerCommand.BetAmount}");
 
             switch (playerCommand.Action) {
                 case PlayerAction.Bet:
@@ -251,17 +251,16 @@ namespace Server.GameControl
                 PayloadSize = payload.Length,
                 Payload = payload
             };
+
+            _connection.Send(packet.ToBytes());
         }
 
 
-        public void HandleMesssage(ClientConnection sender, byte[] data)
+        public void HandleMessage(ClientConnection connection, byte[] data)
         {
             ///TODO: Create the logic that will manage and change the game based on messages from client
 
-
-
-            /// Might lead into another method that would deal with either the game or responding to client (sender.Send(data))
-
+            /// Might lead into another method that would deal with either the game or responding to client (connection.Send(data))
 
             Debug.WriteLine("test");
         }
