@@ -21,11 +21,11 @@ namespace SharedModels.Models
 
             foreach (Card card in Cards)
             {
-                if (Cards.IndexOf(card) != 1) {
+                result += card.ToString();
+                
+                if (Cards.IndexOf(card) != (Cards.Count() - 1)) {
                     result += ", ";
                 }
-
-                result += card.ToString();
             }
 
             return result;

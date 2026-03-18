@@ -13,7 +13,8 @@ namespace Client.Commands
 
         public CommandRelay(Action execute)
         {
-            _execute = execute ?? throw new ArgumentNullException(nameof(execute)); ;
+            _execute = execute ?? throw new ArgumentNullException(nameof(execute));
+
         }
 
         public event EventHandler? CanExecuteChanged;

@@ -3,21 +3,23 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006">
-    <Grid>
+    <Viewbox Stretch="Uniform">
+        <Grid>
         <Grid.Background>
             <ImageBrush
                     ImageSource="/Assets/MainMenu.jpg"
-                    Stretch="UniformToFill" />
+                    Stretch="Fill" />
         </Grid.Background>
         <Rectangle Canvas.Left="0" Canvas.Top="0"
                        Width="575" Height="100"
-                       Fill="#008000" Margin="0,-450,0,0" />
+                       Fill="#009000" Margin="0,-450,0,0" />
         <TextBlock Name="JackBlackBlackJack" FontSize="50"
                        FontWeight="Bold" HorizontalAlignment="Center"
                        VerticalAlignment="Top" Margin="0,65,0,0">Jack Black Blackjack</TextBlock>
-                <Button Name="Rules" Width="200" Height="300" Click="RulesClicked" Margin="246,203,784,151" FontSize="20">RULES</Button>
-                <Button Name="Play" Width="200" Height="300" Click="PlayClicked" Margin="515,203,515,151" FontSize="20" Content="Play" Command="{Binding PlayCommand}">PLAY</Button>
-                <Button Name="Exit" Width="200" Height="300" Click="ExitClicked" Margin="785,203,246,151" FontSize="20">EXIT</Button>
-            </Grid>
-        </Viewbox>
+        <Button Name="Rules" Width="200" Height="300" Margin="246,203,784,151" FontSize="20" Command="{Binding RulesCommand}">RULES</Button>
+        <Button Name="Play" Width="200" Height="300" Margin="515,203,515,151" FontSize="20" Command="{Binding PlayCommand}">PLAY</Button>
+        <Button Name="Exit" Width="200" Height="300" Margin="785,203,246,151" FontSize="20" Command="{Binding ExitCommand}">EXIT</Button>
+    </Grid>
+   </Viewbox>
+
 </UserControl>

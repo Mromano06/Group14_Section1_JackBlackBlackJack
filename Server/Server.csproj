@@ -10,6 +10,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\GameLogic\GameLogic.csproj" />
+    <ProjectReference Include="..\Jables_Protocol\Jables_Protocol.csproj" />
     <None Remove="MainMenu.jpg" />
   </ItemGroup>
 

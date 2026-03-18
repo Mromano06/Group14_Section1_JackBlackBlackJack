@@ -16,6 +16,10 @@ namespace GameLogic.Actions.ActionTypes
 
         public Bet(string playerName, double amount, Game game)
         {
+            if (game == null) {
+                throw new ArgumentNullException("Game is null");
+            }
+
             if (playerName == null) {
                 throw new ArgumentNullException(nameof(playerName));
             }
@@ -30,7 +34,13 @@ namespace GameLogic.Actions.ActionTypes
 
         public bool IsExecutable(Game game)
         {
-            Player player = game.GetPlayer(_playerName);
+            Player player;
+            try {
+                player = game.GetPlayer(_playerName);
+            }
+            catch (ArgumentException) {
+                return false;
+            }
 
             if (player == null) {
                 return false;
@@ -41,16 +51,12 @@ namespace GameLogic.Actions.ActionTypes
                 return false;
             }
 
-            // Player can't bet if they've already busted
-            if (HandHelper.IsBust(player.Hand))
+            // Player can't bet if already have a bet this round
+            if (player.CurrentBet > 0)
                 return false;
 
-            // Player can't bet if they dont have enough balance
+            // Player must have enough balance
             if (_amount > player.Balance)
-                return false;
-
-            // Player can't bet less than 5 or if they have already bet
-            if (_amount < 5 || _amount > 0)
                 return false;
 
             return true; 
