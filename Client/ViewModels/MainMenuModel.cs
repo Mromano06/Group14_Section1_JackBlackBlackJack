@@ -53,7 +53,7 @@ namespace Client.ViewModels
             _showRules?.Invoke();
         }
 
-        // Exit's the application from the main meny
+        // Exit's the application from the main menu
         private void Exit()
         {
             // clean exiting

@@ -1,14 +1,24 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Security.Policy;
-using System.Text;
+﻿using GameLogic.Actions;
+using GameLogic.Actions.ActionTypes;
 using GameLogic.Core;
-using Server.Networking;
+using GameLogic.Logic;
+using GameLogic.Models;
+using Jables_Protocol;
 using Jables_Protocol.DTOs;
+using Jables_Protocol.Serializers;
+using Server.Networking;
+using SharedModels;
+using SharedModels.Core;
+using SharedModels.Models;
+using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.Runtime.Serialization;
-using SharedModels;
-using SharedModels.Models;
+using System.Security.Policy;
+using System.Text;
+
+// Must be strictly defined as it can be "ambigous" with the primitive double 
+using Double = GameLogic.Actions.ActionTypes.Double;
 
 namespace Server.GameControl
 {
@@ -17,22 +27,24 @@ namespace Server.GameControl
         // create game
         private readonly ClientConnection _connection;
         private Game _game;
+        private Player _player;
 
+        // serializers
+        private readonly PlayerCommandSerializer _commandSerializer = new PlayerCommandSerializer();
+        private readonly GameStateSerializer _gameStateSerializer = new GameStateSerializer();
 
         public GameManager(ClientConnection connection)
         {
             _connection = connection;
 
             // initialize the new game
-            _game = new Game();
+            _game = new Game(5, new Shoe(3));
 
             // Add player to game
-            Player newPlayer = new Player();
-
-            _game.AddPlayer(newPlayer);
+            _player = new Player("Brodie Arkell", 1000);
+            _game.AddPlayer(_player);
 
             ///TODO: once we have a game loop add whatever is needed for Game Manager here
-
         }
 
         // this is the callback function that will run when message received from client
@@ -41,6 +53,18 @@ namespace Server.GameControl
         {
             ///TODO: deserialize the message using custom protocol
             /// and then 
+            try {
+                // deserialize the packets wrapper
+                Packet packet = Packet.FromBytes(data);
+
+                Debug.WriteLine($"Received packet of type: {packet.Type}");
+
+                HandleCommand(packet.Payload);
+            }
+
+            catch (Exception ex) {
+                Debug.WriteLine($"Error: {ex.Message}");
+            }
             
             Debug.WriteLine("Client meassage received, size of: " +  data.Length + " bytes.");
 
@@ -48,16 +72,195 @@ namespace Server.GameControl
 
         }
 
-        public void HandleMesssage(ClientConnection sender, byte[] data)
+        private void HandleCommand(byte[] payload)
+        {
+            // Deserialize the payloads command
+            PlayerCommandDto playerCommand = _commandSerializer.Deserialize(payload);
+
+            Debug.WriteLine($"Game Command: {playerCommand.Action}, Bet: {playerCommand.BetAmount}");
+
+            switch (playerCommand.Action) {
+                case PlayerAction.Bet:
+                    ExecuteBet(playerCommand.BetAmount);
+                    break;
+
+                case PlayerAction.Hit:
+                    ExecuteHit();
+                    break;
+
+                case PlayerAction.Stand:
+                    ExecuteStand();
+                    break;
+
+                case PlayerAction.Double:
+                    ExecuteDouble();
+                    break;
+
+                case PlayerAction.Insure:
+                    ExecuteInsure();
+                    break;
+
+                default:
+                    Debug.WriteLine($"Unknown packet: {playerCommand.GetType().Name}");
+                    break;
+            }
+        }
+
+        /// TODO: I think all of these will need some sort of continue/update to tell the process to start again for the next player
+        /// (Side note: they already move the player forward but they gotta tell the server with some sort of function)
+        private void ExecuteBet(double betAmount)
+        {
+            Bet action = new Bet(_player.Name, betAmount, _game);
+            ActionResult actionResult = action.Execute(_game);
+
+            if (!actionResult.Success) {
+                Debug.WriteLine($"Bet action did not complete successfully for: {_player.Name}");
+                return;
+            }
+
+            Debug.WriteLine($"Bet: {_player.Name}");
+
+            // if we are on the last player then deal initial cards
+            if (_player.Name == _game.Players[_game.MaxPlayers - 1].Name) {
+                DealerLogic.DealInitialCards(_game);
+            }
+
+            updateGame(PlayerAction.Bet, _player.CurrentBet);
+        }
+
+        private void ExecuteHit()
+        {
+            Hit action = new Hit(_player.Name);
+            ActionResult actionResult = action.Execute(_game);
+
+            if (!actionResult.Success) {
+                Debug.WriteLine($"Hit action did not complete successfully for: {_player.Name}");
+                return;
+            }
+
+            Debug.WriteLine($"Hit: {_player.Name}");
+
+            // Check if bust
+            if (HandHelper.IsBust(_player.Hand)) {
+                Debug.WriteLine($"Bust: {_player.Name}");
+
+                // If its the last player who has now busted then the dealer shall go
+                if (_player.Name == _game.Players[_game.MaxPlayers - 1].Name) {
+                    DealerLogic.PlayTurn(_game);
+
+                    _game.EndRound();
+                }
+            }
+
+            updateGame(PlayerAction.Hit, _player.CurrentBet);
+        }
+
+        private void ExecuteStand()
+        {
+            Stand action = new Stand(_player.Name);
+            ActionResult actionResult = action.Execute(_game);
+
+            if (!actionResult.Success) {
+                Debug.WriteLine($"Stand action did not complete successfully for: {_player.Name}");
+                return;
+            }
+
+            Debug.WriteLine($"Stand: {_player.Name}");
+
+            // If its the last player who has now stood then the dealer shall go
+            if (_player.Name == _game.Players[_game.MaxPlayers - 1].Name) {
+                DealerLogic.PlayTurn(_game);
+
+                _game.EndRound();
+            }
+
+            updateGame(PlayerAction.Stand, _player.CurrentBet);
+        }
+
+        private void ExecuteDouble()
+        {
+            Double action = new Double(_player.Name);
+            ActionResult actionResult = action.Execute(_game);
+
+            if (!actionResult.Success) {
+                Debug.WriteLine($"Double action did not complete successfully for: {_player.Name}");
+                return;
+            }
+
+            Debug.WriteLine($"Double: {_player.Name}");
+
+            // Check if bust
+            if (HandHelper.IsBust(_player.Hand)) {
+                Debug.WriteLine($"Bust: {_player.Name}");
+
+                // If its the last player who has now busted then the dealer shall go
+                if (_player.Name == _game.Players[_game.MaxPlayers - 1].Name) {
+                    DealerLogic.PlayTurn(_game);
+
+                    _game.EndRound();
+                }
+            }
+
+            updateGame(PlayerAction.Double, _player.CurrentBet);
+        }
+
+        private void ExecuteInsure()
+        {
+            Insure action = new Insure(_player.Name);
+            ActionResult actionResult = action.Execute(_game);
+
+            if (!actionResult.Success) {
+                Debug.WriteLine($"Insure action did not complete successfully for: {_player.Name}");
+                return;
+            }
+
+            Debug.WriteLine($"Insure: {_player.Name}");
+
+            updateGame(PlayerAction.Insure, _player.CurrentBet);
+        }
+
+        private void updateGame(PlayerAction action, double betAmount)
+        {
+            SendGameState();
+            SendPlayerCommand(action, betAmount);
+        }
+
+        private void SendGameState()
+        {
+            GameStateDto dto = new GameStateDto() {
+                GameState = _game.GameState.State
+            };
+
+            SendPacket(PacketType.StateUpdate, _gameStateSerializer.Serialize(dto));
+        }
+
+        private void SendPlayerCommand(PlayerAction action, double betAmount)
+        {
+            PlayerCommandDto dto = new PlayerCommandDto() {
+                Action = action,
+                BetAmount = betAmount
+            };
+
+            SendPacket(PacketType.PlayerAction, _commandSerializer.Serialize(dto));
+        }
+
+        private void SendPacket(PacketType type, byte[] payload)
+        {
+            Packet packet = new Packet {
+                Type = type,
+                PayloadSize = payload.Length,
+                Payload = payload
+            };
+
+            _connection.Send(packet.ToBytes());
+        }
+
+
+        public void HandleMessage(ClientConnection connection, byte[] data)
         {
             ///TODO: Create the logic that will manage and change the game based on messages from client
 
-
-
-
-
-            /// Might lead into another method that would deal with either the game or responding to client (sender.Send(data))
-
+            /// Might lead into another method that would deal with either the game or responding to client (connection.Send(data))
 
             Debug.WriteLine("test");
         }
