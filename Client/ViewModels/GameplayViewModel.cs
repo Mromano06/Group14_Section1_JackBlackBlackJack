@@ -17,8 +17,8 @@ namespace Client.ViewModels
     public class GameplayViewModel : BaseModel
     {
         private readonly NetworkClient _client;
-        private readonly int _wager;
-        private readonly int _playerMoney;
+        private readonly double _wager;
+        private readonly double _playerMoney;
         private bool _isFirstCard;
         public ObservableCollection<CardViewModel> DealtPlayerCards { get; } =
             new ObservableCollection<CardViewModel>();
@@ -29,7 +29,7 @@ namespace Client.ViewModels
         public ICommand StandCommand { get; }
         public ICommand DoubleDownCommand { get; }
 
-        public GameplayViewModel(NetworkClient client, int wager, int playerMoney)
+        public GameplayViewModel(NetworkClient client, double wager, double playerMoney)
         {
             _wager = wager;
             _client = client;
@@ -57,13 +57,13 @@ namespace Client.ViewModels
         }
 
         // Readonly so no setters
-        public int Wager
+        public double Wager
         {
             get => _wager;
 
         }
 
-        public int PlayerMoney
+        public double PlayerMoney
         {
             get => _playerMoney;
         }

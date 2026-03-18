@@ -15,15 +15,15 @@ namespace Client.ViewModels
     {
         private readonly NetworkClient _client;
         private readonly Action<int> _showGame;
-        private readonly int _playerMoney;
-        private int _currentBet;
+        private readonly double _playerMoney;
+        private double _currentBet;
 
         public ICommand IncreaseBetCommand { get; }
         public ICommand DecreaseBetCommand { get; }
         public ICommand MaxBetCommand { get; }
         public ICommand ConfirmBetCommand { get; }
 
-        public BetPlacingViewModel(NetworkClient client, int playerMoney, Action<int> showGame)
+        public BetPlacingViewModel(NetworkClient client, double playerMoney, Action<int> showGame)
         {
             _client = client;
             _showGame = showGame;
@@ -34,7 +34,7 @@ namespace Client.ViewModels
             ConfirmBetCommand = new CommandRelay(Confirm);
         }
 
-        public int CurrentBet
+        public double CurrentBet
         {
             get => _currentBet;
             set
@@ -47,7 +47,7 @@ namespace Client.ViewModels
         
 
         // No Setter because it's readonly
-        public int PlayerMoney
+        public double PlayerMoney
         {
             get => _playerMoney;
         }
@@ -71,8 +71,9 @@ namespace Client.ViewModels
 
         private void Confirm()
         {
+            // TODO: CurrentBet is now a double and Invoke is saying it cant be used
             // TODO: Send the bet amount to the server
-            _showGame?.Invoke(CurrentBet);
+            // _showGame?.Invoke(CurrentBet);
 
         }
     }
