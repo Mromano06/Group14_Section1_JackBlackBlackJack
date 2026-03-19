@@ -14,18 +14,28 @@ namespace Server.Networking
         private TcpListener _listener;
         private Dictionary<ClientConnection, GameManager> _clients = new();
 
+        // logger
+        public event Action<string> OnLog; 
+
+        // invoking the action for logging
+        private void Log(string message)
+        {
+            OnLog?.Invoke(message);
+        }
+
         public async Task Start(int port)
         {
             _listener = new TcpListener(IPAddress.Any, port);
             _listener.Start();
 
             Debug.WriteLine("Server listening...");
-
+            Log("Server listening...");
         
             while (true)
             {
                 TcpClient tcpClient = await _listener.AcceptTcpClientAsync();
                 Debug.WriteLine("Client Connected");
+                Log("Client Connected");
 
                 // create connection with a callback
                 ClientConnection connection = new ClientConnection(tcpClient, HandleClientMessage);
@@ -33,10 +43,11 @@ namespace Server.Networking
                 // start send receive
                 connection.Start();
 
-                GameManager _session = new GameManager(connection); // create a game manager for this connection
+                GameManager _session = new GameManager(connection, OnLog); // create a game manager for this connection
                 _clients[connection] = _session; // add connection to pool
 
                 Debug.WriteLine("Game Session created for Client");
+                Log("Game Session Created for Client");
             }
         
         }
@@ -46,11 +57,11 @@ namespace Server.Networking
             if (_clients.TryGetValue(client, out var session)) {
 
                 session.OnMessageReceived(client, data); // send message to game manager
-
             }
             else
             {
                 Debug.WriteLine("No session found for client");
+                Log("No Session Found for Client");
             }
 
         }
