@@ -72,7 +72,7 @@ namespace Jables_Protocol.Serializers
                 for (int i = 0; i < dto.CardCount; i++)
                 {
                     byte[] byteshand = br.ReadBytes(2);
-                    var cardDto = new CardSerializer().Deserialize(byteshand);
+                    var cardDto = CardSerializer.Deserialize(byteshand);
                     dto.Cards.Add(cardDto);
                 }
             }
@@ -86,7 +86,7 @@ namespace Jables_Protocol.Serializers
                 for (int i = 0; i < dto.DealerCardCount; i++)
                 {
                     byte[] byteshand = br.ReadBytes(2);
-                    var cardDto = new CardSerializer().Deserialize(byteshand);
+                    var cardDto = CardSerializer.Deserialize(byteshand);
                     dto.DealerCards.Add(cardDto);
                 }
             }

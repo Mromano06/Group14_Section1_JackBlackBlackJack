@@ -18,7 +18,7 @@ namespace Jables_Protocol.Serializers
             return ms.ToArray();
         }
 
-        public GameStateDto Deserialize(byte[] data)
+        public static GameStateDto Deserialize(byte[] data)
         {
             using var ms = new MemoryStream(data);
             using var br = new BinaryReader(ms);
