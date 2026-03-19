@@ -106,7 +106,7 @@ namespace Client.Networking
                 case PacketType.CardDealt: { CardDto dto = CardSerializer.Deserialize(data); break; }
 
                 //Hand Dealt
-                case PacketType.
+                case PacketType.HandDealt: { HandDto dto = HandSerializer.Deserialize(data); break; }
 
                 //Join request
             }
