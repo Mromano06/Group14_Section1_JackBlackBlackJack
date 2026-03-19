@@ -80,9 +80,10 @@ namespace Client.ViewModels
             }
         }
 
+        // TODO: Link Dispatcher to each of these functions
         private void Hit()
         {
-            // Get the card from the 
+             
         }
 
         private void Stand()

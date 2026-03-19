@@ -55,6 +55,7 @@ namespace Client.ViewModels
             }
         }
 
+        // TODO: Link Dispatcher to each of these functions
         public void ShowGame(double betAmount)
         {
             
