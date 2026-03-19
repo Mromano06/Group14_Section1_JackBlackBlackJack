@@ -29,11 +29,9 @@ namespace Client.ViewModels
         public ICommand StandCommand { get; }
         public ICommand DoubleDownCommand { get; }
 
-        public GameplayViewModel(NetworkClient client, double betAmount, double playerMoney)
+        public GameplayViewModel(NetworkClient client)
         { 
             _client = client;
-            _betAmount = betAmount;
-            _playerMoney = playerMoney;
             HitCommand = new CommandRelay(Hit);
             StandCommand = new CommandRelay(Stand);
             DoubleDownCommand = new CommandRelay(DoubleDown);
@@ -83,7 +81,7 @@ namespace Client.ViewModels
         // TODO: Link Dispatcher to each of these functions
         private void Hit()
         {
-             // 
+        
         }
 
         private void Stand()
@@ -95,5 +93,6 @@ namespace Client.ViewModels
         {
 
         }
+
     }
 }

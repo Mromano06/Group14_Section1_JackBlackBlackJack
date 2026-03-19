@@ -15,7 +15,7 @@ namespace Client.ViewModels
     {
         private readonly NetworkClient _client;
         private readonly Action<double> _showGame;
-        private readonly double _playerMoney;
+        private double _playerMoney;
         private double _currentBet;
 
         public ICommand IncreaseBetCommand { get; }
@@ -23,11 +23,10 @@ namespace Client.ViewModels
         public ICommand MaxBetCommand { get; }
         public ICommand ConfirmBetCommand { get; }
 
-        public BetPlacingViewModel(NetworkClient client, double playerMoney, Action<double> showGame)
+        public BetPlacingViewModel(NetworkClient client, Action<double> showGame)
         {
             _client = client;
             _showGame = showGame;
-            _playerMoney = playerMoney;
             IncreaseBetCommand = new CommandRelay(IncBet);
             DecreaseBetCommand = new CommandRelay(DecBet);
             MaxBetCommand = new CommandRelay(MaxBet);
@@ -49,6 +48,10 @@ namespace Client.ViewModels
         public double PlayerMoney
         {
             get => _playerMoney;
+            set
+            {
+                _playerMoney = value;
+            }
         }
 
         private void IncBet()
@@ -73,6 +76,11 @@ namespace Client.ViewModels
             // TODO: Send the bet amount to the server
             _showGame?.Invoke(CurrentBet);
 
+        }
+
+        private void GetPlayerMoney(double playerMoney)
+        {
+            PlayerMoney = playerMoney;
         }
     }
 }
