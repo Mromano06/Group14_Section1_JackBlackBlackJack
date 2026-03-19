@@ -9,6 +9,8 @@ using System.Windows.Input;
 // Matthew Romano - March 12th, 2026 - BetPlacingViewModel implementation
 // Hnadles the logic of the bet placing view model
 
+// TODO: Send player money here
+
 namespace Client.ViewModels
 {
     public class BetPlacingViewModel : BaseModel
@@ -44,7 +46,6 @@ namespace Client.ViewModels
                 OnPropertyChanged();
             }
         }
-        
 
         // No Setter because it's readonly
         public double PlayerMoney
@@ -71,7 +72,6 @@ namespace Client.ViewModels
 
         private void Confirm()
         {
-            // TODO: CurrentBet is now a double and Invoke is saying it cant be used
             // TODO: Send the bet amount to the server
             _showGame?.Invoke(CurrentBet);
 

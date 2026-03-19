@@ -40,9 +40,7 @@ namespace Client.ViewModels
                 await _client.Connect("127.0.0.1", 27000);
             }
 
-            // FOR TESTING!!!
             _showGame?.Invoke();
-    
         }
 
         private void Rules()

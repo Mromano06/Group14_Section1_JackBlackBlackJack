@@ -11,7 +11,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-// Matthew Romano - Feb 11th, 2026 - Main Menu for Server Application
+// Brodie Arkell & Matthew Romano - Feb 11th, 2026 - Main Menu for Server Application
 
 namespace Server
 {
