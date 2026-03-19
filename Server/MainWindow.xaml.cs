@@ -25,7 +25,9 @@ namespace Server
         {
             InitializeComponent();
 
+
             StartServer();
+            _server.OnLog += serverOnLog; // sibscribe to Logger
         }
 
         private async void StartServer()
@@ -34,7 +36,16 @@ namespace Server
             _server = new NetworkServer();
 
             // avoid blocking UI
-            _ = Task.Run(() => _server.Start(27000)); 
+            _ = Task.Run(() => _server.Start(27000));
+        }
+
+        // function to invoke when using the Log Action
+        private void serverOnLog(string message)
+        {
+            Dispatcher.Invoke(() =>
+            {
+                LogListBox.Items.Add($"{DateTime.Now:HH:mm:ss} - {message}"); // connects to the MainWindow.xaml 
+            });
         }
 
     }
