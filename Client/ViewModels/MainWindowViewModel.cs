@@ -29,12 +29,10 @@ namespace Client.ViewModels
             }
         }
 
-        public MainWindowViewModel(NetworkClient client, double playerMoney)
+        public MainWindowViewModel()
         {
-            _client = client;
-            _playerMoney = playerMoney;
             _client = new NetworkClient();
-            _currentViewModel = new MainMenuModel(_client, ShowMenu, ShowRules);
+            _currentViewModel = new MainMenuModel(_client, ShowBetting, ShowRules);
         }
 
         public double PlayerMoney
