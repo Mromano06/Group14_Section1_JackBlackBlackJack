@@ -30,8 +30,9 @@ namespace Server.GameControl
         private Player _player;
 
         // serializers
+        private readonly GameUpdateSerializer _gameUpdateSerializer = new GameUpdateSerializer();
         private readonly PlayerCommandSerializer _commandSerializer = new PlayerCommandSerializer();
-        private readonly GameStateSerializer _gameStateSerializer = new GameStateSerializer();
+        private readonly CardSerializer _cardSerializer = new CardSerializer();
         private readonly Action<string> _OnLog;
 
         public GameManager(ClientConnection connection, Action<string> OnLog)
@@ -223,16 +224,37 @@ namespace Server.GameControl
 
         private void SendGameUpdate()
         {
+            List<CardDto> cards = null;
+            List<CardDto> dealerCards = null;
+
+            foreach (Card card in _player.Hand.Cards) {
+                CardDto cardDto = new CardDto() {
+                    Rank = card.Rank,
+                    Suit = card.Suit,
+                };
+
+                cards.Add(cardDto);
+            }
+
+            foreach (Card card in _game.Dealer.Hand.Cards) {
+                CardDto cardDto = new CardDto() {
+                    Rank = card.Rank,
+                    Suit = card.Suit,
+                };
+
+                dealerCards.Add(cardDto);
+            }
+
             GameUpdateDto dto = new GameUpdateDto() {
                 BetSize = _player.CurrentBet,
 
-                CardCount = (_player.Hand == null) ? null : HandHelper.CardCount(_player.Hand),
-                Cards = (_player.Hand == null) ? null : _player.Hand,
+                CardCount = HandHelper.CardCount(_player.Hand),
+                Cards = cards,
 
                 GameState = _game.GameState.State,
 
-                DealerCardCount = (_game.Dealer.Hand == null) ? null : HandHelper.CardCount(_game.Dealer.Hand),
-                DealerCards = (_game.Dealer.Hand == null) ? null : _game.Dealer.Hand,
+                DealerCardCount = HandHelper.CardCount(_game.Dealer.Hand),
+                DealerCards = dealerCards,
 
                 CurrentPlayerIndex = _game.CurrentPlayerIndex
             };

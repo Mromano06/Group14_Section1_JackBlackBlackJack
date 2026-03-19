@@ -55,8 +55,8 @@ namespace GameLogic.Actions.ActionTypes
 
             Player player = game.GetPlayer(_playerName);
 
-            var card = game.Shoe.DrawCard();
-            player.Hand.Cards.Add(card); // Update this
+            Card card = game.Shoe.DrawCard();
+            HandHelper.AddCardToHand(player.Hand, card);
 
             int handValue = HandHelper.CalculateHandValue(player.Hand);
             bool isBust = HandHelper.IsBust(player.Hand);

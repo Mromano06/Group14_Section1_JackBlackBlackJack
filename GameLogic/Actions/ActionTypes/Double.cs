@@ -67,8 +67,8 @@ namespace GameLogic.Actions.ActionTypes
 
             player.HasDoubled = true;
 
-            var card = game.Shoe.DrawCard();
-            player.Hand.Cards.Add(card);
+            Card card = game.Shoe.DrawCard();
+            HandHelper.AddCardToHand(player.Hand, card);
 
             int handValue = HandHelper.CalculateHandValue(player.Hand);
             bool isBust = HandHelper.IsBust(player.Hand);
