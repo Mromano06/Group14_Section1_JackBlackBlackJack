@@ -8,6 +8,8 @@ using System.Windows.Input;
 // Matthew Romano & Brodie Arkell - March 12th, 2026 - MainWindowViewModel implementation
 // Handles the logic of the main view model
 
+// TODO: Send the money maount here
+
 namespace Client.ViewModels
 {
     public class MainWindowViewModel : BaseModel
