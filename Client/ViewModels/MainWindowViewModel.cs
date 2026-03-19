@@ -8,6 +8,8 @@ using System.Windows.Input;
 // Matthew Romano & Brodie Arkell - March 12th, 2026 - MainWindowViewModel implementation
 // Handles the logic of the main view model
 
+// TODO: Send the money maount here
+
 namespace Client.ViewModels
 {
     public class MainWindowViewModel : BaseModel
@@ -55,6 +57,7 @@ namespace Client.ViewModels
             }
         }
 
+        // TODO: Link Dispatcher to each of these functions
         public void ShowGame(double betAmount)
         {
             

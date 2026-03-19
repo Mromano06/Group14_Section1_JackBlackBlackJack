@@ -12,6 +12,7 @@ using Jables_Protocol;
 using Jables_Protocol.Serializers;
 using Jables_Protocol.DTOs;
 using SharedModels.Core;
+using Client.ViewModels;
 
 
 
@@ -25,7 +26,7 @@ namespace Client.Networking
     {
 
         private TcpClient client;
-        private NetworkStream stream;
+        private NetworkStream stream; 
 
         // Queue to hold outgoing commands/messages (thread-safe)
         // will change from string to command object once command object is implemented
@@ -80,6 +81,11 @@ namespace Client.Networking
         {
             Console.WriteLine("Server:" + data); /// add better logging here
 
+            // Deserialize the packet
+
+            // Sort data into player/dealer cards
+
+            MainWindowViewModel _mainWindow = new MainWindowViewModel();
              /// TODO:
             /// parse message from server to handle message and update the UI
             /// Example: if message starts with "Player_Hit", update player state

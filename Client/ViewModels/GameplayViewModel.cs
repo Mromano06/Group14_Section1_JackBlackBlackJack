@@ -10,7 +10,7 @@ using System.Windows.Input;
 // Matthew Romano & Brodie Arkell - March 12th, 2026 - GamplayViewModel Implementation
 // The actual gameplay loop/aspects
 
-// TODO: Figure out the actual gameplay logic and loop
+// TODO: Send cards to display them
 // TODO: Add functionality to each ICommand sister Function
 namespace Client.ViewModels
 {
@@ -80,9 +80,10 @@ namespace Client.ViewModels
             }
         }
 
+        // TODO: Link Dispatcher to each of these functions
         private void Hit()
         {
-            // Get the card from the 
+             
         }
 
         private void Stand()
