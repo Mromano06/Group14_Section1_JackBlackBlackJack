@@ -17,7 +17,7 @@ namespace Client.ViewModels
     public class GameplayViewModel : BaseModel
     {
         private readonly NetworkClient _client;
-        private readonly double _wager;
+        private readonly double _betAmount;
         private readonly double _playerMoney;
         private bool _isFirstCard;
         public ObservableCollection<CardViewModel> DealtPlayerCards { get; } =
@@ -29,11 +29,9 @@ namespace Client.ViewModels
         public ICommand StandCommand { get; }
         public ICommand DoubleDownCommand { get; }
 
-        public GameplayViewModel(NetworkClient client, double wager, double playerMoney)
-        {
-            _wager = wager;
+        public GameplayViewModel(NetworkClient client)
+        { 
             _client = client;
-            _playerMoney = playerMoney;
             HitCommand = new CommandRelay(Hit);
             StandCommand = new CommandRelay(Stand);
             DoubleDownCommand = new CommandRelay(DoubleDown);
@@ -53,13 +51,13 @@ namespace Client.ViewModels
 
         public void DealCardToDealer(string cardCode)
         {
-            DealtPlayerCards.Add(new CardViewModel(cardCode));
+            DealtDealerCards.Add(new CardViewModel(cardCode));
         }
 
         // Readonly so no setters
-        public double Wager
+        public double BetAmount
         {
-            get => _wager;
+            get => _betAmount;
 
         }
 
@@ -83,7 +81,7 @@ namespace Client.ViewModels
         // TODO: Link Dispatcher to each of these functions
         private void Hit()
         {
-             
+        
         }
 
         private void Stand()
@@ -95,5 +93,6 @@ namespace Client.ViewModels
         {
 
         }
+
     }
 }

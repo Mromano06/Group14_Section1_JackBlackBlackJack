@@ -26,7 +26,7 @@ namespace Jables_Protocol.Serializers
             return ms.ToArray();
         }
 
-        public HandDto Deserialize(byte[] data)
+        public static HandDto Deserialize(byte[] data)
         {
             using var ms = new MemoryStream(data);
             using var br = new BinaryReader(ms);
@@ -41,7 +41,7 @@ namespace Jables_Protocol.Serializers
             while (ms.Position < ms.Length)
             {
                 var cardBytes = br.ReadBytes(2); // Read 2 bytes for each card
-                var cardDto = new CardSerializer().Deserialize(cardBytes);
+                var cardDto = CardSerializer.Deserialize(cardBytes);
                 handDto.Cards.Add(cardDto);
             }
 

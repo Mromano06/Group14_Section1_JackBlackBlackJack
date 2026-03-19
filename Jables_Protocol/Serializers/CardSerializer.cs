@@ -18,7 +18,7 @@ namespace Jables_Protocol.Serializers
             return ms.ToArray();
         }
 
-        public CardDto Deserialize(byte[] data)
+        public static CardDto Deserialize(byte[] data)
         {
             using var ms = new MemoryStream(data);
             using var br = new BinaryReader(ms);

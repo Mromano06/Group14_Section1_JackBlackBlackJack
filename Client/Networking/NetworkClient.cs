@@ -8,6 +8,10 @@ using System.Security.Policy;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using Jables_Protocol;
+using Jables_Protocol.Serializers;
+using Jables_Protocol.DTOs;
+using SharedModels.Core;
 using Client.ViewModels;
 
 
@@ -81,10 +85,37 @@ namespace Client.Networking
 
             // Sort data into player/dealer cards
 
-            MainWindowViewModel _mainWindow = new MainWindowViewModel();
-             /// TODO:
+            // MainWindowViewModel _mainWindow = new MainWindowViewModel();
+            /// TODO:
             /// parse message from server to handle message and update the UI
             /// Example: if message starts with "Player_Hit", update player state
+            
+            Packet packet = Packet.FromBytes(data);
+
+            switch(packet.Type)
+            {
+                //case SharedModels.Core.PacketType.Error: // Not sure what to do with Error yet.
+                // Player
+                case PacketType.Player: { PlayerDto dto = PlayerSerializer.Deserialize(data); break; }
+
+                //case player action
+                case PacketType.PlayerAction: { PlayerCommandDto dto = PlayerCommandSerializer.Deserialize(data); break; }
+
+                //case state update
+                case PacketType.StateUpdate: { GameStateDto dto = GameStateSerializer.Deserialize(data); break; }
+
+                // GameUpdate
+                case PacketType.GameUpdate: {  GameUpdateDto dto = GameUpdateSerializer.Deserialize(data); break; }
+
+                //Card Dealt
+                case PacketType.CardDealt: { CardDto dto = CardSerializer.Deserialize(data); break; }
+
+                //Hand Dealt
+                case PacketType.HandDealt: { HandDto dto = HandSerializer.Deserialize(data); break; }
+
+                //Join request
+            }
+
         }
 
         /// <summary>

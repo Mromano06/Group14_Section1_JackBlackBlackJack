@@ -3,9 +3,12 @@
     public enum PacketType : byte   // set the size of enum to byte
     {
         Error,
+        Player,
         PlayerAction,
         StateUpdate,
-        CardsDealt,
+        GameUpdate,
+        CardDealt,
+        HandDealt,
         JoinRequest
     }
 }

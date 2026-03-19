@@ -11,6 +11,6 @@ namespace Jables_Protocol
     public interface ISerializer<T>
     {
         byte[] Serialize(T dto);
-        T Deserialize(byte[] data);
+        static abstract T Deserialize(byte[] data);
     }
 }
