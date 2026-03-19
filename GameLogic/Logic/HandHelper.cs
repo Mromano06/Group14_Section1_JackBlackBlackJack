@@ -70,6 +70,11 @@ namespace GameLogic.Logic
             hand.Cards.Clear();
         }
 
+        public static int CardCount(Hand hand)
+        {
+            return hand.Cards.Count();
+        }
+
         public static void AddCardToHand(Hand hand, Card card)
         {
             if (card == null) {
