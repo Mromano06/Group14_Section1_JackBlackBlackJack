@@ -59,7 +59,9 @@ namespace Server.GameControl
 
                 Debug.WriteLine($"Received packet of type: {packet.Type}");
 
-                HandleCommand(packet.Payload);
+                if (packet.Type == PacketType.PlayerAction) {
+                    HandlePlayerCommand(packet.Payload);
+                }
             }
 
             catch (Exception ex) {
@@ -67,12 +69,9 @@ namespace Server.GameControl
             }
             
             Debug.WriteLine("Client meassage received, size of: " +  data.Length + " bytes.");
-
-            ///This method should lead into HandleMessage (pass DTO into params)
-
         }
 
-        private void HandleCommand(byte[] payload)
+        private void HandlePlayerCommand(byte[] payload)
         {
             // Deserialize the payloads command
             PlayerCommandDto playerCommand = _commandSerializer.Deserialize(payload);
@@ -125,7 +124,7 @@ namespace Server.GameControl
                 DealerLogic.DealInitialCards(_game);
             }
 
-            updateGame(PlayerAction.Bet, _player.CurrentBet);
+            SendGameUpdate();
         }
 
         private void ExecuteHit()
@@ -152,7 +151,7 @@ namespace Server.GameControl
                 }
             }
 
-            updateGame(PlayerAction.Hit, _player.CurrentBet);
+            SendGameUpdate();
         }
 
         private void ExecuteStand()
@@ -174,7 +173,7 @@ namespace Server.GameControl
                 _game.EndRound();
             }
 
-            updateGame(PlayerAction.Stand, _player.CurrentBet);
+            SendGameUpdate();
         }
 
         private void ExecuteDouble()
@@ -201,7 +200,7 @@ namespace Server.GameControl
                 }
             }
 
-            updateGame(PlayerAction.Double, _player.CurrentBet);
+            SendGameUpdate();
         }
 
         private void ExecuteInsure()
@@ -216,32 +215,26 @@ namespace Server.GameControl
 
             Debug.WriteLine($"Insure: {_player.Name}");
 
-            updateGame(PlayerAction.Insure, _player.CurrentBet);
+            SendGameUpdate();
         }
 
-        private void updateGame(PlayerAction action, double betAmount)
+        private void SendGameUpdate()
         {
-            SendGameState();
-            SendPlayerCommand(action, betAmount);
-        }
+            GameUpdateDto dto = new GameUpdateDto() {
+                BetSize = _player.CurrentBet,
 
-        private void SendGameState()
-        {
-            GameStateDto dto = new GameStateDto() {
-                GameState = _game.GameState.State
+                CardCount = (_player.Hand == null) ? null : HandHelper.CardCount(_player.Hand),
+                Cards = (_player.Hand == null) ? null : _player.Hand,
+
+                GameState = _game.GameState.State,
+
+                DealerCardCount = (_game.Dealer.Hand == null) ? null : HandHelper.CardCount(_game.Dealer.Hand),
+                DealerCards = (_game.Dealer.Hand == null) ? null : _game.Dealer.Hand,
+
+                CurrentPlayerIndex = _game.CurrentPlayerIndex
             };
 
-            SendPacket(PacketType.StateUpdate, _gameStateSerializer.Serialize(dto));
-        }
-
-        private void SendPlayerCommand(PlayerAction action, double betAmount)
-        {
-            PlayerCommandDto dto = new PlayerCommandDto() {
-                Action = action,
-                BetAmount = betAmount
-            };
-
-            SendPacket(PacketType.PlayerAction, _commandSerializer.Serialize(dto));
+            SendPacket(PacketType.StateUpdate, _gameUpdateSerializer.Serialize(dto));
         }
 
         private void SendPacket(PacketType type, byte[] payload)
