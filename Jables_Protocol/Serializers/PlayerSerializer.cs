@@ -66,9 +66,19 @@ namespace Jables_Protocol.Serializers
             dto.Name = br.ReadString();
 
             // player hand - can handle a max of
-            int cardCount = br.ReadInt32();
-            byte[] byteHand = br.ReadBytes(2 * cardCount);
-            var handDto = new HandSerializer().Deserialize(byteHand);
+            dto.CardCount = br.ReadInt32();
+            //byte[] byteHand = br.ReadBytes(2 * dto.CardCount);
+            //var handDto = new HandSerializer().Deserialize(byteHand);
+            //dto.Hand = handDto;
+            if (dto.CardCount >= 0)
+            {
+                for (int i = 0; i < dto.CardCount; i++)
+                {
+                    byte[] bytesHand = br.ReadBytes(2);
+                    var cardDto = new CardSerializer().Deserialize(bytesHand);
+                    dto.Hand.Add(cardDto);
+                }
+            }
 
             // player current bet
             dto.CurrentBet = br.ReadDouble();
