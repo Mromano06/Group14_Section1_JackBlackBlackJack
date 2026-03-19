@@ -32,10 +32,12 @@ namespace Server.GameControl
         // serializers
         private readonly PlayerCommandSerializer _commandSerializer = new PlayerCommandSerializer();
         private readonly GameStateSerializer _gameStateSerializer = new GameStateSerializer();
+        private readonly Action<string> _OnLog;
 
-        public GameManager(ClientConnection connection)
+        public GameManager(ClientConnection connection, Action<string> OnLog)
         {
             _connection = connection;
+            _OnLog = OnLog;
 
             // initialize the new game
             _game = new Game(5, new Shoe(3));
@@ -117,6 +119,7 @@ namespace Server.GameControl
                 return;
             }
 
+            _OnLog($"Bet: {_player.Name}");
             Debug.WriteLine($"Bet: {_player.Name}");
 
             // if we are on the last player then deal initial cards
