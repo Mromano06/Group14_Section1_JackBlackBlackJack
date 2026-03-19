@@ -56,7 +56,7 @@ namespace Jables_Protocol.Serializers
             return ms.ToArray();
         }
 
-        public GameUpdateDto Deserialize(byte[] data)
+        public static GameUpdateDto Deserialize(byte[] data)
         {
             GameUpdateDto dto = new GameUpdateDto();
 
