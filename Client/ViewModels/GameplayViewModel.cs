@@ -81,10 +81,10 @@ namespace Client.ViewModels
             }
         }
 
-        // TODO: Link Dispatcher to each of these functions
+        
         private void Hit()
         {
-        
+
         }
 
         private void Stand()
@@ -99,6 +99,7 @@ namespace Client.ViewModels
 
         public void Cleanup()
         {
+            // unsubscribe to events for changing screens
             _client.PlayerCardUpdate -= DealCardToPlayer;
             _client.DealerCardUpdate -= DealCardToDealer;
         }
