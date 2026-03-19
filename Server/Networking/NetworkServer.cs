@@ -43,7 +43,7 @@ namespace Server.Networking
                 // start send receive
                 connection.Start();
 
-                GameManager _session = new GameManager(connection); // create a game manager for this connection
+                GameManager _session = new GameManager(connection, OnLog); // create a game manager for this connection
                 _clients[connection] = _session; // add connection to pool
 
                 Debug.WriteLine("Game Session created for Client");
