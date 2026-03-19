@@ -62,12 +62,12 @@ namespace Client.ViewModels
             // var playCommand = new PlayCommand();
             //_client.EnqueueCommand(playCommand);
             PlayerMoney -= betAmount;
-            CurrentViewModel = new GameplayViewModel(_client, betAmount, _playerMoney);
+            CurrentViewModel = new GameplayViewModel(_client);
         }
 
         public void ShowBetting()
         {
-            CurrentViewModel = new BetPlacingViewModel(_client, _playerMoney, ShowGame);
+            CurrentViewModel = new BetPlacingViewModel(_client, ShowGame);
         }
 
         public void ShowMenu()
