@@ -13,6 +13,7 @@ using Jables_Protocol.Serializers;
 using Jables_Protocol.DTOs;
 using SharedModels.Core;
 using Client.ViewModels;
+using System.Windows.Threading;
 
 
 
@@ -26,7 +27,9 @@ namespace Client.Networking
     {
 
         private TcpClient client;
-        private NetworkStream stream; 
+        private NetworkStream stream;
+        public event Action<CardDto> PlayerCardUpdate;
+        public event Action<CardDto> DealerCardUpdate;
 
         // Queue to hold outgoing commands/messages (thread-safe)
         // will change from string to command object once command object is implemented
@@ -105,7 +108,10 @@ namespace Client.Networking
                 case PacketType.StateUpdate: { GameStateDto dto = GameStateSerializer.Deserialize(data); break; }
 
                 // GameUpdate
-                case PacketType.GameUpdate: {  GameUpdateDto dto = GameUpdateSerializer.Deserialize(data); break; }
+                case PacketType.GameUpdate: { 
+                        GameUpdateDto dto = GameUpdateSerializer.Deserialize(data);
+                        handleGameUpdateDto(dto); 
+                        break; }
 
                 //Card Dealt
                 case PacketType.CardDealt: { CardDto dto = CardSerializer.Deserialize(data); break; }
@@ -199,8 +205,35 @@ namespace Client.Networking
         }
 
 
+        public void handleGameUpdateDto(GameUpdateDto gameUpdateDto) {
+            if (gameUpdateDto.Cards == null) // check if cards are null
+            {
+                Debug.WriteLine(" Player cards is null");
+                return;
+            }
+            
+            CardDto cardDto1 = new CardDto();
+            cardDto1.Rank = gameUpdateDto.Cards[0].Rank; // get the first card rank and suit
+            cardDto1.Suit = gameUpdateDto.Cards[0].Suit;
+            
+            CardDto cardDto2 = new CardDto(); // get the second card rank and suit
+            cardDto2.Rank = gameUpdateDto.Cards[1].Rank;
+            cardDto2.Suit = gameUpdateDto.Cards[1].Suit;
 
 
+            sendPlayerCardUpdate(cardDto1);
+            sendPlayerCardUpdate(cardDto2);
+        }
 
+        public void sendPlayerCardUpdate(CardDto cardDto)
+        {
+            PlayerCardUpdate?.Invoke(cardDto);
+        }
+
+        public void sendDealerCardUpdate(CardDto cardDto)
+        {
+            // send card dto
+            DealerCardUpdate?.Invoke(cardDto);
+        }
     }
 }

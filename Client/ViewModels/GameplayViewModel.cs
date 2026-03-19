@@ -1,5 +1,6 @@
 ﻿using Client.Commands;
 using Client.Networking;
+using Jables_Protocol.DTOs;
 using System;
 using System;
 using System.Collections.Generic;
@@ -32,26 +33,28 @@ namespace Client.ViewModels
         public GameplayViewModel(NetworkClient client)
         { 
             _client = client;
+            _client.PlayerCardUpdate += DealCardToPlayer; // subscribe to dealing player cards
+            _client.DealerCardUpdate += DealCardToDealer; // subscribe to dealing dealer cards
             HitCommand = new CommandRelay(Hit);
             StandCommand = new CommandRelay(Stand);
             DoubleDownCommand = new CommandRelay(DoubleDown);
             _isFirstCard = true;
         }
 
-        public void DealCardToPlayer(string cardCode)
+        public void DealCardToPlayer(CardDto cardDto)
         {
             if (IsFirstCard)
             {
-                DealtPlayerCards.Add(new CardViewModel("BACK"));
+                //DealtPlayerCards.Add(new CardViewModel("BACK"));
                 IsFirstCard = false;
             }
 
-            DealtPlayerCards.Add(new CardViewModel(cardCode));
+            DealtPlayerCards.Add(new CardViewModel(cardDto));
         }
 
-        public void DealCardToDealer(string cardCode)
+        public void DealCardToDealer(CardDto cardDto)
         {
-            DealtDealerCards.Add(new CardViewModel(cardCode));
+            DealtDealerCards.Add(new CardViewModel(cardDto));
         }
 
         // Readonly so no setters
@@ -92,6 +95,12 @@ namespace Client.ViewModels
         private void DoubleDown()
         {
 
+        }
+
+        public void Cleanup()
+        {
+            _client.PlayerCardUpdate -= DealCardToPlayer;
+            _client.DealerCardUpdate -= DealCardToDealer;
         }
 
     }

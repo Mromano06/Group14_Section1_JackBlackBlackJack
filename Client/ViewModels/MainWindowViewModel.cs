@@ -24,6 +24,10 @@ namespace Client.ViewModels
             get => _currentViewModel;
             set
             {
+                if (_currentViewModel is GameplayViewModel previousScreen) // before changing screens check if was on gamescreen
+                {
+                    previousScreen.Cleanup(); // unsubscribes to events when switching screens
+                }
                 _currentViewModel = value;
                 OnPropertyChanged();
             }
