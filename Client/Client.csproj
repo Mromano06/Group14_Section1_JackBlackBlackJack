@@ -15,6 +15,10 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\Jables_Protocol\Jables_Protocol.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
     <Resource Include="Assets\BackOfCard.png" />
     <Resource Include="Assets\Gameboard.jpg">
       <CopyToOutputDirectory>Never</CopyToOutputDirectory>

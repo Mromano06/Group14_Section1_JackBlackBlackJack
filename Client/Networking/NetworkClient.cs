@@ -8,6 +8,10 @@ using System.Security.Policy;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using Jables_Protocol;
+using Jables_Protocol.Serializers;
+using Jables_Protocol.DTOs;
+using SharedModels.Core;
 
 
 
@@ -79,6 +83,19 @@ namespace Client.Networking
              /// TODO:
             /// parse message from server to handle message and update the UI
             /// Example: if message starts with "Player_Hit", update player state
+            
+            Packet packet = Packet.FromBytes(data);
+
+            switch(packet.Type)
+            {
+                //case SharedModels.Core.PacketType.Error: // Not sure what to do with Error yet.
+                case PacketType.StateUpdate: 
+                    { 
+                        GameUpdateDto gameUpdateDto = GameUpdateSerializer.Deserialize(data);
+                        break;
+                    }
+            }
+
         }
 
         /// <summary>
