@@ -6,7 +6,7 @@ using SharedModels.Models;
 
 namespace Jables_Protocol.DTOs
 {
-    internal class GameUpdateDto
+    public class GameUpdateDto
     {
         public double BetSize {  get; set; }
         public int CardCount { get; set; }

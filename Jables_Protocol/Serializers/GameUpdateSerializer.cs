@@ -7,7 +7,7 @@ using SharedModels.Core;
 
 namespace Jables_Protocol.Serializers
 {
-    internal class GameUpdateSerializer : ISerializer<GameUpdateDto>
+    public class GameUpdateSerializer : ISerializer<GameUpdateDto>
     {
         public byte[] Serialize(GameUpdateDto dto) 
         { 
