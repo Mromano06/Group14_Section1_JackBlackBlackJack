@@ -5,7 +5,9 @@
         Error,
         PlayerAction,
         StateUpdate,
-        CardsDealt,
+        GameUpdate,
+        CardDealt,
+        HandDealt,
         JoinRequest
     }
 }
