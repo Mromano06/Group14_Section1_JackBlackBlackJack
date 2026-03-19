@@ -77,7 +77,11 @@ namespace Server.GameControl
         private void HandlePlayerCommand(byte[] payload)
         {
             // Deserialize the payloads command
-            PlayerCommandDto playerCommand = _commandSerializer.Deserialize(payload);
+            // using private variables at the top of the class
+            //PlayerCommandDto playerCommand = _commandSerializer.Deserialize(payload);
+
+            // using the static deserializer
+            PlayerCommandDto playerCommand = PlayerCommandSerializer.Deserialize(payload);
 
             Debug.WriteLine($"Game Command: {playerCommand.Action}, Bet: {playerCommand.BetAmount}");
 
