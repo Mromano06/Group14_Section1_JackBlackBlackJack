@@ -85,8 +85,8 @@ namespace Client.Networking
 
             // Sort data into player/dealer cards
 
-            MainWindowViewModel _mainWindow = new MainWindowViewModel();
-             /// TODO:
+            // MainWindowViewModel _mainWindow = new MainWindowViewModel();
+            /// TODO:
             /// parse message from server to handle message and update the UI
             /// Example: if message starts with "Player_Hit", update player state
             

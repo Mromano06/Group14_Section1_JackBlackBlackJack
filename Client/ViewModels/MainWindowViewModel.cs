@@ -8,8 +8,6 @@ using System.Windows.Input;
 // Matthew Romano & Brodie Arkell - March 12th, 2026 - MainWindowViewModel implementation
 // Handles the logic of the main view model
 
-// TODO: Send the money maount here
-
 namespace Client.ViewModels
 {
     public class MainWindowViewModel : BaseModel
@@ -34,8 +32,8 @@ namespace Client.ViewModels
         public MainWindowViewModel()
         {
             _client = new NetworkClient();
-            _currentViewModel = new MainMenuModel(_client, ShowMenu, ShowRules);
-;        }
+            _currentViewModel = new MainMenuModel(_client, ShowBetting, ShowRules);
+        }
 
         public double PlayerMoney
         {
@@ -60,18 +58,15 @@ namespace Client.ViewModels
         // TODO: Link Dispatcher to each of these functions
         public void ShowGame(double betAmount)
         {
-            
             /// TODO: create command objects so we can enqueue them here
             // var playCommand = new PlayCommand();
             //_client.EnqueueCommand(playCommand);
-            // TODO: Decide if this makes sense
             PlayerMoney -= betAmount;
             CurrentViewModel = new GameplayViewModel(_client, betAmount, _playerMoney);
         }
 
         public void ShowBetting()
         {
-            PlayerMoney = 100; // TODO: Have server get the info and send it here
             CurrentViewModel = new BetPlacingViewModel(_client, _playerMoney, ShowGame);
         }
 

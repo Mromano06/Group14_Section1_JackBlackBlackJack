@@ -14,17 +14,17 @@ namespace Client.ViewModels
     public class MainMenuModel : BaseModel
     {
         private readonly NetworkClient _client;
-        private readonly Action _showGame;
         private readonly Action _showRules;
+        private readonly Action _showBetting;
 
         public ICommand PlayCommand { get; }
         public ICommand RulesCommand { get; }
         public ICommand ExitCommand { get; }
 
-        public MainMenuModel(NetworkClient client, Action ShowGame, Action ShowRules)
+        public MainMenuModel(NetworkClient client, Action ShowBetting, Action ShowRules)
         {
             this._client = client;
-            _showGame = ShowGame;
+            _showBetting = ShowBetting;
             _showRules = ShowRules;
 
             PlayCommand = new CommandRelay(Play);
@@ -40,7 +40,7 @@ namespace Client.ViewModels
                 await _client.Connect("127.0.0.1", 27000);
             }
 
-            _showGame?.Invoke();
+            _showBetting?.Invoke();
         }
 
         private void Rules()
