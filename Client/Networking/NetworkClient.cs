@@ -95,7 +95,12 @@ namespace Client.Networking
             switch(packet.Type)
             {
                 //case SharedModels.Core.PacketType.Error: // Not sure what to do with Error yet.
+                // Player
+                case PacketType.Player: { PlayerDto dto = PlayerSerializer.Deserialize(data); break; }
+
                 //case player action
+                case PacketType.PlayerAction: { PlayerCommandDto dto = PlayerCommandSerializer.Deserialize(data); break; }
+
                 //case state update
                 case PacketType.StateUpdate: { GameStateDto dto = GameStateSerializer.Deserialize(data); break; }
 
