@@ -28,6 +28,13 @@ namespace Client.ViewModels
                 {
                     previousScreen.Cleanup(); // unsubscribes to events when switching screens
                 }
+
+                /// TODO: double check if this is needed when testing the game
+                if (_currentViewModel is BetPlacingViewModel previousBetPlacing)
+                {
+                    previousBetPlacing.Cleanup(); // unsubscribing to events when switching screens
+                }
+
                 _currentViewModel = value;
                 OnPropertyChanged();
             }
@@ -62,9 +69,6 @@ namespace Client.ViewModels
         // TODO: Link Dispatcher to each of these functions
         public void ShowGame(double betAmount)
         {
-            /// TODO: create command objects so we can enqueue them here
-            // var playCommand = new PlayCommand();
-            //_client.EnqueueCommand(playCommand);
             PlayerMoney -= betAmount;
             CurrentViewModel = new GameplayViewModel(_client);
         }

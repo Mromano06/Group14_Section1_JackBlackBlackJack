@@ -30,6 +30,7 @@ namespace Client.Networking
         private NetworkStream stream;
         public event Action<CardDto> PlayerCardUpdate;
         public event Action<CardDto> DealerCardUpdate;
+        public event Action<double> PlayerMoneyUpdate;
 
         // Queue to hold outgoing commands/messages (thread-safe)
         // will change from string to command object once command object is implemented
@@ -99,7 +100,10 @@ namespace Client.Networking
             {
                 //case SharedModels.Core.PacketType.Error: // Not sure what to do with Error yet.
                 // Player
-                case PacketType.Player: { PlayerDto dto = PlayerSerializer.Deserialize(data); break; }
+                case PacketType.Player: { 
+                        PlayerDto dto = PlayerSerializer.Deserialize(data);
+                        sendPlayerMoneyUpdate(dto);
+                        break; }
 
                 //case player action
                 case PacketType.PlayerAction: { PlayerCommandDto dto = PlayerCommandSerializer.Deserialize(data); break; }
@@ -250,6 +254,23 @@ namespace Client.Networking
         {
             // send card dto
             DealerCardUpdate?.Invoke(cardDto);
+        }
+
+        public void sendPlayerMoneyUpdate(PlayerDto player)
+        {
+            if (player == null)
+            {
+                Debug.WriteLine("Player Dto Was Empty");
+                return;
+            }
+
+            if (player.Balance >= 0)
+            {
+                Debug.WriteLine("sending player balance to dispatcher");
+            // send player money to UI
+            PlayerMoneyUpdate?.Invoke(player.Balance);
+            }
+
         }
     }
 }
