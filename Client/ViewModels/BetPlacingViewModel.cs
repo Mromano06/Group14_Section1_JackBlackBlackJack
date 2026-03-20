@@ -3,8 +3,10 @@ using Client.Networking;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Diagnostics;
 using System.Text;
 using System.Windows.Input;
+using System.Windows.Threading;
 
 // Matthew Romano - March 12th, 2026 - BetPlacingViewModel implementation
 // Hnadles the logic of the bet placing view model
@@ -27,6 +29,7 @@ namespace Client.ViewModels
         {
             _client = client;
             _showGame = showGame;
+            _client.PlayerMoneyUpdate += UpdatePlayerMoney;
             IncreaseBetCommand = new CommandRelay(IncBet);
             DecreaseBetCommand = new CommandRelay(DecBet);
             MaxBetCommand = new CommandRelay(MaxBet);
@@ -78,9 +81,20 @@ namespace Client.ViewModels
 
         }
 
+        private void UpdatePlayerMoney(double amount)
+        {
+            Debug.WriteLine("updating the player's money");
+            PlayerMoney = amount;
+        }
+
         private void GetPlayerMoney(double playerMoney)
         {
             PlayerMoney = playerMoney;
+        }
+
+        public void Cleanup()
+        {
+            _client.PlayerMoneyUpdate -= UpdatePlayerMoney;
         }
     }
 }

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Jables_Protocol.DTOs;
+using System;
 using System.Collections.Generic;
 using System.Text;
 
@@ -27,9 +28,13 @@ namespace Client.ViewModels
         public string BackImagePath => $"/Assets/BackOfCard.png";
         public string CardImagePath => $"/Assets/Cards/{CardCode}";
 
-        public CardViewModel(string cardCode)
+        public CardViewModel(CardDto cardDto)
         {
-            _cardCode = cardCode;
+            char code = cardDto.Rank;
+            code += cardDto.Suit;
+            string codeString = code.ToString();
+
+            _cardCode = codeString;
         }
 
     }
