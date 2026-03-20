@@ -6,7 +6,14 @@
         xmlns:local="clr-namespace:Server"
         mc:Ignorable="d"
         Title="MainWindow" Height="450" Width="800">
+
     <Grid>
-        <ListBox x:Name="LogListBox"/>
+        <Canvas Background="White">
+            <Image Source="/Assets/JBLogger.png" Width="546" Height="467" Stretch="Uniform" Canvas.Left="127" Canvas.Top="-16" Opacity="0.4"/>
+            <Rectangle Width="800" Height="27" Fill="White" HorizontalAlignment="Left" VerticalAlignment="Center" Stroke="Black"/>
+            <TextBlock Name="Instructions" FontSize="14" Text="Server Logs - Jack Black Blackjack" Canvas.Left="297" 
+                       Canvas.Top="4" HorizontalAlignment="Left" VerticalAlignment="Center" RenderTransformOrigin="0.495,0.604" ></TextBlock>
+            <ListBox x:Name="LogListBox" Margin="0, 27, 0, 0" HorizontalAlignment="Center"/>
+        </Canvas>
     </Grid>
 </Window>

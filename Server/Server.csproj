@@ -11,7 +11,14 @@
   <ItemGroup>
     <ProjectReference Include="..\GameLogic\GameLogic.csproj" />
     <ProjectReference Include="..\Jables_Protocol\Jables_Protocol.csproj" />
+    <None Remove="Assets\JBLogger.png" />
     <None Remove="MainMenu.jpg" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Resource Include="Assets\JBLogger.png">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Resource>
   </ItemGroup>
 
 </Project>
