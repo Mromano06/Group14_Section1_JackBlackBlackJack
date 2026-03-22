@@ -32,6 +32,7 @@ namespace Server.GameControl
         // serializers
         private readonly GameUpdateSerializer _gameUpdateSerializer = new GameUpdateSerializer();
         private readonly PlayerCommandSerializer _commandSerializer = new PlayerCommandSerializer();
+        private readonly PlayerSerializer _playerSerializer = new PlayerSerializer();
         private readonly CardSerializer _cardSerializer = new CardSerializer();
         private readonly Action<string> _OnLog;
 
@@ -46,6 +47,21 @@ namespace Server.GameControl
             // Add player to game
             _player = new Player("Brodie Arkell", 1000);
             _game.AddPlayer(_player);
+
+            PlayerDto playerDto = new PlayerDto();
+            playerDto.Name = _player.Name;
+            playerDto.CardCount = 0;
+            playerDto.Hand = null;
+            playerDto.CurrentBet = 0;
+            playerDto.HasDoubled = false;
+            playerDto.HasInsured = false;
+            playerDto.ActionCount = 0;
+            playerDto.Balance = 1000;
+
+            byte[] buffer = _playerSerializer.Serialize(playerDto);
+
+            _OnLog("Send Player Initialization");
+            _connection.Send(buffer);
 
             ///TODO: once we have a game loop add whatever is needed for Game Manager here
         }
