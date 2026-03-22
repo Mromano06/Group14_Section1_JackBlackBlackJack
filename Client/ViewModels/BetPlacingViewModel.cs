@@ -42,8 +42,10 @@ namespace Client.ViewModels
             set
             {
                 if (value <= _playerMoney && value >= 0)
+                {
                     _currentBet = value;
-                OnPropertyChanged();
+                    OnPropertyChanged();
+                }
             }
         }
 
@@ -54,6 +56,7 @@ namespace Client.ViewModels
             set
             {
                 _playerMoney = value;
+                OnPropertyChanged();
             }
         }
 
@@ -84,13 +87,11 @@ namespace Client.ViewModels
         private void UpdatePlayerMoney(double amount)
         {
             Debug.WriteLine("updating the player's money");
-            PlayerMoney = amount;
-            OnPropertyChanged();
-        }
 
-        private void GetPlayerMoney(double playerMoney)
-        {
-            PlayerMoney = playerMoney;
+            if (App.Current.Dispatcher.CheckAccess())
+                PlayerMoney = amount;
+            else
+                App.Current.Dispatcher.Invoke(() => PlayerMoney = amount);
         }
 
         public void Cleanup()
