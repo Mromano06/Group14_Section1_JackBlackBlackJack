@@ -67,10 +67,12 @@ namespace Jables_Protocol.Serializers
 
             // player hand - can handle a max of
             dto.CardCount = br.ReadInt32();
+
             //byte[] byteHand = br.ReadBytes(2 * dto.CardCount);
             //var handDto = new HandSerializer().Deserialize(byteHand);
             //dto.Hand = handDto;
-            if (dto.CardCount >= 0)
+            dto.Hand = new List<CardDto>(); // Initialized before we attempt to use it
+            if (dto.CardCount > 0)
             {
                 for (int i = 0; i < dto.CardCount; i++)
                 {

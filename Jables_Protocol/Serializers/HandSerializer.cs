@@ -34,8 +34,7 @@ namespace Jables_Protocol.Serializers
             var handDto = new HandDto { Cards = new List<CardDto>() };
             handDto.Count = br.ReadInt32();
 
-            // I think this is going to cause some problems
-            if (ms.Length == 0 || handDto.Count == 0) // because technically, it's possible to have an empty hand.
+            if (handDto.Count == 0) // because technically, it's possible to have an empty hand.
                 return handDto; // Return an empty hand if there are no bytes
 
             while (ms.Position < ms.Length)
@@ -47,6 +46,5 @@ namespace Jables_Protocol.Serializers
 
             return handDto;
         }
-
     }
 }

@@ -41,29 +41,15 @@ namespace Server.GameControl
             _connection = connection;
             _OnLog = OnLog;
 
+            Debug.WriteLine("Game Session created for Client");
+            _OnLog("Game Session Created for Client");
+
             // initialize the new game
             _game = new Game(5, new Shoe(3));
 
             // Add player to game
             _player = new Player("Brodie Arkell", 1000);
             _game.AddPlayer(_player);
-
-            PlayerDto playerDto = new PlayerDto();
-            playerDto.Name = _player.Name;
-            playerDto.CardCount = 0;
-            playerDto.Hand = null;
-            playerDto.CurrentBet = 0;
-            playerDto.HasDoubled = false;
-            playerDto.HasInsured = false;
-            playerDto.ActionCount = 0;
-            playerDto.Balance = 1000;
-
-            byte[] buffer = _playerSerializer.Serialize(playerDto);
-
-            _OnLog("Send Player Initialization");
-            _connection.Send(buffer);
-
-            ///TODO: once we have a game loop add whatever is needed for Game Manager here
         }
 
         // this is the callback function that will run when message received from client
