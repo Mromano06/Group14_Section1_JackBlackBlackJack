@@ -11,7 +11,7 @@
                     Stretch="Fill" />
             </Grid.Background>
             <Canvas Background="Transparent">
-                <Rectangle Width="110" Height="37" Fill="White" HorizontalAlignment="Center" VerticalAlignment="Center" Stroke="Black" StrokeThickness="2" />
+                <Rectangle Width="130" Height="37" Fill="White" HorizontalAlignment="Left" VerticalAlignment="Center" Stroke="Black" StrokeThickness="2" />
                 <Button Name="IncrementBet" Width="40" Height="40" Canvas.Left="600" Command="{Binding IncreaseBetCommand}" 
                     Canvas.Top="455" FontSize="28" FontWeight="Bold" Content="+" HorizontalContentAlignment="Center"
                         VerticalContentAlignment="Center" HorizontalAlignment="Center" VerticalAlignment="Top"></Button>

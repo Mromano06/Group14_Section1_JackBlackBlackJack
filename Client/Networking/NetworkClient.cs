@@ -101,27 +101,27 @@ namespace Client.Networking
                 //case SharedModels.Core.PacketType.Error: // Not sure what to do with Error yet.
                 // Player
                 case PacketType.Player: { 
-                        PlayerDto dto = PlayerSerializer.Deserialize(data);
+                        PlayerDto dto = PlayerSerializer.Deserialize(packet.Payload);
                         sendPlayerMoneyUpdate(dto);
                         break; }
 
                 //case player action
-                case PacketType.PlayerAction: { PlayerCommandDto dto = PlayerCommandSerializer.Deserialize(data); break; }
+                case PacketType.PlayerAction: { PlayerCommandDto dto = PlayerCommandSerializer.Deserialize(packet.Payload); break; }
 
                 //case state update
-                case PacketType.StateUpdate: { GameStateDto dto = GameStateSerializer.Deserialize(data); break; }
+                case PacketType.StateUpdate: { GameStateDto dto = GameStateSerializer.Deserialize(packet.Payload); break; }
 
                 // GameUpdate
                 case PacketType.GameUpdate: { 
-                        GameUpdateDto dto = GameUpdateSerializer.Deserialize(data);
+                        GameUpdateDto dto = GameUpdateSerializer.Deserialize(packet.Payload);
                         handleGameUpdateDto(dto); 
                         break; }
 
                 //Card Dealt
-                case PacketType.CardDealt: { CardDto dto = CardSerializer.Deserialize(data); break; }
+                case PacketType.CardDealt: { CardDto dto = CardSerializer.Deserialize(packet.Payload); break; }
 
                 //Hand Dealt
-                case PacketType.HandDealt: { HandDto dto = HandSerializer.Deserialize(data); break; }
+                case PacketType.HandDealt: { HandDto dto = HandSerializer.Deserialize(packet.Payload); break; }
 
                 //Join request
             }

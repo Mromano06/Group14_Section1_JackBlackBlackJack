@@ -8,7 +8,6 @@ using System.Security.Cryptography.X509Certificates;
 // Sam Pelot
 // WIP
 
-
 namespace Jables_Protocol
 {
 
@@ -39,14 +38,13 @@ namespace Jables_Protocol
         {
             using var ms = new MemoryStream(data);
             using var br = new BinaryReader(ms);
-
+            
             PacketType type = (PacketType)br.ReadByte();
+
             int payloadSize = br.ReadInt32();
             byte[] payload = br.ReadBytes(payloadSize);
 
             return new Packet { Type = type, PayloadSize = payloadSize, Payload = payload };
         }
-
     }
-
 }
