@@ -267,8 +267,12 @@ namespace Client.Networking
             if (player.Balance >= 0)
             {
                 Debug.WriteLine("sending player balance to dispatcher");
-            // send player money to UI
-            PlayerMoneyUpdate?.Invoke(player.Balance);
+                // send player money to UI
+                App.Current.Dispatcher.Invoke(() =>
+                {
+                     PlayerMoneyUpdate?.Invoke(player.Balance);
+                });
+
             }
 
         }
