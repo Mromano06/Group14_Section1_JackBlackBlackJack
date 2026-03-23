@@ -85,12 +85,7 @@ namespace Client.ViewModels
         {
             Debug.WriteLine($"updating the player's money to: {amount}");
             PlayerMoney = amount;
-            OnPropertyChanged();
-        }
-
-        private void GetPlayerMoney(double playerMoney)
-        {
-            PlayerMoney = playerMoney;
+            OnPropertyChanged(nameof(PlayerMoney));
         }
 
         public void Cleanup()
