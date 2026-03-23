@@ -22,7 +22,7 @@ namespace GameLogic.Core {
 
         // Game settings
         public double MinBet { get; set; }
-        public int MaxPlayers { get; set; } = 5;
+        public int MaxPlayers { get; set; } = 1;
         public double PayoutRatio { get; set; } = 2.0;
         public double InsurancePayoutRatio { get; set; } = 1.5;
 
