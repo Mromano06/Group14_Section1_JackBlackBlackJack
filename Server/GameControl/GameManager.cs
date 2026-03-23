@@ -45,7 +45,7 @@ namespace Server.GameControl
             _OnLog("Game Session Created for Client");
 
             // initialize the new game
-            _game = new Game(5, new Shoe(3));
+            _game = new Game(10, new Shoe(3));
 
             // Add player to game
             _player = new Player("Brodie Arkell", 1000);
@@ -230,8 +230,8 @@ namespace Server.GameControl
 
         private void SendGameUpdate()
         {
-            List<CardDto> cards = null;
-            List<CardDto> dealerCards = null;
+            List<CardDto> cards = new List<CardDto>();
+            List<CardDto> dealerCards = new List<CardDto>();
 
             foreach (Card card in _player.Hand.Cards) {
                 CardDto cardDto = new CardDto() {
@@ -240,7 +240,7 @@ namespace Server.GameControl
                 };
 
                 cards.Add(cardDto);
-            }
+            }/// Object reference not set to an instance on an object
 
             foreach (Card card in _game.Dealer.Hand.Cards) {
                 CardDto cardDto = new CardDto() {
