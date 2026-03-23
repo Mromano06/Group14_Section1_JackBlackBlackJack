@@ -12,8 +12,8 @@ namespace Jables_Protocol.Serializers
             using var ms = new MemoryStream();
             using var bw = new BinaryWriter(ms);
 
-            bw.Write(dto.Rank);
-            bw.Write(dto.Suit);
+            bw.Write((byte)dto.Rank);
+            bw.Write((byte)dto.Suit);
 
             return ms.ToArray();
         }
@@ -22,8 +22,8 @@ namespace Jables_Protocol.Serializers
         {
             using var ms = new MemoryStream(data);
             using var br = new BinaryReader(ms);
-            char rank = br.ReadChar();
-            char suit = br.ReadChar();
+            char rank = (char)br.ReadByte();
+            char suit = (char)br.ReadByte();
             return new CardDto { Rank = rank, Suit = suit };
         }
     }

@@ -4,8 +4,6 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Text;
 
-// TODO: use BinaryWriter.Write(String) so that the deserializer uses BinaryReader.ReadString();
-
 namespace Jables_Protocol.Serializers
 {
     public class PlayerSerializer : ISerializer<DTOs.PlayerDto>
@@ -16,10 +14,9 @@ namespace Jables_Protocol.Serializers
             using var bw = new BinaryWriter(ms);
 
             // player name
-            if (dto.Name == null || dto.Name.Length == 0) 
-                bw.Write(string.Empty); // not sure we need this    
-            else
-                bw.Write(dto.Name);
+            byte[] nameBytes = Encoding.UTF8.GetBytes(dto.Name ?? string.Empty);
+            bw.Write(nameBytes);
+            bw.Write((byte)0x00); // adding a null terminator 
 
             // player hand
 
@@ -36,7 +33,6 @@ namespace Jables_Protocol.Serializers
                     bw.Write(cardBytes);        // Write the card bytes
                 }
             }
-                
 
             // player current bet
             bw.Write(dto.CurrentBet);
@@ -61,9 +57,16 @@ namespace Jables_Protocol.Serializers
             using var ms = new MemoryStream(data);
             using var br = new BinaryReader(ms);
             var dto = new PlayerDto();
-            
-            // player name
-            dto.Name = br.ReadString();
+
+            // player name (Very scuffed)
+            var nameBytes = new List<byte>();
+            byte b;
+
+            while ((b = br.ReadByte()) != 0) {
+                nameBytes.Add(b);
+            }
+
+            dto.Name = Encoding.UTF8.GetString(nameBytes.ToArray());
 
             // player hand - can handle a max of
             dto.CardCount = br.ReadInt32();

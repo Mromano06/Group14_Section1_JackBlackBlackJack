@@ -7,7 +7,7 @@ namespace Jables_Protocol.DTOs
 {
     public class PlayerDto
     {
-        public string? Name { get; set; }   // Made it nullable
+        public string Name { get; set; }
         public int CardCount { get; set; }
         public List<CardDto>? Hand { get; set; }    // Made it nullable
         public double CurrentBet { get; set; }
