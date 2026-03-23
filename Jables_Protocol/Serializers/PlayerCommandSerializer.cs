@@ -30,7 +30,7 @@ namespace Jables_Protocol.Serializers
             using var br = new BinaryReader(ms);
 
             byte packetType = br.ReadByte();
-            int betAmount = br.ReadInt32();
+            double betAmount = br.ReadDouble();
 
             return new PlayerCommandDto { Action = (PlayerAction)packetType, BetAmount = betAmount };
         }
