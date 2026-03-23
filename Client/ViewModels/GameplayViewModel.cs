@@ -20,7 +20,7 @@ namespace Client.ViewModels
     {
         private readonly NetworkClient _client;
         private readonly double _betAmount;
-        private readonly double _playerMoney;
+        private double _playerMoney;
         private bool _isFirstCard;
         public ObservableCollection<CardViewModel> DealtPlayerCards { get; } =
             new ObservableCollection<CardViewModel>();
@@ -36,6 +36,8 @@ namespace Client.ViewModels
             _client = client;
             _client.PlayerCardUpdate += DealCardToPlayer; // subscribe to dealing player cards
             _client.DealerCardUpdate += DealCardToDealer; // subscribe to dealing dealer cards
+            _client.PlayerMoneyUpdate += UpdatePlayerMoney;
+            _client.PlayerBetUpdate += UpdateBetAmount;
             HitCommand = new CommandRelay(Hit);
             StandCommand = new CommandRelay(Stand);
             DoubleDownCommand = new CommandRelay(DoubleDown);
@@ -68,6 +70,10 @@ namespace Client.ViewModels
         public double PlayerMoney
         {
             get => _playerMoney;
+            set
+            {
+                _playerMoney = value;
+            }
         }
 
         public bool IsFirstCard
@@ -82,20 +88,43 @@ namespace Client.ViewModels
             }
         }
 
-        
+        private void DealInitalHand()
+        {
+            // DealCardToPlayer()
+            // DealCardToDealer()
+            // DealCardToPlayer()
+            // DealCardToDealer()
+
+        }
+
+        private void UpdatePlayerMoney(double amount)
+        {
+            Debug.WriteLine($"updating the player's money to: {amount}");
+            PlayerMoney = amount;
+            OnPropertyChanged(nameof(PlayerMoney));
+        }
+
+        private void UpdateBetAmount(double amount)
+        {
+            Debug.WriteLine($"updating the player's money to: {amount}");
+            PlayerMoney = amount;
+            OnPropertyChanged(nameof(BetAmount));
+        }
+
         private void Hit()
         {
-
+            // DealCardToPlayer()
         }
 
         private void Stand()
         {
-
+            // End turn
         }
 
         private void DoubleDown()
         {
-
+            // DealCardToPlayer()
+            // End turn
         }
 
         public void Cleanup()
