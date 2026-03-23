@@ -31,6 +31,7 @@ namespace Client.Networking
         public event Action<CardDto> PlayerCardUpdate;
         public event Action<CardDto> DealerCardUpdate;
         public event Action<double> PlayerMoneyUpdate;
+        public event Action<double> PlayerBetUpdate;
 
         // Queue to hold outgoing commands/messages (thread-safe)
         // will change from string to command object once command object is implemented
@@ -269,6 +270,23 @@ namespace Client.Networking
                 Debug.WriteLine("sending player balance to dispatcher");
             // send player money to UI
             PlayerMoneyUpdate?.Invoke(player.Balance);
+            }
+
+        }
+
+        public void sendPlayerBetUpdate(PlayerDto player)
+        {
+            if (player == null)
+            {
+                Debug.WriteLine("Player Dto Was Empty");
+                return;
+            }
+
+            if (player.Balance >= 0)
+            {
+                Debug.WriteLine("sending player bet amount to dispatcher");
+                // send player bet to UI
+                PlayerBetUpdate?.Invoke(player.CurrentBet);
             }
 
         }
