@@ -16,10 +16,9 @@ namespace Jables_Protocol.Serializers
             // player name
             byte[] nameBytes = Encoding.UTF8.GetBytes(dto.Name ?? string.Empty);
             bw.Write(nameBytes);
-            bw.Write((byte)0x00); // adding a null terminator 
+            bw.Write((byte)0x00); // adding a null terminator
 
             // player hand
-
             if (dto.Hand == null || dto.CardCount == 0)
             {
                 bw.Write(dto.CardCount);
