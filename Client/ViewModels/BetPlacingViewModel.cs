@@ -1,5 +1,9 @@
 ﻿using Client.Commands;
 using Client.Networking;
+using Jables_Protocol;
+using Jables_Protocol.DTOs;
+using Jables_Protocol.Serializers;
+using SharedModels.Core;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -19,6 +23,7 @@ namespace Client.ViewModels
         private readonly Action<double> _showGame;
         private double _playerMoney;
         private double _currentBet;
+        private readonly PlayerCommandSerializer _commandSerializer = new PlayerCommandSerializer();
 
         public ICommand IncreaseBetCommand { get; }
         public ICommand DecreaseBetCommand { get; }
@@ -76,6 +81,22 @@ namespace Client.ViewModels
 
         private void Confirm()
         {
+            PlayerCommandDto cmd = new PlayerCommandDto();
+            cmd.Action = PlayerAction.Bet;
+            cmd.BetAmount = CurrentBet;
+
+            byte[] commandBytes = _commandSerializer.Serialize(cmd);
+
+            Packet packetToSend = new Packet
+            {
+                Type = PacketType.PlayerAction,
+                PayloadSize = commandBytes.Length,
+                Payload = commandBytes
+            };
+
+            byte[] bytesToSend = packetToSend.ToBytes();
+
+            _client.Send(bytesToSend);
             _showGame?.Invoke(CurrentBet);
 
         }
