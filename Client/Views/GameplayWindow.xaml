@@ -27,21 +27,26 @@
                 <TextBlock Name="Balance" FontSize="14" Text="{Binding PlayerMoney, StringFormat=Balance: ${0}}" Canvas.Left="16" Canvas.Top="9" HorizontalAlignment="Left" VerticalAlignment="Center"/>
                 <TextBlock Name="Bet" FontSize="14" Text="{Binding BetAmount, StringFormat=Current Bet: ${0}}" Canvas.Left="120" Canvas.Top="9" HorizontalAlignment="Left" VerticalAlignment="Center"/>
 
-                <ItemsControl ItemsSource="{Binding DealtDealerCards}" Width="192" Height="306" Margin="4">
+                <ItemsControl ItemsSource="{Binding DealtDealerCards}" Canvas.Left="400"
+              Canvas.Top="-21"
+              Width="500"
+              Height="306">
                     <ItemsControl.ItemsPanel>
                         <ItemsPanelTemplate>
                             <StackPanel Orientation="Horizontal" />
                         </ItemsPanelTemplate>
                     </ItemsControl.ItemsPanel>
-                    
-                        <ItemsControl.ItemTemplate>
-                            <DataTemplate>
-                            <Image Source="{Binding CardImagePath}" Width="192" Height="306" Margin="4"/>
-                            </DataTemplate>
-                        </ItemsControl.ItemTemplate>
-                    </ItemsControl>
 
-                <ItemsControl ItemsSource="{Binding DealtPlayerCards}" Width="192" Height="306" Margin="4">
+                    <ItemsControl.ItemTemplate>
+                        <DataTemplate>
+                            <Image Source="{Binding CardImagePath}" Width="192" Height="306" Margin="4"/>
+                        </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+                </ItemsControl>
+
+                <ItemsControl ItemsSource="{Binding DealtPlayerCards}" Margin="4" Canvas.Left="430"
+              Canvas.Top="70"
+              Width="500">
                     <ItemsControl.ItemsPanel>
                         <ItemsPanelTemplate>
                             <StackPanel Orientation="Horizontal" />
