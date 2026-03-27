@@ -9,6 +9,7 @@ namespace Jables_Protocol.DTOs
     public class GameUpdateDto
     {
         public double BetSize {  get; set; }
+        public double PlayerBalance { get; set; }
         public int CardCount { get; set; }
         public List<CardDto>? Cards { get; set; }
         public GameStateEnum GameState { get; set; }
