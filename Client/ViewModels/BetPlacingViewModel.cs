@@ -11,6 +11,7 @@ using System.Diagnostics;
 using System.Text;
 using System.Windows.Input;
 using System.Windows.Threading;
+using System.Windows;
 
 // Matthew Romano - March 12th, 2026 - BetPlacingViewModel implementation
 // Hnadles the logic of the bet placing view model
@@ -103,9 +104,12 @@ namespace Client.ViewModels
 
         private void UpdatePlayerMoney(double amount)
         {
-            Debug.WriteLine($"updating the player's money to: {amount}");
-            PlayerMoney = amount;
-            OnPropertyChanged(nameof(PlayerMoney));
+            Application.Current.Dispatcher.BeginInvoke(new Action(() =>
+            {
+                Debug.WriteLine($"updating the player's money to: {amount}");
+                PlayerMoney = amount;
+                OnPropertyChanged(nameof(PlayerMoney));
+            }));
         }
 
         public void Cleanup()

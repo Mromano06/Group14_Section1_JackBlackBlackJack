@@ -16,25 +16,18 @@ namespace Client.ViewModels
             {
                 _cardCode = value;
 
-                if (_cardCode == "BACK")
-                    OnPropertyChanged();
-                    OnPropertyChanged(nameof(BackImagePath));
-
-                OnPropertyChanged();
+                OnPropertyChanged(nameof(CardCode));
                 OnPropertyChanged(nameof(CardImagePath));
+                OnPropertyChanged(nameof(BackImagePath));
             }
         }
 
         public string BackImagePath => $"/Assets/BackOfCard.png";
-        public string CardImagePath => $"/Assets/Cards/{CardCode}";
+        public string CardImagePath => $"/Assets/Cards/{CardCode}.png";
 
         public CardViewModel(CardDto cardDto)
         {
-            char code = cardDto.Rank;
-            code += cardDto.Suit;
-            string codeString = code.ToString();
-
-            _cardCode = codeString;
+            CardCode = cardDto?.Rank.ToString() + cardDto?.Suit.ToString();
         }
 
     }

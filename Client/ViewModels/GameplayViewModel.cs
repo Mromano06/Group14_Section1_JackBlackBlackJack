@@ -8,18 +8,20 @@ using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.Text;
 using System.Windows.Input;
+using System.Windows.Threading;
+using System.Windows;
+
 
 // Matthew Romano & Brodie Arkell - March 12th, 2026 - GamplayViewModel Implementation
 // The actual gameplay loop/aspects
 
 // TODO: Send cards to display them
-// TODO: Add functionality to each ICommand sister Function
 namespace Client.ViewModels
 {
     public class GameplayViewModel : BaseModel
     {
         private readonly NetworkClient _client;
-        private readonly double _betAmount;
+        private double _betAmount;
         private double _playerMoney;
         private bool _isFirstCard;
         public ObservableCollection<CardViewModel> DealtPlayerCards { get; } =
@@ -46,25 +48,37 @@ namespace Client.ViewModels
 
         public void DealCardToPlayer(CardDto cardDto)
         {
-            if (IsFirstCard)
+            Application.Current.Dispatcher.BeginInvoke(new Action(() =>
             {
-                //DealtPlayerCards.Add(new CardViewModel("BACK"));
-                IsFirstCard = false;
-            }
+                if (IsFirstCard)
+                {
+                    //DealtPlayerCards.Add(new CardViewModel("BACK"));
+                    IsFirstCard = false;
+                }
 
-            DealtPlayerCards.Add(new CardViewModel(cardDto));
+                Debug.WriteLine($"Attempting to deal card to player {cardDto.Rank}{cardDto.Suit}");
+                DealtPlayerCards.Add(new CardViewModel(cardDto));
+            }));
+
         }
 
         public void DealCardToDealer(CardDto cardDto)
         {
-            DealtDealerCards.Add(new CardViewModel(cardDto));
+            Application.Current.Dispatcher.BeginInvoke(new Action(() =>
+            {
+                Debug.WriteLine($"Attempting to deal card to dealer {cardDto.Rank}{cardDto.Suit}");
+                DealtDealerCards.Add(new CardViewModel(cardDto));
+            }));
         }
 
         // Readonly so no setters
         public double BetAmount
         {
             get => _betAmount;
-
+            set
+            {
+                _betAmount = value;
+            }
         }
 
         public double PlayerMoney
@@ -88,6 +102,7 @@ namespace Client.ViewModels
             }
         }
 
+        // TODO: Send the inital hands for the dealer and player
         private void DealInitalHand()
         {
             // DealCardToPlayer()
@@ -99,28 +114,38 @@ namespace Client.ViewModels
 
         private void UpdatePlayerMoney(double amount)
         {
-            Debug.WriteLine($"updating the player's money to: {amount}");
-            PlayerMoney = amount;
-            OnPropertyChanged(nameof(PlayerMoney));
+            Application.Current.Dispatcher.BeginInvoke(new Action(() =>
+            {
+                Debug.WriteLine($"updating the player's money to: {amount}");
+                PlayerMoney = amount;
+                OnPropertyChanged(nameof(PlayerMoney));
+            }));
         }
 
         private void UpdateBetAmount(double amount)
         {
-            Debug.WriteLine($"updating the player's money to: {amount}");
-            PlayerMoney = amount;
-            OnPropertyChanged(nameof(BetAmount));
+            Application.Current.Dispatcher.BeginInvoke(new Action(() =>
+            {
+                Debug.WriteLine($"updating the player's money to: {amount}");
+                BetAmount = amount;
+                OnPropertyChanged(nameof(BetAmount));
+            }));
         }
 
+        // TODO: Have the dispatcher send the card number to this function
         private void Hit()
         {
             // DealCardToPlayer()
         }
 
+        // TODO: Have the dispatcher send an end round message to the server
         private void Stand()
         {
             // End turn
         }
 
+        // TODO: Have the dispatcher send the card number to this function
+        // TODO: Have the dispatcher send an end round message to the server
         private void DoubleDown()
         {
             // DealCardToPlayer()

@@ -27,21 +27,27 @@
                 <TextBlock Name="Balance" FontSize="14" Text="{Binding PlayerMoney, StringFormat=Balance: ${0}}" Canvas.Left="16" Canvas.Top="9" HorizontalAlignment="Left" VerticalAlignment="Center"/>
                 <TextBlock Name="Bet" FontSize="14" Text="{Binding BetAmount, StringFormat=Current Bet: ${0}}" Canvas.Left="120" Canvas.Top="9" HorizontalAlignment="Left" VerticalAlignment="Center"/>
 
-                <ItemsControl ItemsSource="{Binding DealtDealerCards}" Width="192" Height="306" Margin="4">
+                <ItemsControl ItemsSource="{Binding DealtDealerCards}" Canvas.Left="526"
+              Canvas.Top="51"
+              Width="248"
+              Height="137">
                     <ItemsControl.ItemsPanel>
                         <ItemsPanelTemplate>
                             <StackPanel Orientation="Horizontal" />
                         </ItemsPanelTemplate>
                     </ItemsControl.ItemsPanel>
-                    
-                        <ItemsControl.ItemTemplate>
-                            <DataTemplate>
-                            <Image Source="{Binding CardImagePath}" Width="192" Height="306" Margin="4"/>
-                            </DataTemplate>
-                        </ItemsControl.ItemTemplate>
-                    </ItemsControl>
 
-                <ItemsControl ItemsSource="{Binding DealtPlayerCards}" Width="192" Height="306" Margin="4">
+                    <ItemsControl.ItemTemplate>
+                        <DataTemplate>
+                            <Image Source="{Binding CardImagePath}" Width="192" Height="306" Margin="4"/>
+                        </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+                </ItemsControl>
+
+                <ItemsControl ItemsSource="{Binding DealtPlayerCards}" Canvas.Left="525"
+              Canvas.Top="528"
+              Width="248"
+              Height="137" HorizontalAlignment="Center" VerticalAlignment="Top">
                     <ItemsControl.ItemsPanel>
                         <ItemsPanelTemplate>
                             <StackPanel Orientation="Horizontal" />
