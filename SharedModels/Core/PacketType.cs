@@ -9,6 +9,7 @@
         GameUpdate,
         CardDealt,
         HandDealt,
-        JoinRequest
+        JoinRequest,
+        EndGame
     }
 }
