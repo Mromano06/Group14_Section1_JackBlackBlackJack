@@ -18,6 +18,8 @@ namespace Jables_Protocol.Serializers
 
             bw.Write(dto.PlayerBalance);
 
+            bw.Write(dto.IsEndRound);
+
             // Card count & card list
             if (dto.Cards == null || dto.CardCount == 0)
             {
@@ -66,6 +68,7 @@ namespace Jables_Protocol.Serializers
 
             dto.BetSize = br.ReadDouble();
             dto.PlayerBalance = br.ReadDouble();
+            dto.IsEndRound = br.ReadBoolean();
             dto.CardCount = br.ReadInt32();
             //byte[] byteHand = br.ReadBytes(2 * dto.CardCount);
             //var handDto = new HandSerializer().Deserialize(byteHand);

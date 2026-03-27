@@ -118,6 +118,7 @@ namespace Server.GameControl
         /// (Side note: they already move the player forward but they gotta tell the server with some sort of function)
         private void ExecuteBet(double betAmount)
         {
+            bool IsEndRound = false;
             Bet action = new Bet(_player.Name, betAmount, _game);
             ActionResult actionResult = action.Execute(_game);
 
@@ -134,11 +135,12 @@ namespace Server.GameControl
                 DealerLogic.DealInitialCards(_game);
             }
 
-            SendGameUpdate();
+            SendGameUpdate(IsEndRound);
         }
 
         private void ExecuteHit()
         {
+            bool IsEndRound = false;
             Hit action = new Hit(_player.Name);
             ActionResult actionResult = action.Execute(_game);
 
@@ -157,15 +159,20 @@ namespace Server.GameControl
                 if (_player.Name == _game.Players[_game.MaxPlayers - 1].Name) {
                     DealerLogic.PlayTurn(_game);
 
-                    _game.EndRound();
+                    IsEndRound = true;
                 }
             }
 
-            SendGameUpdate();
+            SendGameUpdate(IsEndRound);
+
+            if (IsEndRound) {
+                _game.EndRound();
+            }
         }
 
         private void ExecuteStand()
         {
+            bool IsEndRound = true;
             Stand action = new Stand(_player.Name);
             ActionResult actionResult = action.Execute(_game);
 
@@ -181,11 +188,16 @@ namespace Server.GameControl
                 DealerLogic.PlayTurn(_game);
             }
 
-            SendGameUpdate();
+            SendGameUpdate(IsEndRound);
+
+            if (IsEndRound) {
+                _game.EndRound();
+            }
         }
 
         private void ExecuteDouble()
         {
+            bool IsEndRound = false;
             Double action = new Double(_player.Name);
             ActionResult actionResult = action.Execute(_game);
 
@@ -204,11 +216,15 @@ namespace Server.GameControl
                 if (_player.Name == _game.Players[_game.MaxPlayers - 1].Name) {
                     DealerLogic.PlayTurn(_game);
 
-                    _game.EndRound();
+                    IsEndRound = true;
                 }
             }
 
-            SendGameUpdate();
+            SendGameUpdate(IsEndRound);
+
+            if (IsEndRound) {
+                _game.EndRound();
+            }
         }
 
         private void ExecuteInsure()
@@ -223,10 +239,12 @@ namespace Server.GameControl
 
             Debug.WriteLine($"Insure: {_player.Name}");
 
-            SendGameUpdate();
+            bool IsEndRound = false;
+
+            SendGameUpdate(IsEndRound);
         }
 
-        private void SendGameUpdate()
+        private void SendGameUpdate(bool IsEndRound)
         {
             List<CardDto> cards = new List<CardDto>();
             List<CardDto> dealerCards = new List<CardDto>();
@@ -254,6 +272,8 @@ namespace Server.GameControl
 
                 PlayerBalance = _player.Balance,
 
+                IsEndRound = IsEndRound,
+
                 CardCount = HandHelper.CardCount(_player.Hand),
                 Cards = cards,
 
@@ -278,16 +298,5 @@ namespace Server.GameControl
 
             _connection.Send(packet.ToBytes());
         }
-
-
-        public void HandleMessage(ClientConnection connection, byte[] data)
-        {
-            ///TODO: Create the logic that will manage and change the game based on messages from client
-
-            /// Might lead into another method that would deal with either the game or responding to client (connection.Send(data))
-
-            Debug.WriteLine("test");
-        }
-
     }
 }
