@@ -212,35 +212,36 @@ namespace Client.Networking
 
         public void handleGameUpdateDto(GameUpdateDto gameUpdateDto) {
             // if player cards not null send them to UI
+            
+            
             if (gameUpdateDto.Cards != null) 
             {
-            
-                CardDto cardDto1 = new CardDto();
-                cardDto1.Rank = gameUpdateDto.Cards[0].Rank; // get the first card rank and suit
-                cardDto1.Suit = gameUpdateDto.Cards[0].Suit;
-            
-                CardDto cardDto2 = new CardDto(); // get the second card rank and suit
-                cardDto2.Rank = gameUpdateDto.Cards[1].Rank;
-                cardDto2.Suit = gameUpdateDto.Cards[1].Suit;
+                // send all cards in the update
+                for (int i = 0; i < gameUpdateDto.CardCount; i++)
+                {
 
-                sendPlayerCardUpdate(cardDto1);
-                sendPlayerCardUpdate(cardDto2);
+                    CardDto cardDto = new CardDto();
+                    cardDto.Rank = gameUpdateDto.Cards[i].Rank; // get the first card rank and suit
+                    cardDto.Suit = gameUpdateDto.Cards[i].Suit;
+                    sendPlayerCardUpdate(cardDto);            
+                }
+                
+
                 Debug.WriteLine("Sending player cards to dispatcher");
             }
 
             // if dealer cards not null send them to UI
             if (gameUpdateDto.DealerCards != null)
             {
-                CardDto cardDto1 = new CardDto();
-                cardDto1.Rank = gameUpdateDto.DealerCards[0].Rank; // get the first card rank and suit
-                cardDto1.Suit = gameUpdateDto.DealerCards[0].Suit;
+                // send all cards in the update
+                for (int i = 0; i < gameUpdateDto.DealerCardCount; i++)
+                {
 
-                CardDto cardDto2 = new CardDto(); // get the second card rank and suit
-                cardDto2.Rank = gameUpdateDto.DealerCards[1].Rank;
-                cardDto2.Suit = gameUpdateDto.DealerCards[1].Suit;
-
-                sendDealerCardUpdate(cardDto1);
-                sendDealerCardUpdate(cardDto2);
+                    CardDto cardDto = new CardDto();
+                    cardDto.Rank = gameUpdateDto.DealerCards[i].Rank; // get the first card rank and suit
+                    cardDto.Suit = gameUpdateDto.DealerCards[i].Suit;
+                    sendDealerCardUpdate(cardDto);
+                }
                 Debug.WriteLine("Sending dealer cards to dispatcher");
             }
 
