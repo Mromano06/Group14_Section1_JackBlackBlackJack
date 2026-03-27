@@ -1,18 +1,19 @@
 ﻿using Client.Commands;
 using Client.Networking;
+using Jables_Protocol;
 using Jables_Protocol.DTOs;
+using Jables_Protocol.Serializers;
+using SharedModels.Core;
+using SharedModels.Models;
 using System;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.Text;
+using System.Windows;
 using System.Windows.Input;
 using System.Windows.Threading;
-using System.Windows;
-using SharedModels.Core;
-using Jables_Protocol.Serializers;
-using Jables_Protocol;
 
 
 // Matthew Romano & Brodie Arkell - March 12th, 2026 - GamplayViewModel Implementation
@@ -57,12 +58,6 @@ namespace Client.ViewModels
         {
             Application.Current.Dispatcher.BeginInvoke(new Action(() =>
             {
-                if (IsFirstCard)
-                {
-                    //DealtPlayerCards.Add(new CardViewModel("BACK"));
-                    IsFirstCard = false;
-                }
-
                 Debug.WriteLine($"Attempting to deal card to player {cardDto.Rank}{cardDto.Suit}");
                 DealtPlayerCards.Add(new CardViewModel(cardDto));
             }));
@@ -109,16 +104,6 @@ namespace Client.ViewModels
             }
         }
 
-        // TODO: Send the inital hands for the dealer and player
-        private void DealInitalHand()
-        {
-            // DealCardToPlayer()
-            // DealCardToDealer()
-            // DealCardToPlayer()
-            // DealCardToDealer()
-
-        }
-
         private void UpdatePlayerMoney(double amount)
         {
             Application.Current.Dispatcher.BeginInvoke(new Action(() =>
@@ -139,11 +124,8 @@ namespace Client.ViewModels
             }));
         }
 
-        // TODO: Have the dispatcher send the card number to this function
         private void Hit()
         {
-            // DealCardToPlayer()
-
             PlayerCommandDto playerCommandDto = new PlayerCommandDto();
             playerCommandDto.Action = PlayerAction.Hit;
             playerCommandDto.BetAmount = 0;
@@ -155,13 +137,18 @@ namespace Client.ViewModels
             pkt.PayloadSize = 12;
 
             _client.Send(pkt.ToBytes());
+
+            Application.Current.Dispatcher.BeginInvoke(new Action(() =>
+            {
+                DealtPlayerCards.Clear();
+                DealtDealerCards.Clear();
+                IsFirstCard = true;
+            }));
         }
 
-        // TODO: Have the dispatcher send an end round message to the server
         private void Stand()
         {
             // End turn
-
             PlayerCommandDto playerCommandDto = new PlayerCommandDto();
             playerCommandDto.Action = PlayerAction.Stand;
             playerCommandDto.BetAmount = 0;
@@ -172,13 +159,16 @@ namespace Client.ViewModels
             pkt.Payload = _commandSerializer.Serialize(playerCommandDto);
             pkt.PayloadSize = 12;
             _client.Send(pkt.ToBytes());
+
+            Application.Current.Dispatcher.BeginInvoke(new Action(() =>
+            {
+                DealtPlayerCards.Clear();
+                DealtDealerCards.Clear();
+            }));
         }
 
-        // TODO: Have the dispatcher send the card number to this function
-        // TODO: Have the dispatcher send an end round message to the server
         private void DoubleDown()
         {
-            // DealCardToPlayer()
             // End turn
             PlayerCommandDto playerCommandDto = new PlayerCommandDto();
             playerCommandDto.Action = PlayerAction.Double;
@@ -191,6 +181,12 @@ namespace Client.ViewModels
             pkt.PayloadSize = 12;
 
             _client.Send(pkt.ToBytes());
+
+            Application.Current.Dispatcher.BeginInvoke(new Action(() =>
+            {
+                DealtPlayerCards.Clear();
+                DealtDealerCards.Clear();
+            }));
         }
 
         public void Cleanup()
@@ -198,6 +194,8 @@ namespace Client.ViewModels
             // unsubscribe to events for changing screens
             _client.PlayerCardUpdate -= DealCardToPlayer;
             _client.DealerCardUpdate -= DealCardToDealer;
+            _client.PlayerMoneyUpdate -= UpdatePlayerMoney;
+            _client.PlayerBetUpdate -= UpdateBetAmount;
         }
 
     }

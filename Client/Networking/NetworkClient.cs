@@ -209,7 +209,6 @@ namespace Client.Networking
             client?.Close();
         }
 
-
         public void handleGameUpdateDto(GameUpdateDto gameUpdateDto) {
             // if player cards not null send them to UI
             
@@ -225,8 +224,6 @@ namespace Client.Networking
                     cardDto.Suit = gameUpdateDto.Cards[i].Suit;
                     sendPlayerCardUpdate(cardDto);            
                 }
-                
-
                 Debug.WriteLine("Sending player cards to dispatcher");
             }
 

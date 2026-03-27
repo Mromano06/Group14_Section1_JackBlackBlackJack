@@ -179,8 +179,6 @@ namespace Server.GameControl
             // If its the last player who has now stood then the dealer shall go
             if (_player.Name == _game.Players[_game.MaxPlayers - 1].Name) {
                 DealerLogic.PlayTurn(_game);
-
-                _game.EndRound();
             }
 
             SendGameUpdate();
