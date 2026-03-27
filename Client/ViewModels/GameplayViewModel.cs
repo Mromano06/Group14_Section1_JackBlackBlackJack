@@ -13,7 +13,6 @@ using System.Windows.Input;
 // The actual gameplay loop/aspects
 
 // TODO: Send cards to display them
-// TODO: Add functionality to each ICommand sister Function
 namespace Client.ViewModels
 {
     public class GameplayViewModel : BaseModel
@@ -52,11 +51,14 @@ namespace Client.ViewModels
                 IsFirstCard = false;
             }
 
-            DealtPlayerCards.Add(new CardViewModel(cardDto));
+            Debug.WriteLine($"Attempting to deal card to player {cardDto.Rank}{cardDto.Suit}");
+            DealtPlayerCards.Add(new CardViewModel(cardDto)); 
+
         }
 
         public void DealCardToDealer(CardDto cardDto)
         {
+            Debug.WriteLine($"Attempting to deal card to dealer {cardDto.Rank}{cardDto.Suit}");
             DealtDealerCards.Add(new CardViewModel(cardDto));
         }
 
@@ -88,6 +90,7 @@ namespace Client.ViewModels
             }
         }
 
+        // TODO: Send the inital hands for the dealer and player
         private void DealInitalHand()
         {
             // DealCardToPlayer()
@@ -111,16 +114,20 @@ namespace Client.ViewModels
             OnPropertyChanged(nameof(BetAmount));
         }
 
+        // TODO: Have the dispatcher send the card number to this function
         private void Hit()
         {
             // DealCardToPlayer()
         }
 
+        // TODO: Have the dispatcher send an end round message to the server
         private void Stand()
         {
             // End turn
         }
 
+        // TODO: Have the dispatcher send the card number to this function
+        // TODO: Have the dispatcher send an end round message to the server
         private void DoubleDown()
         {
             // DealCardToPlayer()

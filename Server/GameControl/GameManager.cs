@@ -126,7 +126,7 @@ namespace Server.GameControl
                 return;
             }
 
-            _OnLog($"Bet: {_player.Name}");
+            _OnLog($"Bet: {_player.Name} {betAmount}");
             Debug.WriteLine($"Bet: {_player.Name}");
 
             // if we are on the last player then deal initial cards
@@ -265,7 +265,7 @@ namespace Server.GameControl
                 CurrentPlayerIndex = _game.CurrentPlayerIndex
             };
 
-            SendPacket(PacketType.StateUpdate, _gameUpdateSerializer.Serialize(dto));
+            SendPacket(PacketType.GameUpdate, _gameUpdateSerializer.Serialize(dto));
         }
 
         private void SendPacket(PacketType type, byte[] payload)
