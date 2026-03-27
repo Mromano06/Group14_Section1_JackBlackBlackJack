@@ -33,8 +33,10 @@ namespace Client.ViewModels
         public ICommand StandCommand { get; }
         public ICommand DoubleDownCommand { get; }
 
-        public GameplayViewModel(NetworkClient client)
-        { 
+        public GameplayViewModel(NetworkClient client, double betAmount, double playerMoney)
+        {
+            _betAmount = betAmount;
+            _playerMoney = playerMoney;
             _client = client;
             _client.PlayerCardUpdate += DealCardToPlayer; // subscribe to dealing player cards
             _client.DealerCardUpdate += DealCardToDealer; // subscribe to dealing dealer cards

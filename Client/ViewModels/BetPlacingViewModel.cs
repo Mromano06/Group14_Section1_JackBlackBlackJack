@@ -21,7 +21,7 @@ namespace Client.ViewModels
     public class BetPlacingViewModel : BaseModel
     {
         private readonly NetworkClient _client;
-        private readonly Action<double> _showGame;
+        private readonly Action<double, double> _showGame;
         private double _playerMoney;
         private double _currentBet;
         private readonly PlayerCommandSerializer _commandSerializer = new PlayerCommandSerializer();
@@ -31,7 +31,7 @@ namespace Client.ViewModels
         public ICommand MaxBetCommand { get; }
         public ICommand ConfirmBetCommand { get; }
 
-        public BetPlacingViewModel(NetworkClient client, Action<double> showGame)
+        public BetPlacingViewModel(NetworkClient client, Action<double, double> showGame)
         {
             _client = client;
             _showGame = showGame;
@@ -98,7 +98,7 @@ namespace Client.ViewModels
             byte[] bytesToSend = packetToSend.ToBytes();
 
             _client.Send(bytesToSend);
-            _showGame?.Invoke(CurrentBet);
+            _showGame?.Invoke(CurrentBet, PlayerMoney);
 
         }
 
