@@ -67,10 +67,10 @@ namespace Client.ViewModels
         }
 
         // TODO: Link Dispatcher to each of these functions
-        public void ShowGame(double betAmount)
+        public void ShowGame(double betAmount, double playerMoney)
         {
-            PlayerMoney -= betAmount;
-            CurrentViewModel = new GameplayViewModel(_client);
+            playerMoney -= betAmount; // temp saving to display on the main gameplay window
+            CurrentViewModel = new GameplayViewModel(_client, betAmount, playerMoney);
         }
 
         public void ShowBetting()

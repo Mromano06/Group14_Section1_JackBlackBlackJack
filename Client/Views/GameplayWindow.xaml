@@ -14,8 +14,8 @@
                     Stretch="Fill" />
             </Grid.Background>
             <Canvas Background="Transparent">
-                <Rectangle Width="110" Height="37" Fill="White" HorizontalAlignment="Center" VerticalAlignment="Center" Stroke="Black" StrokeThickness="2" />
-                <Rectangle Width="128" Height="37" Fill="White" HorizontalAlignment="Left" VerticalAlignment="Center" Canvas.Left="108" Stroke="Black" StrokeThickness="2"/>
+                <Rectangle Width="140" Height="37" Fill="White" HorizontalAlignment="Left" VerticalAlignment="Center" Stroke="Black" StrokeThickness="2" />
+                <Rectangle Width="118" Height="37" Fill="White" HorizontalAlignment="Left" VerticalAlignment="Center" Canvas.Left="140" Stroke="Black" StrokeThickness="2"/>
                 <Rectangle Canvas.Left="588" Canvas.Top="394" Width="124" Height="37" Fill="White" HorizontalAlignment="Left" VerticalAlignment="Center"/>
                 <Button x:Name="Hit" Width="50" Height="50" Canvas.Left="564" Command="{Binding HitCommand}"
                 Canvas.Top="454" FontSize="13" FontWeight="Bold" Content="Hit" HorizontalAlignment="Center" VerticalAlignment="Top"></Button>
@@ -25,12 +25,12 @@
                 FontWeight="Bold" Content="Double" Canvas.Left="684" Canvas.Top="454" HorizontalAlignment="Center" VerticalAlignment="Top"/>
                 <TextBlock Name="Instructions" FontSize="14" Text="It is your turn!" Canvas.Left="607" Canvas.Top="403" HorizontalAlignment="Left" VerticalAlignment="Center"/>
                 <TextBlock Name="Balance" FontSize="14" Text="{Binding PlayerMoney, StringFormat=Balance: ${0}}" Canvas.Left="16" Canvas.Top="9" HorizontalAlignment="Left" VerticalAlignment="Center"/>
-                <TextBlock Name="Bet" FontSize="14" Text="{Binding BetAmount, StringFormat=Current Bet: ${0}}" Canvas.Left="120" Canvas.Top="9" HorizontalAlignment="Left" VerticalAlignment="Center"/>
+                <TextBlock Name="Bet" FontSize="14" Text="{Binding BetAmount, StringFormat=Current Bet: ${0}}" Canvas.Left="149" Canvas.Top="9" HorizontalAlignment="Left" VerticalAlignment="Center"/>
 
-                <ItemsControl ItemsSource="{Binding DealtDealerCards}" Canvas.Left="526"
+                <ItemsControl ItemsSource="{Binding DealtDealerCards}" Canvas.Left="457"
               Canvas.Top="51"
-              Width="248"
-              Height="137">
+              Width="394"
+              Height="137" HorizontalAlignment="Left" VerticalAlignment="Center">
                     <ItemsControl.ItemsPanel>
                         <ItemsPanelTemplate>
                             <StackPanel Orientation="Horizontal" />
@@ -39,15 +39,15 @@
 
                     <ItemsControl.ItemTemplate>
                         <DataTemplate>
-                            <Image Source="{Binding CardImagePath}" Width="192" Height="306" Margin="4"/>
+                            <Image Source="{Binding CardImagePath}" Width="85" Height="128" Margin="4"/>
                         </DataTemplate>
                     </ItemsControl.ItemTemplate>
                 </ItemsControl>
 
-                <ItemsControl ItemsSource="{Binding DealtPlayerCards}" Canvas.Left="525"
+                <ItemsControl ItemsSource="{Binding DealtPlayerCards}" Canvas.Left="457"
               Canvas.Top="528"
-              Width="248"
-              Height="137" HorizontalAlignment="Center" VerticalAlignment="Top">
+              Width="394"
+              Height="137" HorizontalAlignment="Left" VerticalAlignment="Center">
                     <ItemsControl.ItemsPanel>
                         <ItemsPanelTemplate>
                             <StackPanel Orientation="Horizontal" />
@@ -56,7 +56,7 @@
 
                     <ItemsControl.ItemTemplate>
                         <DataTemplate>
-                            <Image Source="{Binding CardImagePath}" Width="192" Height="306" Margin="4"/>
+                            <Image Source="{Binding CardImagePath}" Width="85" Height="128" Margin="4"/>
                         </DataTemplate>
                     </ItemsControl.ItemTemplate>
                 </ItemsControl>
