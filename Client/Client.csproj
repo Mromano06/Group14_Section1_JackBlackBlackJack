@@ -11,6 +11,11 @@
   <ItemGroup>
     <None Remove="Assets\BackOfCard.png" />
     <None Remove="Assets\Cards\2C.png" />
+    <None Remove="Assets\Cards\2D.png" />
+    <None Remove="Assets\Cards\2H.png" />
+    <None Remove="Assets\Cards\2S.png" />
+    <None Remove="Assets\Cards\3C.png" />
+    <None Remove="Assets\Cards\3D.png" />
     <None Remove="Assets\Cards\3H.png" />
     <None Remove="Assets\Cards\3S.png" />
     <None Remove="Assets\Cards\4C.png" />
@@ -68,6 +73,11 @@
   <ItemGroup>
     <Resource Include="Assets\BackOfCard.png" />
     <Resource Include="Assets\Cards\2C.png" />
+    <Resource Include="Assets\Cards\2D.png" />
+    <Resource Include="Assets\Cards\2H.png" />
+    <Resource Include="Assets\Cards\2S.png" />
+    <Resource Include="Assets\Cards\3C.png" />
+    <Resource Include="Assets\Cards\3D.png" />
     <Resource Include="Assets\Cards\3H.png" />
     <Resource Include="Assets\Cards\3S.png" />
     <Resource Include="Assets\Cards\4C.png" />

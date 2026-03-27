@@ -27,10 +27,10 @@
                 <TextBlock Name="Balance" FontSize="14" Text="{Binding PlayerMoney, StringFormat=Balance: ${0}}" Canvas.Left="16" Canvas.Top="9" HorizontalAlignment="Left" VerticalAlignment="Center"/>
                 <TextBlock Name="Bet" FontSize="14" Text="{Binding BetAmount, StringFormat=Current Bet: ${0}}" Canvas.Left="120" Canvas.Top="9" HorizontalAlignment="Left" VerticalAlignment="Center"/>
 
-                <ItemsControl ItemsSource="{Binding DealtDealerCards}" Canvas.Left="400"
-              Canvas.Top="-21"
-              Width="500"
-              Height="306">
+                <ItemsControl ItemsSource="{Binding DealtDealerCards}" Canvas.Left="526"
+              Canvas.Top="51"
+              Width="248"
+              Height="137">
                     <ItemsControl.ItemsPanel>
                         <ItemsPanelTemplate>
                             <StackPanel Orientation="Horizontal" />
@@ -44,9 +44,10 @@
                     </ItemsControl.ItemTemplate>
                 </ItemsControl>
 
-                <ItemsControl ItemsSource="{Binding DealtPlayerCards}" Margin="4" Canvas.Left="430"
-              Canvas.Top="70"
-              Width="500">
+                <ItemsControl ItemsSource="{Binding DealtPlayerCards}" Canvas.Left="525"
+              Canvas.Top="528"
+              Width="248"
+              Height="137" HorizontalAlignment="Center" VerticalAlignment="Top">
                     <ItemsControl.ItemsPanel>
                         <ItemsPanelTemplate>
                             <StackPanel Orientation="Horizontal" />
