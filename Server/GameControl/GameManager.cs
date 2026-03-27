@@ -254,6 +254,8 @@ namespace Server.GameControl
             GameUpdateDto dto = new GameUpdateDto() {
                 BetSize = _player.CurrentBet,
 
+                PlayerBalance = _player.Balance,
+
                 CardCount = HandHelper.CardCount(_player.Hand),
                 Cards = cards,
 

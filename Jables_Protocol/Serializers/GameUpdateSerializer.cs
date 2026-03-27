@@ -14,8 +14,9 @@ namespace Jables_Protocol.Serializers
             using var ms = new MemoryStream();
             using var bw = new BinaryWriter(ms);
 
-            // bet size
             bw.Write(dto.BetSize);
+
+            bw.Write(dto.PlayerBalance);
 
             // Card count & card list
             if (dto.Cards == null || dto.CardCount == 0)
@@ -64,6 +65,7 @@ namespace Jables_Protocol.Serializers
             using var br = new BinaryReader(ms);
 
             dto.BetSize = br.ReadDouble();
+            dto.PlayerBalance = br.ReadDouble();
             dto.CardCount = br.ReadInt32();
             //byte[] byteHand = br.ReadBytes(2 * dto.CardCount);
             //var handDto = new HandSerializer().Deserialize(byteHand);
