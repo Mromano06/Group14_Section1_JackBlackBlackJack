@@ -10,6 +10,9 @@ using System.Text;
 using System.Windows.Input;
 using System.Windows.Threading;
 using System.Windows;
+using SharedModels.Core;
+using Jables_Protocol.Serializers;
+using Jables_Protocol;
 
 
 // Matthew Romano & Brodie Arkell - March 12th, 2026 - GamplayViewModel Implementation
@@ -24,6 +27,8 @@ namespace Client.ViewModels
         private double _betAmount;
         private double _playerMoney;
         private bool _isFirstCard;
+        PlayerCommandSerializer _commandSerializer = new PlayerCommandSerializer();
+
         public ObservableCollection<CardViewModel> DealtPlayerCards { get; } =
             new ObservableCollection<CardViewModel>();
         public ObservableCollection<CardViewModel> DealtDealerCards { get; } =
@@ -138,12 +143,35 @@ namespace Client.ViewModels
         private void Hit()
         {
             // DealCardToPlayer()
+
+            PlayerCommandDto playerCommandDto = new PlayerCommandDto();
+            playerCommandDto.Action = PlayerAction.Hit;
+            playerCommandDto.BetAmount = 0;
+
+            Packet pkt = new Packet();
+
+            pkt.Type = PacketType.PlayerAction;
+            pkt.Payload = _commandSerializer.Serialize(playerCommandDto);
+            pkt.PayloadSize = 12;
+
+            _client.Send(pkt.ToBytes());
         }
 
         // TODO: Have the dispatcher send an end round message to the server
         private void Stand()
         {
             // End turn
+
+            PlayerCommandDto playerCommandDto = new PlayerCommandDto();
+            playerCommandDto.Action = PlayerAction.Stand;
+            playerCommandDto.BetAmount = 0;
+
+            Packet pkt = new Packet();
+
+            pkt.Type = PacketType.PlayerAction;
+            pkt.Payload = _commandSerializer.Serialize(playerCommandDto);
+            pkt.PayloadSize = 12;
+            _client.Send(pkt.ToBytes());
         }
 
         // TODO: Have the dispatcher send the card number to this function
@@ -152,6 +180,17 @@ namespace Client.ViewModels
         {
             // DealCardToPlayer()
             // End turn
+            PlayerCommandDto playerCommandDto = new PlayerCommandDto();
+            playerCommandDto.Action = PlayerAction.Double;
+            playerCommandDto.BetAmount = 0;
+
+            Packet pkt = new Packet();
+
+            pkt.Type = PacketType.PlayerAction;
+            pkt.Payload = _commandSerializer.Serialize(playerCommandDto);
+            pkt.PayloadSize = 12;
+
+            _client.Send(pkt.ToBytes());
         }
 
         public void Cleanup()
