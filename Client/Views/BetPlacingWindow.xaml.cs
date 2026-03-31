@@ -1,4 +1,5 @@
 ﻿using Client.ViewModels;
+using System.Windows;
 using System.Windows.Controls;
 
 // Matthew Romano - March 11th, 2026 - Bet Placing Window code behind
@@ -13,6 +14,16 @@ namespace Client.Views
         public BetPlacingWindow()
         {
             InitializeComponent();
+        }
+
+        private void OnLoaded(object sender, RoutedEventArgs e)
+        {
+            if (DataContext is BetPlacingViewModel viewModel)
+            {
+
+                viewModel.Initialize();
+            }
+
         }
     }
 }

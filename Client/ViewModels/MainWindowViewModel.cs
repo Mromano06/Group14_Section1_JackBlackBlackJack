@@ -75,7 +75,7 @@ namespace Client.ViewModels
 
         public void ShowBetting()
         {
-            CurrentViewModel = new BetPlacingViewModel(_client, ShowGame);
+            CurrentViewModel = new BetPlacingViewModel(_client, ShowGame, _playerMoney, _latestBet);
         }
 
         public void ShowMenu()

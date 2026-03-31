@@ -245,7 +245,7 @@ namespace Client.Networking
             }
             sendPlayerMoneyUpdate(gameUpdateDto.Player);
             sendPlayerBetUpdate(gameUpdateDto.Player.CurrentBet);
-
+            sendRoundCheck(gameUpdateDto.IsEndRound);
             
         }
 
