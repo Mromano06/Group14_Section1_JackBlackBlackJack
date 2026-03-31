@@ -29,6 +29,7 @@ namespace Client.ViewModels
         private double _betAmount;
         private double _playerMoney;
         private bool _isFirstCard;
+        private bool _isRoundOver;
         private bool _allowDouble = true;
 
         public ObservableCollection<CardViewModel> DealtPlayerCards { get; } =
@@ -100,6 +101,16 @@ namespace Client.ViewModels
             }
         }
 
+        private bool IsRoundOver
+        {
+            get => _isRoundOver;
+            set
+            {
+                _isRoundOver = false;
+            }
+        }
+
+
         public void DealCardToPlayer(CardDto cardDto)
         {
             Application.Current.Dispatcher.BeginInvoke(new Action(() =>
@@ -139,6 +150,7 @@ namespace Client.ViewModels
             }));
         }
 
+        // TODO: Add round end check for each action, if the round is done move on to betting screen
         private void Hit()
         {
             PlayerCommandDto playerCommandDto = new PlayerCommandDto();
@@ -159,6 +171,13 @@ namespace Client.ViewModels
                 DealtDealerCards.Clear();
                 IsFirstCard = true;
             }));
+
+            // Check if the round is over here
+
+            if (IsRoundOver)
+            {
+                // route to betting screen
+            }
         }
 
         private void Stand()
@@ -180,6 +199,13 @@ namespace Client.ViewModels
                 DealtPlayerCards.Clear();
                 DealtDealerCards.Clear();
             }));
+
+            // Check if the round is over here
+
+            if (IsRoundOver)
+            {
+                // route to betting screen
+            }
         }
 
         private void DoubleDown()
@@ -206,6 +232,13 @@ namespace Client.ViewModels
             OnPropertyChanged();
 
             AllowDouble = false;
+
+            // Check if the round is over here
+
+            if (IsRoundOver)
+            {
+                // route to betting screen
+            }
         }
 
         public void Cleanup()
