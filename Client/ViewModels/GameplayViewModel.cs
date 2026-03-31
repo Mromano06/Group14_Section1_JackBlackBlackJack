@@ -128,7 +128,7 @@ namespace Client.ViewModels
             {
                 Debug.WriteLine($"updating the player's money to: {amount}");
                 PlayerMoney = amount;
-                OnPropertyChanged(nameof(PlayerMoney));
+                //OnPropertyChanged(nameof(PlayerMoney));
             }));
         }
 
@@ -226,6 +226,7 @@ namespace Client.ViewModels
             _client.DealerCardUpdate -= DealCardToDealer;
             _client.PlayerMoneyUpdate -= UpdatePlayerMoney;
             _client.PlayerBetUpdate -= UpdateBetAmount;
+            _client.RoundCheckUpdate -= UpdateRound;
         }
 
     }

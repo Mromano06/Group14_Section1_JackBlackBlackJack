@@ -15,6 +15,8 @@ namespace Client.ViewModels
         private BaseModel _currentViewModel;
         // Client shared across all screens
         private readonly NetworkClient _client;
+        //private readonly Action _moneyUpdate;
+        //private readonly Action _betUpdate;
 
         private double _playerMoney;
         private double _latestBet;
@@ -44,6 +46,8 @@ namespace Client.ViewModels
         {
             _client = new NetworkClient();
             _currentViewModel = new MainMenuModel(_client, ShowBetting, ShowRules);
+            _client.PlayerBetUpdate += betUpdate;
+            _client.PlayerMoneyUpdate += moneyUpdate;
         }
 
         public double PlayerMoney
@@ -88,5 +92,14 @@ namespace Client.ViewModels
             CurrentViewModel = new RulesViewModel(ShowMenu);
         }
 
+        public void betUpdate(double betAmount)
+        {
+            LatestBet = betAmount;
+        }
+
+        public void moneyUpdate(double money)
+        {
+            PlayerMoney = money;
+        }
     }
 }
