@@ -11,7 +11,7 @@ namespace Jables_Protocol.DTOs
     {
         public string Name { get; set; }
         public int CardCount { get; set; }
-        public List<CardDto>? Hand { get; set; }    // Made it nullable
+        public List<CardDto> Hand { get; set; } = new();
         public double CurrentBet { get; set; }
         public bool HasDoubled { get; set; }
         public bool HasInsured { get; set; }
@@ -22,25 +22,26 @@ namespace Jables_Protocol.DTOs
 
         public PlayerDto(Player player)
         {
-            List<CardDto> cards = new List<CardDto>();
-
-            foreach (Card card in player.Hand.Cards) {
-                CardDto cardDto = new CardDto() {
-                    Rank = card.Rank,
-                    Suit = card.Suit,
-                };
-
-                cards.Add(cardDto);
-            }
-
             Name = player.Name;
             CardCount = HandHelper.CardCount(player.Hand);
-            Hand = cards;
             CurrentBet = player.CurrentBet;
             HasDoubled = player.HasDoubled;
             HasInsured = player.HasInsured;
             ActionCount = player.ActionCount;
             Balance = player.Balance;
+
+            Hand = new List<CardDto>();
+
+            if (player.Hand != null && HandHelper.CardCount(player.Hand) > 0) {
+                foreach (Card card in player.Hand.Cards) {
+                    CardDto cardDto = new CardDto() {
+                        Rank = card.Rank,
+                        Suit = card.Suit,
+                    };
+
+                    Hand.Add(cardDto);
+                }
+            }
         }
     }
 }
