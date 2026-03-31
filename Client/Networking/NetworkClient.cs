@@ -242,6 +242,10 @@ namespace Client.Networking
                 Debug.WriteLine("Sending dealer cards to dispatcher");
             }
 
+
+            sendPlayerBetUpdate(gameUpdateDto.BetSize);
+
+
         }
 
         public void sendPlayerCardUpdate(CardDto cardDto)
@@ -272,19 +276,15 @@ namespace Client.Networking
 
         }
 
-        public void sendPlayerBetUpdate(PlayerDto player)
+        public void sendPlayerBetUpdate(double amount)
         {
-            if (player == null)
-            {
-                Debug.WriteLine("Player Dto Was Empty");
-                return;
-            }
+   
 
-            if (player.Balance >= 0)
+            if (amount >= 0)
             {
                 Debug.WriteLine("sending player bet amount to dispatcher");
                 // send player bet to UI
-                PlayerBetUpdate?.Invoke(player.CurrentBet);
+                PlayerBetUpdate?.Invoke(amount);
             }
 
         }
