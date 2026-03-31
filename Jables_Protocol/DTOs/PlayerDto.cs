@@ -1,7 +1,9 @@
-﻿using System;
+﻿using GameLogic.Logic;
+using Jables_Protocol.Serializers;
+using SharedModels.Models;
+using System;
 using System.Collections.Generic;
 using System.Text;
-using SharedModels.Models;
 
 namespace Jables_Protocol.DTOs
 {
@@ -16,9 +18,27 @@ namespace Jables_Protocol.DTOs
         public int ActionCount { get; set; }
         public double Balance { get; set; }
 
-        //public PlayerDto() 
-        //{
-        //    Hand = new List<CardDto>();
-        //}
+        public PlayerDto(Player player)
+        {
+            List<CardDto> cards = new List<CardDto>();
+
+            foreach (Card card in player.Hand.Cards) {
+                CardDto cardDto = new CardDto() {
+                    Rank = card.Rank,
+                    Suit = card.Suit,
+                };
+
+                cards.Add(cardDto);
+            }
+
+            Name = player.Name;
+            CardCount = HandHelper.CardCount(player.Hand);
+            Hand = cards;
+            CurrentBet = player.CurrentBet;
+            HasDoubled = player.HasDoubled;
+            HasInsured = player.HasInsured;
+            ActionCount = player.ActionCount;
+            Balance = player.Balance;
+        }
     }
 }

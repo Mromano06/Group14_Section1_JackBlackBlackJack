@@ -14,26 +14,11 @@ namespace Jables_Protocol.Serializers
             using var ms = new MemoryStream();
             using var bw = new BinaryWriter(ms);
 
-            bw.Write(dto.BetSize);
-
-            bw.Write(dto.PlayerBalance);
+            byte[] playerBytes = new PlayerSerializer().Serialize(dto.Player);
+            bw.Write(playerBytes.Length);
+            bw.Write(playerBytes);
 
             bw.Write(dto.IsEndRound);
-
-            // Card count & card list
-            if (dto.Cards == null || dto.CardCount == 0)
-            {
-                bw.Write(dto.CardCount);
-            }
-            else
-            {
-                bw.Write(dto.CardCount);
-                foreach (var card in dto.Cards)
-                {
-                    var cardBytes = new CardSerializer().Serialize(card);
-                    bw.Write(cardBytes);
-                }
-            }
 
             // game state enum
             bw.Write((byte)dto.GameState);
@@ -66,22 +51,14 @@ namespace Jables_Protocol.Serializers
             using var ms = new MemoryStream(data);
             using var br = new BinaryReader(ms);
 
-            dto.BetSize = br.ReadDouble();
-            dto.PlayerBalance = br.ReadDouble();
+            // Adding player data
+            int playerSize = br.ReadInt32();
+
+            byte[] playerBytes = br.ReadBytes(playerSize);
+            PlayerDto playerDto = PlayerSerializer.Deserialize(playerBytes);
+            dto.Player = playerDto;
+
             dto.IsEndRound = br.ReadBoolean();
-            dto.CardCount = br.ReadInt32();
-            //byte[] byteHand = br.ReadBytes(2 * dto.CardCount);
-            //var handDto = new HandSerializer().Deserialize(byteHand);
-            if (dto.CardCount >= 0)
-            {
-                dto.Cards = new List<CardDto>();
-                for (int i = 0; i < dto.CardCount; i++)
-                {
-                    byte[] byteshand = br.ReadBytes(2);
-                    CardDto cardDto = CardSerializer.Deserialize(byteshand);
-                    dto.Cards.Add(cardDto);
-                }
-            }
 
             dto.GameState = (GameStateEnum)br.ReadByte();
 

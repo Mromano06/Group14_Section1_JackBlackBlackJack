@@ -16,6 +16,8 @@ using System.Diagnostics;
 using System.Runtime.Serialization;
 using System.Security.Policy;
 using System.Text;
+using System.Xml.Linq;
+
 
 // Must be strictly defined as it can be "ambigous" with the primitive double 
 using Double = GameLogic.Actions.ActionTypes.Double;
@@ -135,7 +137,7 @@ namespace Server.GameControl
                 DealerLogic.DealInitialCards(_game);
             }
 
-            SendGameUpdate(IsEndRound);
+            SendGameUpdate(IsEndRound, _player);
         }
 
         private void ExecuteHit()
@@ -163,7 +165,7 @@ namespace Server.GameControl
                 }
             }
 
-            SendGameUpdate(IsEndRound);
+            SendGameUpdate(IsEndRound, _player);
 
             if (IsEndRound) {
                 _game.EndRound();
@@ -188,7 +190,7 @@ namespace Server.GameControl
                 DealerLogic.PlayTurn(_game);
             }
 
-            SendGameUpdate(IsEndRound);
+            SendGameUpdate(IsEndRound, _player);
 
             if (IsEndRound) {
                 _game.EndRound();
@@ -220,7 +222,7 @@ namespace Server.GameControl
                 }
             }
 
-            SendGameUpdate(IsEndRound);
+            SendGameUpdate(IsEndRound, _player);
 
             if (IsEndRound) {
                 _game.EndRound();
@@ -241,22 +243,13 @@ namespace Server.GameControl
 
             bool IsEndRound = false;
 
-            SendGameUpdate(IsEndRound);
+            SendGameUpdate(IsEndRound, _player);
         }
 
-        private void SendGameUpdate(bool IsEndRound)
+        private void SendGameUpdate(bool IsEndRound, Player player)
         {
-            List<CardDto> cards = new List<CardDto>();
             List<CardDto> dealerCards = new List<CardDto>();
-
-            foreach (Card card in _player.Hand.Cards) {
-                CardDto cardDto = new CardDto() {
-                    Rank = card.Rank,
-                    Suit = card.Suit,
-                };
-
-                cards.Add(cardDto);
-            }/// Object reference not set to an instance on an object
+            PlayerDto playerDto = new PlayerDto(player);
 
             foreach (Card card in _game.Dealer.Hand.Cards) {
                 CardDto cardDto = new CardDto() {
@@ -268,14 +261,9 @@ namespace Server.GameControl
             }
 
             GameUpdateDto dto = new GameUpdateDto() {
-                BetSize = _player.CurrentBet,
-
-                PlayerBalance = _player.Balance,
+                Player = playerDto,
 
                 IsEndRound = IsEndRound,
-
-                CardCount = HandHelper.CardCount(_player.Hand),
-                Cards = cards,
 
                 GameState = _game.GameState.State,
 

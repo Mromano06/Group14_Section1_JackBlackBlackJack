@@ -8,10 +8,8 @@ namespace Jables_Protocol.DTOs
 {
     public class GameUpdateDto
     {
-        public double BetSize {  get; set; }
-        public double PlayerBalance { get; set; }
+        public PlayerDto Player { get; set; }
         public bool IsEndRound { get; set; }
-        public int CardCount { get; set; }
         public List<CardDto>? Cards { get; set; }
         public GameStateEnum GameState { get; set; }
         public int DealerCardCount {  get; set; }
