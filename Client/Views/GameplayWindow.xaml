@@ -20,9 +20,9 @@
                 <Button x:Name="Hit" Width="50" Height="50" Canvas.Left="564" Command="{Binding HitCommand}"
                 Canvas.Top="454" FontSize="13" FontWeight="Bold" Content="Hit" HorizontalAlignment="Center" VerticalAlignment="Top"></Button>
                 <Button x:Name="Stand" Width="50" Height="50" Canvas.Left="624" Command="{Binding StandCommand}"
-                Canvas.Top="454" FontSize="13" FontWeight="Bold" Content="Stand" HorizontalAlignment="Center" VerticalAlignment="Top"></Button>
-                <Button x:Name="Double" Width="50" Height="50" FontSize="12" Command="{Binding DoubleDownCommand}"
-                FontWeight="Bold" Content="Double" Canvas.Left="684" Canvas.Top="454" HorizontalAlignment="Center" VerticalAlignment="Top"/>
+                    Canvas.Top="454" FontSize="13" FontWeight="Bold" Content="Stand" HorizontalAlignment="Center" VerticalAlignment="Top"></Button>
+                <Button x:Name="DDButton" Width="50" Height="50" FontSize="12" Command="{Binding DoubleDownCommand}" IsEnabled="{Binding AllowDouble}"
+                    FontWeight="Bold" Content="Double" Canvas.Left="684" Canvas.Top="454" HorizontalAlignment="Center" VerticalAlignment="Top"/>
                 <TextBlock Name="Instructions" FontSize="14" Text="It is your turn!" Canvas.Left="607" Canvas.Top="403" HorizontalAlignment="Left" VerticalAlignment="Center"/>
                 <TextBlock Name="Balance" FontSize="14" Text="{Binding PlayerMoney, StringFormat=Balance: ${0}}" Canvas.Left="16" Canvas.Top="9" HorizontalAlignment="Left" VerticalAlignment="Center"/>
                 <TextBlock Name="Bet" FontSize="14" Text="{Binding BetAmount, StringFormat=Current Bet: ${0}}" Canvas.Left="149" Canvas.Top="9" HorizontalAlignment="Left" VerticalAlignment="Center"/>

@@ -242,7 +242,6 @@ namespace Client.Networking
                 Debug.WriteLine("Sending dealer cards to dispatcher");
             }
 
-
             sendPlayerBetUpdate(gameUpdateDto.BetSize);
 
 
