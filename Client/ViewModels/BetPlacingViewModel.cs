@@ -31,7 +31,7 @@ namespace Client.ViewModels
         public ICommand MaxBetCommand { get; }
         public ICommand ConfirmBetCommand { get; }
 
-        public BetPlacingViewModel(NetworkClient client, Action<double, double> showGame, double playerMoney, double LastBet)
+        public BetPlacingViewModel(NetworkClient client, Action<double, double> showGame)
         {
             _client = client;
             _showGame = showGame;
@@ -40,8 +40,8 @@ namespace Client.ViewModels
             DecreaseBetCommand = new CommandRelay(DecBet);
             MaxBetCommand = new CommandRelay(MaxBet);
             ConfirmBetCommand = new CommandRelay(Confirm);
-            CurrentBet = LastBet;
-            PlayerMoney = playerMoney;
+            PlayerMoney = _client.LatestPlayerMoney;
+            UpdatePlayerMoney(_client.LatestPlayerMoney);
         }
 
         public double CurrentBet
@@ -50,8 +50,11 @@ namespace Client.ViewModels
             set
             {
                 if (value <= _playerMoney && value >= 0 && _currentBet != value)
+                {
                     _currentBet = value;
-                OnPropertyChanged();
+                    OnPropertyChanged();
+
+                }
             }
         }
 
@@ -113,12 +116,6 @@ namespace Client.ViewModels
                 PlayerMoney = amount;
                // OnPropertyChanged(nameof(PlayerMoney));
             }));
-        }
-
-        public void Initialize()
-        {
-            OnPropertyChanged(nameof(PlayerMoney));
-            OnPropertyChanged(nameof(CurrentBet));
         }
 
         public void Cleanup()

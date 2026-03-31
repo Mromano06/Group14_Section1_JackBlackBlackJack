@@ -34,6 +34,7 @@ namespace Client.Networking
         public event Action<double> PlayerMoneyUpdate;
         public event Action<double> PlayerBetUpdate;
         public event Action<bool> RoundCheckUpdate;
+        public double LatestPlayerMoney { get; private set; }
 
         // Queue to hold outgoing commands/messages (thread-safe)
         // will change from string to command object once command object is implemented
@@ -243,8 +244,8 @@ namespace Client.Networking
                 }
                 Debug.WriteLine("Sending dealer cards to dispatcher");
             }
-            sendPlayerMoneyUpdate(gameUpdateDto.Player);
             sendPlayerBetUpdate(gameUpdateDto.Player.CurrentBet);
+            sendPlayerMoneyUpdate(gameUpdateDto.Player);
             sendRoundCheck(gameUpdateDto.IsEndRound);
             
         }
@@ -271,6 +272,7 @@ namespace Client.Networking
             if (player.Balance >= 0)
             {
                 Debug.WriteLine("sending player balance to dispatcher");
+                LatestPlayerMoney = player.Balance;
             // send player money to UI
             PlayerMoneyUpdate?.Invoke(player.Balance);
             }

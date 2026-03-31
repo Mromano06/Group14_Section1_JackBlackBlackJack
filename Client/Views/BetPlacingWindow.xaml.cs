@@ -16,14 +16,5 @@ namespace Client.Views
             InitializeComponent();
         }
 
-        private void OnLoaded(object sender, RoutedEventArgs e)
-        {
-            if (DataContext is BetPlacingViewModel viewModel)
-            {
-
-                viewModel.Initialize();
-            }
-
-        }
     }
 }

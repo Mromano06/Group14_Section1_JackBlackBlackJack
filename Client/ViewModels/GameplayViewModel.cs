@@ -215,7 +215,10 @@ namespace Client.ViewModels
         {
             if (check)
             {
-                _showBetting?.Invoke();
+                Application.Current.Dispatcher.BeginInvoke(new Action(() =>
+                {
+                    _showBetting?.Invoke();
+                }));
             }
         }
 
