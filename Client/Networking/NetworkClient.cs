@@ -213,15 +213,15 @@ namespace Client.Networking
             // if player cards not null send them to UI
             
             
-            if (gameUpdateDto.Cards != null) 
+            if (gameUpdateDto.Player.Hand != null) 
             {
                 // send all cards in the update
-                for (int i = 0; i < gameUpdateDto.CardCount; i++)
+                for (int i = 0; i < gameUpdateDto.Player.CardCount; i++)
                 {
 
                     CardDto cardDto = new CardDto();
-                    cardDto.Rank = gameUpdateDto.Cards[i].Rank; // get the first card rank and suit
-                    cardDto.Suit = gameUpdateDto.Cards[i].Suit;
+                    cardDto.Rank = gameUpdateDto.Player.Hand[i].Rank; // get the first card rank and suit
+                    cardDto.Suit = gameUpdateDto.Player.Hand[i].Suit;
                     sendPlayerCardUpdate(cardDto);            
                 }
                 Debug.WriteLine("Sending player cards to dispatcher");
@@ -241,8 +241,8 @@ namespace Client.Networking
                 }
                 Debug.WriteLine("Sending dealer cards to dispatcher");
             }
-
-            sendPlayerBetUpdate(gameUpdateDto.BetSize);
+            sendPlayerMoneyUpdate(gameUpdateDto.Player);
+            sendPlayerBetUpdate(gameUpdateDto.Player.CurrentBet);
 
 
         }

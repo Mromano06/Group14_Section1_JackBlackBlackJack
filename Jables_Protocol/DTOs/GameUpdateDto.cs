@@ -10,7 +10,6 @@ namespace Jables_Protocol.DTOs
     {
         public PlayerDto Player { get; set; }
         public bool IsEndRound { get; set; }
-        public List<CardDto>? Cards { get; set; }
         public GameStateEnum GameState { get; set; }
         public int DealerCardCount {  get; set; }
         public List<CardDto>? DealerCards { get; set; }

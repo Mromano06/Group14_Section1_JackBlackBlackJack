@@ -18,6 +18,8 @@ namespace Jables_Protocol.DTOs
         public int ActionCount { get; set; }
         public double Balance { get; set; }
 
+        public PlayerDto() { }
+
         public PlayerDto(Player player)
         {
             List<CardDto> cards = new List<CardDto>();
