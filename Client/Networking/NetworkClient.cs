@@ -242,6 +242,8 @@ namespace Client.Networking
                 Debug.WriteLine("Sending dealer cards to dispatcher");
             }
 
+
+
         }
 
         public void sendPlayerCardUpdate(CardDto cardDto)

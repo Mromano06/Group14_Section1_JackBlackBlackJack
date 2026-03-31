@@ -12,6 +12,7 @@ using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.Text;
 using System.Windows;
+using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Threading;
 
@@ -28,7 +29,7 @@ namespace Client.ViewModels
         private double _betAmount;
         private double _playerMoney;
         private bool _isFirstCard;
-        PlayerCommandSerializer _commandSerializer = new PlayerCommandSerializer();
+        private bool _allowDouble = true;
 
         public ObservableCollection<CardViewModel> DealtPlayerCards { get; } =
             new ObservableCollection<CardViewModel>();
@@ -38,6 +39,8 @@ namespace Client.ViewModels
         public ICommand HitCommand { get; }
         public ICommand StandCommand { get; }
         public ICommand DoubleDownCommand { get; }
+
+        PlayerCommandSerializer _commandSerializer = new PlayerCommandSerializer();
 
         public GameplayViewModel(NetworkClient client, double betAmount, double playerMoney)
         {
@@ -52,6 +55,49 @@ namespace Client.ViewModels
             StandCommand = new CommandRelay(Stand);
             DoubleDownCommand = new CommandRelay(DoubleDown);
             _isFirstCard = true;
+        }
+
+        // Readonly so no setters
+        public double BetAmount
+        {
+            get => _betAmount;
+            set
+            {
+                _betAmount = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public double PlayerMoney
+        {
+            get => _playerMoney;
+            set
+            {
+                _playerMoney = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public bool IsFirstCard
+        {
+            get 
+            {
+                return _isFirstCard;
+            }
+            set
+            {
+                _isFirstCard = value;
+            }
+        }
+
+        public bool AllowDouble
+        {
+            get => _allowDouble;
+            set
+            {
+                _allowDouble = value;
+                OnPropertyChanged(nameof(AllowDouble));
+            }
         }
 
         public void DealCardToPlayer(CardDto cardDto)
@@ -71,37 +117,6 @@ namespace Client.ViewModels
                 Debug.WriteLine($"Attempting to deal card to dealer {cardDto.Rank}{cardDto.Suit}");
                 DealtDealerCards.Add(new CardViewModel(cardDto));
             }));
-        }
-
-        // Readonly so no setters
-        public double BetAmount
-        {
-            get => _betAmount;
-            set
-            {
-                _betAmount = value;
-            }
-        }
-
-        public double PlayerMoney
-        {
-            get => _playerMoney;
-            set
-            {
-                _playerMoney = value;
-            }
-        }
-
-        public bool IsFirstCard
-        {
-            get 
-            {
-                return _isFirstCard;
-            }
-            set
-            {
-                _isFirstCard = value;
-            }
         }
 
         private void UpdatePlayerMoney(double amount)
@@ -187,6 +202,10 @@ namespace Client.ViewModels
                 DealtPlayerCards.Clear();
                 DealtDealerCards.Clear();
             }));
+
+            OnPropertyChanged();
+
+            AllowDouble = false;
         }
 
         public void Cleanup()
