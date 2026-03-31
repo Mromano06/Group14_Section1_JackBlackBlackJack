@@ -14,6 +14,7 @@ using Jables_Protocol.DTOs;
 using SharedModels.Core;
 using Client.ViewModels;
 using System.Windows.Threading;
+using System.Windows.Media.Converters;
 
 
 
@@ -32,6 +33,7 @@ namespace Client.Networking
         public event Action<CardDto> DealerCardUpdate;
         public event Action<double> PlayerMoneyUpdate;
         public event Action<double> PlayerBetUpdate;
+        public event Action<bool> RoundCheckUpdate;
 
         // Queue to hold outgoing commands/messages (thread-safe)
         // will change from string to command object once command object is implemented
@@ -244,7 +246,7 @@ namespace Client.Networking
             sendPlayerMoneyUpdate(gameUpdateDto.Player);
             sendPlayerBetUpdate(gameUpdateDto.Player.CurrentBet);
 
-
+            
         }
 
         public void sendPlayerCardUpdate(CardDto cardDto)
@@ -286,6 +288,15 @@ namespace Client.Networking
                 PlayerBetUpdate?.Invoke(amount);
             }
 
+        }
+
+        public void sendRoundCheck(bool roundCheck)
+        {
+            if (roundCheck)
+            {
+                Debug.WriteLine("Sending round check");
+                RoundCheckUpdate?.Invoke(roundCheck);
+            }
         }
     }
 }

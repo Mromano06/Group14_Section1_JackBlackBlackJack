@@ -30,6 +30,7 @@ namespace Client.ViewModels
         private double _playerMoney;
         private bool _isFirstCard;
         private bool _allowDouble = true;
+        private readonly Action _showBetting;
 
         public ObservableCollection<CardViewModel> DealtPlayerCards { get; } =
             new ObservableCollection<CardViewModel>();
@@ -42,15 +43,17 @@ namespace Client.ViewModels
 
         PlayerCommandSerializer _commandSerializer = new PlayerCommandSerializer();
 
-        public GameplayViewModel(NetworkClient client, double betAmount, double playerMoney)
+        public GameplayViewModel(NetworkClient client, double betAmount, double playerMoney, Action ShowBetting)
         {
             _betAmount = betAmount;
             _playerMoney = playerMoney;
             _client = client;
+            _showBetting = ShowBetting;
             _client.PlayerCardUpdate += DealCardToPlayer; // subscribe to dealing player cards
             _client.DealerCardUpdate += DealCardToDealer; // subscribe to dealing dealer cards
             _client.PlayerMoneyUpdate += UpdatePlayerMoney;
             _client.PlayerBetUpdate += UpdateBetAmount;
+            _client.RoundCheckUpdate += UpdateRound;
             HitCommand = new CommandRelay(Hit);
             StandCommand = new CommandRelay(Stand);
             DoubleDownCommand = new CommandRelay(DoubleDown);
@@ -206,6 +209,14 @@ namespace Client.ViewModels
             OnPropertyChanged();
 
             AllowDouble = false;
+        }
+
+        private void UpdateRound(bool check)
+        {
+            if (check)
+            {
+                _showBetting?.Invoke();
+            }
         }
 
         public void Cleanup()

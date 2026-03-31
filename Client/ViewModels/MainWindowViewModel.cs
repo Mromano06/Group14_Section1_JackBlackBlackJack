@@ -70,7 +70,7 @@ namespace Client.ViewModels
         public void ShowGame(double betAmount, double playerMoney)
         {
             playerMoney -= betAmount; // temp saving to display on the main gameplay window
-            CurrentViewModel = new GameplayViewModel(_client, betAmount, playerMoney);
+            CurrentViewModel = new GameplayViewModel(_client, betAmount, playerMoney, ShowBetting);
         }
 
         public void ShowBetting()

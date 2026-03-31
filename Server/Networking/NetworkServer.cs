@@ -56,7 +56,7 @@ namespace Server.Networking
 
                 // DO NOT SET THE HAND OR YOU WILL BREAK EVERYTHING
                 Player player = new Player() {
-                    Name = "Evan Travis",
+                    Name = "Brodie Arkell",
                     CurrentBet = 0,
                     HasDoubled = false,
                     HasInsured = false,
