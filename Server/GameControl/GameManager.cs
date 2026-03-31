@@ -33,9 +33,6 @@ namespace Server.GameControl
 
         // serializers
         private readonly GameUpdateSerializer _gameUpdateSerializer = new GameUpdateSerializer();
-        private readonly PlayerCommandSerializer _commandSerializer = new PlayerCommandSerializer();
-        private readonly PlayerSerializer _playerSerializer = new PlayerSerializer();
-        private readonly CardSerializer _cardSerializer = new CardSerializer();
         private readonly Action<string> _OnLog;
 
         public GameManager(ClientConnection connection, Action<string> OnLog)
