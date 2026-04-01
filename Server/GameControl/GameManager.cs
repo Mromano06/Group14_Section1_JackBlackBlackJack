@@ -164,13 +164,15 @@ namespace Server.GameControl
                 }
             }
 
-            if (IsEndRound) {
-                _game.EndRound();
-            }
-
             ROUND_RESULT result = _game.RoundResult(_player);
 
             SendGameUpdate(IsEndRound, _player, actionResult.Success, result);
+            if (IsEndRound)
+            {
+                _game.EndRound();
+                SendGameUpdate(IsEndRound, _player, actionResult.Success, result);
+            }
+
         }
 
         private void ExecuteStand()
@@ -193,6 +195,7 @@ namespace Server.GameControl
 
             ROUND_RESULT result = _game.RoundResult(_player);
 
+            SendGameUpdate(IsEndRound, _player, actionResult.Success, result);
             _game.EndRound();
             SendGameUpdate(IsEndRound, _player, actionResult.Success, result);
 
@@ -218,6 +221,7 @@ namespace Server.GameControl
 
             ROUND_RESULT result = _game.RoundResult(_player);
 
+            SendGameUpdate(IsEndRound, _player, actionResult.Success, result);
             _game.EndRound();
             SendGameUpdate(IsEndRound, _player, actionResult.Success, result);
         }

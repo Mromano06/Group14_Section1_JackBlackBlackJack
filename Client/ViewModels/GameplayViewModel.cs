@@ -170,7 +170,7 @@ namespace Client.ViewModels
             {
                 RoundHasEnded = false;
                 AllowDouble = true;
-                Task.Delay(1000).ContinueWith(_ =>  // 1 second delay
+                Task.Delay(250).ContinueWith(_ =>  // 1 second delay
                 {
                      Application.Current.Dispatcher.BeginInvoke(new Action(() =>
                      {
@@ -245,7 +245,6 @@ namespace Client.ViewModels
                     DealtDealerCards.Clear();
                 }));
             });
-            
 
             OnPropertyChanged();
 
