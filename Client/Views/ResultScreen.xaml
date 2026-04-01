@@ -1,0 +1,23 @@
+﻿<UserControl x:Class="Client.Views.ResultScreen"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006">
+    <Viewbox Stretch="Uniform">
+        <Grid Width="1300" Height="720">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="41*"/>
+                <ColumnDefinition Width="89*"/>
+            </Grid.ColumnDefinitions>
+            <Grid.Background>
+                <ImageBrush
+                    ImageSource="/Assets/Gameboard.jpg"
+                    Stretch="Fill" />
+            </Grid.Background>
+            <Canvas Background="Transparent" Grid.ColumnSpan="2">
+                <Rectangle Canvas.Left="560" Canvas.Top="417" Width="180" Height="37" Fill="White" HorizontalAlignment="Center" VerticalAlignment="Top"/>
+                <TextBlock Name="Instructions" FontSize="14" Text="Please place your bet." Canvas.Left="583" Canvas.Top="426" HorizontalAlignment="Left" VerticalAlignment="Top" ></TextBlock>
+            </Canvas>
+        </Grid>
+    </Viewbox>
+</UserControl>

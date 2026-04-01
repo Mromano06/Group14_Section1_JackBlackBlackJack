@@ -43,10 +43,8 @@ namespace Client.ViewModels
 
         PlayerCommandSerializer _commandSerializer = new PlayerCommandSerializer();
 
-        public GameplayViewModel(NetworkClient client, double betAmount, double playerMoney, Action ShowBetting)
+        public GameplayViewModel(NetworkClient client, Action ShowBetting)
         {
-            _betAmount = betAmount;
-            _playerMoney = playerMoney;
             _client = client;
             _showBetting = ShowBetting;
             _client.PlayerCardUpdate += DealCardToPlayer; // subscribe to dealing player cards
@@ -128,7 +126,7 @@ namespace Client.ViewModels
             {
                 Debug.WriteLine($"updating the player's money to: {amount}");
                 PlayerMoney = amount;
-                //OnPropertyChanged(nameof(PlayerMoney));
+                OnPropertyChanged(nameof(PlayerMoney));
             }));
         }
 
@@ -140,6 +138,17 @@ namespace Client.ViewModels
                 BetAmount = amount;
                 OnPropertyChanged(nameof(BetAmount));
             }));
+        }
+
+        private void UpdateRound(bool check)
+        {
+            if (check)
+            {
+                Application.Current.Dispatcher.BeginInvoke(new Action(() =>
+                {
+                    _showBetting?.Invoke();
+                }));
+            }
         }
 
         private void Hit()
@@ -209,17 +218,6 @@ namespace Client.ViewModels
             OnPropertyChanged();
 
             AllowDouble = false;
-        }
-
-        private void UpdateRound(bool check)
-        {
-            if (check)
-            {
-                Application.Current.Dispatcher.BeginInvoke(new Action(() =>
-                {
-                    _showBetting?.Invoke();
-                }));
-            }
         }
 
         public void Cleanup()
