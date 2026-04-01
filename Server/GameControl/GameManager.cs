@@ -134,7 +134,9 @@ namespace Server.GameControl
                 DealerLogic.DealInitialCards(_game);
             }
 
-            SendGameUpdate(IsEndRound, _player, actionResult.Success, _game.RoundResult(_player));
+            ROUND_RESULT result = _game.RoundResult(_player);
+
+            SendGameUpdate(IsEndRound, _player, actionResult.Success, result);
         }
 
         private void ExecuteHit()
@@ -166,7 +168,9 @@ namespace Server.GameControl
                 _game.EndRound();
             }
 
-            SendGameUpdate(IsEndRound, _player, actionResult.Success, _game.RoundResult(_player));
+            ROUND_RESULT result = _game.RoundResult(_player);
+
+            SendGameUpdate(IsEndRound, _player, actionResult.Success, result);
         }
 
         private void ExecuteStand()
@@ -187,8 +191,10 @@ namespace Server.GameControl
                 DealerLogic.PlayTurn(_game);
             }
 
+            ROUND_RESULT result = _game.RoundResult(_player);
+
             _game.EndRound();
-            SendGameUpdate(IsEndRound, _player, actionResult.Success, _game.RoundResult(_player));
+            SendGameUpdate(IsEndRound, _player, actionResult.Success, result);
 
         }
 
@@ -210,8 +216,10 @@ namespace Server.GameControl
                 DealerLogic.PlayTurn(_game);
             }
 
+            ROUND_RESULT result = _game.RoundResult(_player);
+
             _game.EndRound();
-            SendGameUpdate(IsEndRound, _player, actionResult.Success, _game.RoundResult(_player));
+            SendGameUpdate(IsEndRound, _player, actionResult.Success, result);
         }
 
         private void ExecuteInsure()
@@ -228,7 +236,9 @@ namespace Server.GameControl
 
             bool IsEndRound = false;
 
-            SendGameUpdate(IsEndRound, _player, actionResult.Success, _game.RoundResult(_player));
+            ROUND_RESULT result = _game.RoundResult(_player);
+
+            SendGameUpdate(IsEndRound, _player, actionResult.Success, result);
         }
 
         private void SendGameUpdate(bool IsEndRound, Player player, bool actionResult, ROUND_RESULT roundWin)

@@ -31,7 +31,8 @@ namespace Client.ViewModels
         private bool _isFirstCard;
         private bool _allowDouble = true;
         private bool _roundHasEnded = false;
-        private readonly Action _showResults;
+        private String _resultMessage;
+        private readonly Action<String> _showResults;
 
         public ObservableCollection<CardViewModel> DealtPlayerCards { get; } =
             new ObservableCollection<CardViewModel>();
@@ -44,8 +45,9 @@ namespace Client.ViewModels
 
         PlayerCommandSerializer _commandSerializer = new PlayerCommandSerializer();
 
-        public GameplayViewModel(NetworkClient client, Action ShowResults)
+        public GameplayViewModel(NetworkClient client, Action<String> ShowResults)
         {
+            _resultMessage = String.Empty;
             _client = client;
             _showResults = ShowResults;
             _client.PlayerCardUpdate += DealCardToPlayer; // subscribe to dealing player cards
@@ -53,6 +55,7 @@ namespace Client.ViewModels
             _client.PlayerMoneyUpdate += UpdatePlayerMoney;
             _client.PlayerBetUpdate += UpdateBetAmount;
             _client.RoundCheckUpdate += UpdateRound;
+            _client.RoundResultUpdate += RoundResult;
             HitCommand = new CommandRelay(Hit);
             StandCommand = new CommandRelay(Stand);
             DoubleDownCommand = new CommandRelay(DoubleDown);
@@ -112,14 +115,15 @@ namespace Client.ViewModels
             }
         }
 
-        //public ROUND_RESULT UpdateTurn
-        //{ 
-        //    get => _isDealerTurn;
-        //    set
-        //    {
-        //        _updateTurn = value;
-        //    }
-        //}
+        public String ResultMessage
+        {
+            set
+            {
+                _resultMessage = value;
+                OnPropertyChanged();
+            }
+            get => _resultMessage;
+        }
 
         public void DealCardToPlayer(CardDto cardDto)
         {
@@ -170,7 +174,7 @@ namespace Client.ViewModels
                 {
                      Application.Current.Dispatcher.BeginInvoke(new Action(() =>
                      {
-                         _showResults?.Invoke();
+                         _showResults?.Invoke(ResultMessage);
                      }));
                 });
             }
@@ -247,6 +251,29 @@ namespace Client.ViewModels
 
             AllowDouble = false;
 
+        }
+
+        public void RoundResult(ROUND_RESULT result)
+        {
+            switch (result)
+            {
+                case ROUND_RESULT.WIN:
+                    ResultMessage = "You won the round!";
+                    break;
+
+                case ROUND_RESULT.LOSS:
+                    ResultMessage = "You lost the round :(";
+                    break;
+
+                case ROUND_RESULT.PUSH:
+                    ResultMessage = "You pushed.";
+                    break;
+
+                // Should never get this
+                case ROUND_RESULT.DEFAULT:
+                    ResultMessage = "Uh oh, bad things happened.";
+                    break;
+            }
         }
 
         public void Cleanup()

@@ -61,7 +61,7 @@ namespace Server.Networking
                     HasDoubled = false,
                     HasInsured = false,
                     ActionCount = 0,
-                    Balance = 999.99
+                    Balance = 1000
                 };
 
                 PlayerDto playerDto = new PlayerDto(player);

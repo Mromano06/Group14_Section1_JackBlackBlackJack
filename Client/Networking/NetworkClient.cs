@@ -38,6 +38,7 @@ namespace Client.Networking
         public event Action<ROUND_RESULT> RoundResultUpdate;
         public event Action<int> PlayerIndexUpdate;
         public double LatestPlayerMoney { get; private set; }
+        public ROUND_RESULT LatestRoundResult { get; private set; }
 
         // Queue to hold outgoing commands/messages (thread-safe)
         // will change from string to command object once command object is implemented
