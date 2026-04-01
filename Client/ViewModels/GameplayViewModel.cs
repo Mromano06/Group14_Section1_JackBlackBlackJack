@@ -237,14 +237,11 @@ namespace Client.ViewModels
 
             _client.Send(pkt.ToBytes());
 
-            Task.Delay(500).ContinueWith(_ =>  // 0.5 second delay
+            Application.Current.Dispatcher.BeginInvoke(new Action(() =>
             {
-                Application.Current.Dispatcher.BeginInvoke(new Action(() =>
-                {
-                    DealtPlayerCards.Clear();
-                    DealtDealerCards.Clear();
-                }));
-            });
+                DealtPlayerCards.Clear();
+                DealtDealerCards.Clear();
+            }));
 
             OnPropertyChanged();
 

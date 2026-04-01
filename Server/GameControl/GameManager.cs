@@ -151,10 +151,12 @@ namespace Server.GameControl
             }
 
             Debug.WriteLine($"Hit: {_player.Name}");
+            _OnLog($"[Hit]: {_player.Name}");
 
             // Check if bust
             if (HandHelper.IsBust(_player.Hand)) {
                 Debug.WriteLine($"Bust: {_player.Name}");
+                _OnLog($"[Bust]: {_player.Name}");
 
                 // If its the last player who has now busted then the dealer shall go
                 if (_player.Name == _game.Players[_game.MaxPlayers - 1].Name) {
@@ -187,6 +189,7 @@ namespace Server.GameControl
             }
 
             Debug.WriteLine($"Stand: {_player.Name}");
+            _OnLog($"[Stand] {_player.Name}");
 
             // If its the last player who has now stood then the dealer shall go
             if (_player.Name == _game.Players[_game.MaxPlayers - 1].Name) {
@@ -213,6 +216,7 @@ namespace Server.GameControl
             }
 
             Debug.WriteLine($"Double: {_player.Name}");
+            _OnLog($"[Double] {_player.Name}");
 
             // If its the last player who has now busted then the dealer shall go
             if (_player.Name == _game.Players[_game.MaxPlayers - 1].Name) {
@@ -237,7 +241,7 @@ namespace Server.GameControl
             }
 
             Debug.WriteLine($"Insure: {_player.Name}");
-
+            _OnLog($"[Insure] {_player.Name}");
             bool IsEndRound = false;
 
             ROUND_RESULT result = _game.RoundResult(_player);
