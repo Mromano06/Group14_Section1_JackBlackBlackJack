@@ -15,6 +15,7 @@ using SharedModels.Core;
 using Client.ViewModels;
 using System.Windows.Threading;
 using System.Windows.Media.Converters;
+using System.Security.RightsManagement;
 
 
 
@@ -34,6 +35,8 @@ namespace Client.Networking
         public event Action<double> PlayerMoneyUpdate;
         public event Action<double> PlayerBetUpdate;
         public event Action<bool> RoundCheckUpdate;
+        public event Action<ROUND_RESULT> RoundResultUpdate;
+        public event Action<int> PlayerIndexUpdate;
         public double LatestPlayerMoney { get; private set; }
 
         // Queue to hold outgoing commands/messages (thread-safe)
@@ -97,17 +100,19 @@ namespace Client.Networking
             /// TODO:
             /// parse message from server to handle message and update the UI
             /// Example: if message starts with "Player_Hit", update player state
-            
+
             Packet packet = Packet.FromBytes(data);
 
-            switch(packet.Type)
+            switch (packet.Type)
             {
                 //case SharedModels.Core.PacketType.Error: // Not sure what to do with Error yet.
                 // Player
-                case PacketType.Player: { 
+                case PacketType.Player:
+                    {
                         PlayerDto dto = PlayerSerializer.Deserialize(packet.Payload);
                         sendPlayerMoneyUpdate(dto);
-                        break; }
+                        break;
+                    }
 
                 //case player action
                 case PacketType.PlayerAction: { PlayerCommandDto dto = PlayerCommandSerializer.Deserialize(packet.Payload); break; }
@@ -116,10 +121,12 @@ namespace Client.Networking
                 case PacketType.StateUpdate: { GameStateDto dto = GameStateSerializer.Deserialize(packet.Payload); break; }
 
                 // GameUpdate
-                case PacketType.GameUpdate: { 
+                case PacketType.GameUpdate:
+                    {
                         GameUpdateDto dto = GameUpdateSerializer.Deserialize(packet.Payload);
-                        handleGameUpdateDto(dto); 
-                        break; }
+                        handleGameUpdateDto(dto);
+                        break;
+                    }
 
                 //Card Dealt
                 case PacketType.CardDealt: { CardDto dto = CardSerializer.Deserialize(packet.Payload); break; }
@@ -127,7 +134,7 @@ namespace Client.Networking
                 //Hand Dealt
                 case PacketType.HandDealt: { HandDto dto = HandSerializer.Deserialize(packet.Payload); break; }
 
-                //Join request
+                    //Join request
             }
 
         }
@@ -177,7 +184,7 @@ namespace Client.Networking
             try
             {
 
-                while (!cancellation.Token.IsCancellationRequested && IsConnected) 
+                while (!cancellation.Token.IsCancellationRequested && IsConnected)
                 {
                     int bytesRead = await stream.ReadAsync(buffer, 0, buffer.Length, cancellation.Token);
                     if (bytesRead == 0)
@@ -212,42 +219,58 @@ namespace Client.Networking
             client?.Close();
         }
 
-        public void handleGameUpdateDto(GameUpdateDto gameUpdateDto) {
+        public void handleGameUpdateDto(GameUpdateDto gameUpdateDto)
+        {
             // if player cards not null send them to UI
-            
-            
-            if (gameUpdateDto.Player.Hand != null) 
-            {
-                // send all cards in the update
-                for (int i = 0; i < gameUpdateDto.Player.CardCount; i++)
-                {
 
-                    CardDto cardDto = new CardDto();
-                    cardDto.Rank = gameUpdateDto.Player.Hand[i].Rank; // get the first card rank and suit
-                    cardDto.Suit = gameUpdateDto.Player.Hand[i].Suit;
-                    sendPlayerCardUpdate(cardDto);            
+            if (gameUpdateDto.ActionResult != false)
+            {
+
+                if (gameUpdateDto.Player.Hand != null)
+                {
+                    // send all cards in the update
+                    for (int i = 0; i < gameUpdateDto.Player.CardCount; i++)
+                    {
+
+                        CardDto cardDto = new CardDto();
+                        cardDto.Rank = gameUpdateDto.Player.Hand[i].Rank; // get the first card rank and suit
+                        cardDto.Suit = gameUpdateDto.Player.Hand[i].Suit;
+                        sendPlayerCardUpdate(cardDto);
+                    }
+                    Debug.WriteLine("Sending player cards to dispatcher");
                 }
-                Debug.WriteLine("Sending player cards to dispatcher");
+
+                // if dealer cards not null send them to UI
+                if (gameUpdateDto.DealerCards != null)
+                {
+                    // send all cards in the update
+                    for (int i = 0; i < gameUpdateDto.DealerCardCount; i++)
+                    {
+
+                        CardDto cardDto = new CardDto();
+                        cardDto.Rank = gameUpdateDto.DealerCards[i].Rank; // get the first card rank and suit
+                        cardDto.Suit = gameUpdateDto.DealerCards[i].Suit;
+                        sendDealerCardUpdate(cardDto);
+                    }
+                    Debug.WriteLine("Sending dealer cards to dispatcher");
+                }
+                sendPlayerBetUpdate(gameUpdateDto.Player.CurrentBet);
+                sendPlayerMoneyUpdate(gameUpdateDto.Player);
+                sendPlayerIndex(gameUpdateDto.CurrentPlayerIndex);
+
+
+                if (gameUpdateDto.IsEndRound)
+                {
+                    sendRoundResult(gameUpdateDto.RoundWin);
+                    sendRoundCheck(gameUpdateDto.IsEndRound);
+                }
+
+            }
+            else
+            {
+                Debug.WriteLine("Action result was false, not sending updates to dispatcher");
             }
 
-            // if dealer cards not null send them to UI
-            if (gameUpdateDto.DealerCards != null)
-            {
-                // send all cards in the update
-                for (int i = 0; i < gameUpdateDto.DealerCardCount; i++)
-                {
-
-                    CardDto cardDto = new CardDto();
-                    cardDto.Rank = gameUpdateDto.DealerCards[i].Rank; // get the first card rank and suit
-                    cardDto.Suit = gameUpdateDto.DealerCards[i].Suit;
-                    sendDealerCardUpdate(cardDto);
-                }
-                Debug.WriteLine("Sending dealer cards to dispatcher");
-            }
-            sendPlayerBetUpdate(gameUpdateDto.Player.CurrentBet);
-            sendPlayerMoneyUpdate(gameUpdateDto.Player);
-            sendRoundCheck(gameUpdateDto.IsEndRound);
-            
         }
 
         public void sendPlayerCardUpdate(CardDto cardDto)
@@ -273,15 +296,15 @@ namespace Client.Networking
             {
                 Debug.WriteLine("sending player balance to dispatcher");
                 LatestPlayerMoney = player.Balance;
-            // send player money to UI
-            PlayerMoneyUpdate?.Invoke(player.Balance);
+                // send player money to UI
+                PlayerMoneyUpdate?.Invoke(player.Balance);
             }
 
         }
 
         public void sendPlayerBetUpdate(double amount)
         {
-   
+
 
             if (amount >= 0)
             {
@@ -299,6 +322,19 @@ namespace Client.Networking
                 Debug.WriteLine("Sending round check");
                 RoundCheckUpdate?.Invoke(roundCheck);
             }
+        }
+
+        public void sendRoundResult(ROUND_RESULT result)
+        {
+            Debug.WriteLine("Sending round result");
+            RoundResultUpdate?.Invoke(result);
+        }
+
+        public void sendPlayerIndex(int index)
+        {
+            Debug.WriteLine("Sending player index: " + index);
+            // send player index to UI
+            PlayerIndexUpdate?.Invoke(index);
         }
     }
 }
