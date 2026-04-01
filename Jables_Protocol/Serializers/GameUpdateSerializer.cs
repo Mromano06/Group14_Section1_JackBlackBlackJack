@@ -84,8 +84,6 @@ namespace Jables_Protocol.Serializers
             dto.ActionResult = br.ReadBoolean();
             dto.RoundWin = (ROUND_RESULT)br.ReadByte();
 
-            dto = new GameUpdateDto();
-
             return dto;
         }
 
