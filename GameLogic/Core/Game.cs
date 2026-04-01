@@ -7,6 +7,14 @@ using GameLogic.Models;
 using SharedModels.Core;
 using SharedModels.Models;
 
+public enum ROUND_RESULT
+{
+    WIN,
+    LOSS,
+    PUSH,
+    DEFAULT
+}
+
 namespace GameLogic.Core {
     public class Game 
     {
@@ -91,8 +99,6 @@ namespace GameLogic.Core {
 
         public void Loss(Player player, int dealerValue)
         {
-            // The players balance is already decreased in the betting logic
-
             // Insurance detection
             if (player.HasInsured && dealerValue == 21) {
                 player.Balance += player.CurrentBet / InsurancePayoutRatio; // Regain original bet - insurance
@@ -107,7 +113,7 @@ namespace GameLogic.Core {
             player.Balance += player.CurrentBet;
         }
 
-        public void GameResult(Player player)
+        public ROUND_RESULT RoundResult(Player player)
         {
             Hand dealerHand = Dealer.Hand;
             int dealerValue = HandHelper.CalculateHandValue(dealerHand);
@@ -116,35 +122,62 @@ namespace GameLogic.Core {
             // Player busted
             if (HandHelper.IsBust(player.Hand)) {
                 Loss(player, dealerValue);
+
+                return ROUND_RESULT.LOSS;
             }
 
             // Dealer busted
             else if (HandHelper.IsBust(dealerHand)) {
-                Win(player);
+                return ROUND_RESULT.WIN;
             }
 
             // Neither busted
             else {
                 if (playerValue < dealerValue) {
-                    Loss(player, dealerValue);
+                    return ROUND_RESULT.LOSS;
                 }
 
                 else if (playerValue == dealerValue) {
-                    Push(player);
+                    return ROUND_RESULT.PUSH;
                 }
 
                 if (playerValue > dealerValue) {
-                    Win(player);
+                    return ROUND_RESULT.WIN;
                 }
+            }
+
+            return ROUND_RESULT.DEFAULT;
+        }
+
+        public void RoundResultUpdatePlayer(Player player, ROUND_RESULT roundResult, int dealerValue) {
+            switch (roundResult) {
+                case ROUND_RESULT.LOSS:
+                    Loss(player, dealerValue);
+                    break;
+
+                case ROUND_RESULT.WIN:
+                    Win(player);
+                    break;
+
+                case ROUND_RESULT.PUSH:
+                    Push(player);
+                    break;
+
+                default:
+                    return;
             }
         }
 
         public void EndRound()
         {
+            Hand dealerHand = Dealer.Hand;
+            int dealerValue = HandHelper.CalculateHandValue(dealerHand);
+
             GameState.TransitionTo(GameStateEnum.ENDROUND);
 
             foreach (Player player in Players) {
-                GameResult(player);
+                ROUND_RESULT roundResult = RoundResult(player);
+                RoundResultUpdatePlayer(player, roundResult, dealerValue);
             }
 
             // Reset the round to a base state
