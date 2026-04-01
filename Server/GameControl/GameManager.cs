@@ -162,11 +162,11 @@ namespace Server.GameControl
                 }
             }
 
-            SendGameUpdate(IsEndRound, _player);
-
             if (IsEndRound) {
                 _game.EndRound();
             }
+
+            SendGameUpdate(IsEndRound, _player);
         }
 
         private void ExecuteStand()
@@ -187,16 +187,14 @@ namespace Server.GameControl
                 DealerLogic.PlayTurn(_game);
             }
 
+            _game.EndRound();
             SendGameUpdate(IsEndRound, _player);
 
-            if (IsEndRound) {
-                _game.EndRound();
-            }
         }
 
         private void ExecuteDouble()
         {
-            bool IsEndRound = false;
+            bool IsEndRound = true;
             Double action = new Double(_player.Name);
             ActionResult actionResult = action.Execute(_game);
 
@@ -207,23 +205,13 @@ namespace Server.GameControl
 
             Debug.WriteLine($"Double: {_player.Name}");
 
-            // Check if bust
-            if (HandHelper.IsBust(_player.Hand)) {
-                Debug.WriteLine($"Bust: {_player.Name}");
-
-                // If its the last player who has now busted then the dealer shall go
-                if (_player.Name == _game.Players[_game.MaxPlayers - 1].Name) {
-                    DealerLogic.PlayTurn(_game);
-
-                    IsEndRound = true;
-                }
+            // If its the last player who has now busted then the dealer shall go
+            if (_player.Name == _game.Players[_game.MaxPlayers - 1].Name) {
+                DealerLogic.PlayTurn(_game);
             }
 
+            _game.EndRound();
             SendGameUpdate(IsEndRound, _player);
-
-            if (IsEndRound) {
-                _game.EndRound();
-            }
         }
 
         private void ExecuteInsure()

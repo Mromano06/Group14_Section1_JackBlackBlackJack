@@ -15,7 +15,7 @@
             </Grid.Background>
             <Canvas Background="Transparent">
                 <Rectangle Width="140" Height="37" Fill="White" HorizontalAlignment="Left" VerticalAlignment="Center" Stroke="Black" StrokeThickness="2" />
-                <Rectangle Width="118" Height="37" Fill="White" HorizontalAlignment="Left" VerticalAlignment="Center" Canvas.Left="140" Stroke="Black" StrokeThickness="2"/>
+                <Rectangle Width="134" Height="37" Fill="White" HorizontalAlignment="Left" VerticalAlignment="Center" Canvas.Left="140" Stroke="Black" StrokeThickness="2"/>
                 <Rectangle Canvas.Left="588" Canvas.Top="394" Width="124" Height="37" Fill="White" HorizontalAlignment="Left" VerticalAlignment="Center"/>
                 <Button x:Name="Hit" Width="50" Height="50" Canvas.Left="564" Command="{Binding HitCommand}"
                 Canvas.Top="454" FontSize="13" FontWeight="Bold" Content="Hit" HorizontalAlignment="Center" VerticalAlignment="Top"></Button>

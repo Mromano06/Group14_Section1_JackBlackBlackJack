@@ -35,14 +35,13 @@ namespace Client.ViewModels
         {
             _client = client;
             _showGame = showGame;
+            _playerMoney = _client.LatestPlayerMoney; // set backing field directly
             _client.PlayerMoneyUpdate += UpdatePlayerMoney;
             _client.PlayerBetUpdate += UpdateBetAmount;
             IncreaseBetCommand = new CommandRelay(IncBet);
             DecreaseBetCommand = new CommandRelay(DecBet);
             MaxBetCommand = new CommandRelay(MaxBet);
             ConfirmBetCommand = new CommandRelay(Confirm);
-            PlayerMoney = _client.LatestPlayerMoney;
-            UpdatePlayerMoney(_client.LatestPlayerMoney);
         }
 
         public double CurrentBet
@@ -86,7 +85,6 @@ namespace Client.ViewModels
         {
             CurrentBet = _playerMoney;
         }
-
         private void Confirm()
         {
             PlayerCommandDto cmd = new PlayerCommandDto();
@@ -115,7 +113,6 @@ namespace Client.ViewModels
             {
                 Debug.WriteLine($"updating the player's money to: {amount}");
                 PlayerMoney = amount;
-                OnPropertyChanged(nameof(PlayerMoney));
             }));
         }
 
@@ -125,13 +122,13 @@ namespace Client.ViewModels
             {
                 Debug.WriteLine($"updating the player's money to: {amount}");
                 CurrentBet = amount;
-                OnPropertyChanged(nameof(CurrentBet));
             }));
         }
 
         public void Cleanup()
         {
             _client.PlayerMoneyUpdate -= UpdatePlayerMoney;
+            _client.PlayerBetUpdate -= UpdateBetAmount;
         }
     }
 }

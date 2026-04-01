@@ -68,7 +68,7 @@ namespace Client.ViewModels
 
         public void ShowGame()
         {
-            CurrentViewModel = new GameplayViewModel(_client, ShowBetting);
+            CurrentViewModel = new GameplayViewModel(_client, ShowResults);
         }
 
         public void ShowBetting()
@@ -88,7 +88,7 @@ namespace Client.ViewModels
 
         public void ShowResults()
         {
-            CurrentViewModel = new ResultScreenViewModel(ShowBetting);
+            CurrentViewModel = new ResultScreenViewModel(_client, ShowBetting, ShowMenu);
         }
 
         public void betUpdate(double betAmount)

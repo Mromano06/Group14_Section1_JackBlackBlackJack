@@ -30,7 +30,8 @@ namespace Client.ViewModels
         private double _playerMoney;
         private bool _isFirstCard;
         private bool _allowDouble = true;
-        private readonly Action _showBetting;
+        private bool _roundHasEnded = false;
+        private readonly Action _showResults;
 
         public ObservableCollection<CardViewModel> DealtPlayerCards { get; } =
             new ObservableCollection<CardViewModel>();
@@ -43,10 +44,10 @@ namespace Client.ViewModels
 
         PlayerCommandSerializer _commandSerializer = new PlayerCommandSerializer();
 
-        public GameplayViewModel(NetworkClient client, Action ShowBetting)
+        public GameplayViewModel(NetworkClient client, Action ShowResults)
         {
             _client = client;
-            _showBetting = ShowBetting;
+            _showResults = ShowResults;
             _client.PlayerCardUpdate += DealCardToPlayer; // subscribe to dealing player cards
             _client.DealerCardUpdate += DealCardToDealer; // subscribe to dealing dealer cards
             _client.PlayerMoneyUpdate += UpdatePlayerMoney;
@@ -101,6 +102,16 @@ namespace Client.ViewModels
             }
         }
 
+        public bool RoundHasEnded
+        {
+            get => _roundHasEnded;
+            set
+            {
+                _roundHasEnded = value;
+                OnPropertyChanged(nameof(RoundHasEnded));
+            }
+        }
+
         public void DealCardToPlayer(CardDto cardDto)
         {
             Application.Current.Dispatcher.BeginInvoke(new Action(() =>
@@ -144,10 +155,15 @@ namespace Client.ViewModels
         {
             if (check)
             {
-                Application.Current.Dispatcher.BeginInvoke(new Action(() =>
+                RoundHasEnded = false;
+                AllowDouble = true;
+                Task.Delay(1000).ContinueWith(_ =>  // 2 second delay
                 {
-                    _showBetting?.Invoke();
-                }));
+                     Application.Current.Dispatcher.BeginInvoke(new Action(() =>
+                     {
+                         _showResults?.Invoke();
+                     }));
+                });
             }
         }
 
@@ -169,7 +185,6 @@ namespace Client.ViewModels
             {
                 DealtPlayerCards.Clear();
                 DealtDealerCards.Clear();
-                IsFirstCard = true;
             }));
         }
 
@@ -218,6 +233,7 @@ namespace Client.ViewModels
             OnPropertyChanged();
 
             AllowDouble = false;
+
         }
 
         public void Cleanup()
