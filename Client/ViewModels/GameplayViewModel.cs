@@ -157,7 +157,7 @@ namespace Client.ViewModels
             {
                 RoundHasEnded = false;
                 AllowDouble = true;
-                Task.Delay(1000).ContinueWith(_ =>  // 2 second delay
+                Task.Delay(1000).ContinueWith(_ =>  // 1 second delay
                 {
                      Application.Current.Dispatcher.BeginInvoke(new Action(() =>
                      {
@@ -224,11 +224,15 @@ namespace Client.ViewModels
 
             _client.Send(pkt.ToBytes());
 
-            Application.Current.Dispatcher.BeginInvoke(new Action(() =>
+            Task.Delay(500).ContinueWith(_ =>  // 0.5 second delay
             {
-                DealtPlayerCards.Clear();
-                DealtDealerCards.Clear();
-            }));
+                Application.Current.Dispatcher.BeginInvoke(new Action(() =>
+                {
+                    DealtPlayerCards.Clear();
+                    DealtDealerCards.Clear();
+                }));
+            });
+            
 
             OnPropertyChanged();
 
