@@ -27,6 +27,7 @@ namespace Client.ViewModels
             _resultMessage = "Waiting for round result..."; // Default until a message is recieved
             ContinueCommand = new CommandRelay(Continue);
             MainMenuCommand = new CommandRelay(MainMenu);
+            _client.RoundResultUpdate += RoundResult;
         }
 
         public String ResultMessage
@@ -53,6 +54,29 @@ namespace Client.ViewModels
             {
                 _showBetting?.Invoke();
             }));
+        }
+
+        public void RoundResult(ROUND_RESULT result)
+        {
+            switch (result)
+            {
+                case ROUND_RESULT.WIN:
+                    ResultMessage = "You won the round!";
+                    break;
+
+                case ROUND_RESULT.LOSS:
+                    ResultMessage = "You lost the round :(";
+                    break;
+
+                case ROUND_RESULT.PUSH:
+                    ResultMessage = "You pushed.";
+                    break;
+
+                // Should never get this
+                case ROUND_RESULT.DEFAULT:
+                    ResultMessage = "Uh oh, bad things happened.";
+                    break;
+            }
         }
 
         // TODO: Update the result message based on the result

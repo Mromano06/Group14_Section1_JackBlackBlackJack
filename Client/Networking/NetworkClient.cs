@@ -223,7 +223,7 @@ namespace Client.Networking
         {
             // if player cards not null send them to UI
 
-            if (gameUpdateDto.ActionResult != false)
+            if (gameUpdateDto.ActionResult == true)
             {
 
                 if (gameUpdateDto.Player.Hand != null)

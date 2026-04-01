@@ -112,6 +112,15 @@ namespace Client.ViewModels
             }
         }
 
+        //public ROUND_RESULT UpdateTurn
+        //{ 
+        //    get => _isDealerTurn;
+        //    set
+        //    {
+        //        _updateTurn = value;
+        //    }
+        //}
+
         public void DealCardToPlayer(CardDto cardDto)
         {
             Application.Current.Dispatcher.BeginInvoke(new Action(() =>

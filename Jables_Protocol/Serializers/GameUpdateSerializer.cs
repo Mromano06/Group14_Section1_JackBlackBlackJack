@@ -43,7 +43,7 @@ namespace Jables_Protocol.Serializers
 
             bw.Write(dto.ActionResult);
 
-            bw.Write(dto.RoundWin);
+            bw.Write((byte)dto.RoundWin);
 
             return ms.ToArray();
         }

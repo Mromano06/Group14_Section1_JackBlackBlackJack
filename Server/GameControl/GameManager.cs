@@ -134,7 +134,7 @@ namespace Server.GameControl
                 DealerLogic.DealInitialCards(_game);
             }
 
-            SendGameUpdate(IsEndRound, _player);
+            SendGameUpdate(IsEndRound, _player, actionResult.Success, _game.RoundResult(_player));
         }
 
         private void ExecuteHit()
@@ -166,7 +166,7 @@ namespace Server.GameControl
                 _game.EndRound();
             }
 
-            SendGameUpdate(IsEndRound, _player);
+            SendGameUpdate(IsEndRound, _player, actionResult.Success, _game.RoundResult(_player));
         }
 
         private void ExecuteStand()
@@ -188,7 +188,7 @@ namespace Server.GameControl
             }
 
             _game.EndRound();
-            SendGameUpdate(IsEndRound, _player);
+            SendGameUpdate(IsEndRound, _player, actionResult.Success, _game.RoundResult(_player));
 
         }
 
@@ -211,7 +211,7 @@ namespace Server.GameControl
             }
 
             _game.EndRound();
-            SendGameUpdate(IsEndRound, _player);
+            SendGameUpdate(IsEndRound, _player, actionResult.Success, _game.RoundResult(_player));
         }
 
         private void ExecuteInsure()
@@ -228,10 +228,10 @@ namespace Server.GameControl
 
             bool IsEndRound = false;
 
-            SendGameUpdate(IsEndRound, _player);
+            SendGameUpdate(IsEndRound, _player, actionResult.Success, _game.RoundResult(_player));
         }
 
-        private void SendGameUpdate(bool IsEndRound, Player player)
+        private void SendGameUpdate(bool IsEndRound, Player player, bool actionResult, ROUND_RESULT roundWin)
         {
             List<CardDto> dealerCards = new List<CardDto>();
             PlayerDto playerDto = new PlayerDto(player);
@@ -255,7 +255,10 @@ namespace Server.GameControl
                 DealerCardCount = HandHelper.CardCount(_game.Dealer.Hand),
                 DealerCards = dealerCards,
 
-                CurrentPlayerIndex = _game.CurrentPlayerIndex
+                CurrentPlayerIndex = _game.CurrentPlayerIndex,
+
+                ActionResult = actionResult,
+                RoundWin = roundWin
             };
 
             SendPacket(PacketType.GameUpdate, _gameUpdateSerializer.Serialize(dto));
