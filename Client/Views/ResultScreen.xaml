@@ -1,0 +1,27 @@
+﻿<UserControl x:Class="Client.Views.ResultScreen"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006">
+    <Viewbox Stretch="Uniform">
+        <Grid Width="1300" Height="720">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="41*"/>
+                <ColumnDefinition Width="89*"/>
+            </Grid.ColumnDefinitions>
+            <Grid.Background>
+                <ImageBrush
+                    ImageSource="/Assets/Gameboard.jpg"
+                    Stretch="Fill" />
+            </Grid.Background>
+            <Canvas Background="Transparent" Grid.ColumnSpan="2">
+                <Rectangle Canvas.Left="560" Canvas.Top="375" Width="180" Height="37" Fill="White" HorizontalAlignment="Center" VerticalAlignment="Top"/>
+                <TextBlock Name="Balance" FontSize="14" Text="{Binding ResultMessage}" Canvas.Left="580" Canvas.Top="385" HorizontalAlignment="Center" VerticalAlignment="Top"/>
+                <Button x:Name="Continue" Width="80" Height="50" FontSize="12" Command="{Binding ContinueCommand}"
+                    FontWeight="Bold" Content="Play Again" Canvas.Left="654" Canvas.Top="417" HorizontalAlignment="Left" VerticalAlignment="Center"/>
+                <Button x:Name="MainMenu" Width="80" Height="50" FontSize="12" Command="{Binding MainMenuCommand}"
+                    FontWeight="Bold" Content="Main Menu" Canvas.Left="565" Canvas.Top="417" HorizontalAlignment="Left" VerticalAlignment="Center"/>
+            </Canvas>
+        </Grid>
+    </Viewbox>
+</UserControl>

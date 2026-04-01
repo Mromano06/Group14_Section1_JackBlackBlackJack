@@ -21,7 +21,7 @@ namespace Client.ViewModels
     public class BetPlacingViewModel : BaseModel
     {
         private readonly NetworkClient _client;
-        private readonly Action<double, double> _showGame;
+        private readonly Action _showGame;
         private double _playerMoney;
         private double _currentBet;
         private readonly PlayerCommandSerializer _commandSerializer = new PlayerCommandSerializer();
@@ -31,17 +31,17 @@ namespace Client.ViewModels
         public ICommand MaxBetCommand { get; }
         public ICommand ConfirmBetCommand { get; }
 
-        public BetPlacingViewModel(NetworkClient client, Action<double, double> showGame)
+        public BetPlacingViewModel(NetworkClient client, Action showGame)
         {
             _client = client;
             _showGame = showGame;
+            _playerMoney = _client.LatestPlayerMoney; // set backing field directly
             _client.PlayerMoneyUpdate += UpdatePlayerMoney;
+            _client.PlayerBetUpdate += UpdateBetAmount;
             IncreaseBetCommand = new CommandRelay(IncBet);
             DecreaseBetCommand = new CommandRelay(DecBet);
             MaxBetCommand = new CommandRelay(MaxBet);
             ConfirmBetCommand = new CommandRelay(Confirm);
-            PlayerMoney = _client.LatestPlayerMoney;
-            UpdatePlayerMoney(_client.LatestPlayerMoney);
         }
 
         public double CurrentBet
@@ -85,7 +85,6 @@ namespace Client.ViewModels
         {
             CurrentBet = _playerMoney;
         }
-
         private void Confirm()
         {
             PlayerCommandDto cmd = new PlayerCommandDto();
@@ -104,7 +103,7 @@ namespace Client.ViewModels
             byte[] bytesToSend = packetToSend.ToBytes();
 
             _client.Send(bytesToSend);
-            _showGame?.Invoke(CurrentBet, PlayerMoney);
+            _showGame?.Invoke();
 
         }
 
@@ -114,13 +113,22 @@ namespace Client.ViewModels
             {
                 Debug.WriteLine($"updating the player's money to: {amount}");
                 PlayerMoney = amount;
-               // OnPropertyChanged(nameof(PlayerMoney));
+            }));
+        }
+
+        private void UpdateBetAmount(double amount)
+        {
+            Application.Current.Dispatcher.BeginInvoke(new Action(() =>
+            {
+                Debug.WriteLine($"updating the player's money to: {amount}");
+                CurrentBet = amount;
             }));
         }
 
         public void Cleanup()
         {
             _client.PlayerMoneyUpdate -= UpdatePlayerMoney;
+            _client.PlayerBetUpdate -= UpdateBetAmount;
         }
     }
 }
