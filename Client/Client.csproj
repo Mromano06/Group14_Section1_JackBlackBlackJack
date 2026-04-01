@@ -136,6 +136,9 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Compile Update="Views\ResultScreen.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Update="Views\BetPlacingWindow.xaml.cs">
       <SubType>Code</SubType>
     </Compile>

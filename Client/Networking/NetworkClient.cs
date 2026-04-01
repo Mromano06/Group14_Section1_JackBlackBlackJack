@@ -14,6 +14,7 @@ using Jables_Protocol.DTOs;
 using SharedModels.Core;
 using Client.ViewModels;
 using System.Windows.Threading;
+using System.Windows.Media.Converters;
 
 
 
@@ -32,6 +33,8 @@ namespace Client.Networking
         public event Action<CardDto> DealerCardUpdate;
         public event Action<double> PlayerMoneyUpdate;
         public event Action<double> PlayerBetUpdate;
+        public event Action<bool> RoundCheckUpdate;
+        public double LatestPlayerMoney { get; private set; }
 
         // Queue to hold outgoing commands/messages (thread-safe)
         // will change from string to command object once command object is implemented
@@ -213,15 +216,15 @@ namespace Client.Networking
             // if player cards not null send them to UI
             
             
-            if (gameUpdateDto.Cards != null) 
+            if (gameUpdateDto.Player.Hand != null) 
             {
                 // send all cards in the update
-                for (int i = 0; i < gameUpdateDto.CardCount; i++)
+                for (int i = 0; i < gameUpdateDto.Player.CardCount; i++)
                 {
 
                     CardDto cardDto = new CardDto();
-                    cardDto.Rank = gameUpdateDto.Cards[i].Rank; // get the first card rank and suit
-                    cardDto.Suit = gameUpdateDto.Cards[i].Suit;
+                    cardDto.Rank = gameUpdateDto.Player.Hand[i].Rank; // get the first card rank and suit
+                    cardDto.Suit = gameUpdateDto.Player.Hand[i].Suit;
                     sendPlayerCardUpdate(cardDto);            
                 }
                 Debug.WriteLine("Sending player cards to dispatcher");
@@ -241,10 +244,10 @@ namespace Client.Networking
                 }
                 Debug.WriteLine("Sending dealer cards to dispatcher");
             }
-
-            sendPlayerBetUpdate(gameUpdateDto.BetSize);
-
-
+            sendPlayerBetUpdate(gameUpdateDto.Player.CurrentBet);
+            sendPlayerMoneyUpdate(gameUpdateDto.Player);
+            sendRoundCheck(gameUpdateDto.IsEndRound);
+            
         }
 
         public void sendPlayerCardUpdate(CardDto cardDto)
@@ -269,6 +272,7 @@ namespace Client.Networking
             if (player.Balance >= 0)
             {
                 Debug.WriteLine("sending player balance to dispatcher");
+                LatestPlayerMoney = player.Balance;
             // send player money to UI
             PlayerMoneyUpdate?.Invoke(player.Balance);
             }
@@ -286,6 +290,15 @@ namespace Client.Networking
                 PlayerBetUpdate?.Invoke(amount);
             }
 
+        }
+
+        public void sendRoundCheck(bool roundCheck)
+        {
+            if (roundCheck)
+            {
+                Debug.WriteLine("Sending round check");
+                RoundCheckUpdate?.Invoke(roundCheck);
+            }
         }
     }
 }

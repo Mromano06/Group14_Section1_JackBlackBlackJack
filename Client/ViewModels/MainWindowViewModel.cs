@@ -66,11 +66,9 @@ namespace Client.ViewModels
             }
         }
 
-        // TODO: Link Dispatcher to each of these functions
-        public void ShowGame(double betAmount, double playerMoney)
+        public void ShowGame()
         {
-            playerMoney -= betAmount; // temp saving to display on the main gameplay window
-            CurrentViewModel = new GameplayViewModel(_client, betAmount, playerMoney);
+            CurrentViewModel = new GameplayViewModel(_client, ShowResults);
         }
 
         public void ShowBetting()
@@ -88,5 +86,19 @@ namespace Client.ViewModels
             CurrentViewModel = new RulesViewModel(ShowMenu);
         }
 
+        public void ShowResults()
+        {
+            CurrentViewModel = new ResultScreenViewModel(_client, ShowBetting, ShowMenu);
+        }
+
+        public void betUpdate(double betAmount)
+        {
+            LatestBet = betAmount;
+        }
+
+        public void moneyUpdate(double money)
+        {
+            PlayerMoney = money;
+        }
     }
 }

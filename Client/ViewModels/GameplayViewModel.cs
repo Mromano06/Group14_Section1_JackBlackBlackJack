@@ -30,6 +30,8 @@ namespace Client.ViewModels
         private double _playerMoney;
         private bool _isFirstCard;
         private bool _allowDouble = true;
+        private bool _roundHasEnded = false;
+        private readonly Action _showResults;
 
         public ObservableCollection<CardViewModel> DealtPlayerCards { get; } =
             new ObservableCollection<CardViewModel>();
@@ -42,15 +44,15 @@ namespace Client.ViewModels
 
         PlayerCommandSerializer _commandSerializer = new PlayerCommandSerializer();
 
-        public GameplayViewModel(NetworkClient client, double betAmount, double playerMoney)
+        public GameplayViewModel(NetworkClient client, Action ShowResults)
         {
-            _betAmount = betAmount;
-            _playerMoney = playerMoney;
             _client = client;
+            _showResults = ShowResults;
             _client.PlayerCardUpdate += DealCardToPlayer; // subscribe to dealing player cards
             _client.DealerCardUpdate += DealCardToDealer; // subscribe to dealing dealer cards
             _client.PlayerMoneyUpdate += UpdatePlayerMoney;
             _client.PlayerBetUpdate += UpdateBetAmount;
+            _client.RoundCheckUpdate += UpdateRound;
             HitCommand = new CommandRelay(Hit);
             StandCommand = new CommandRelay(Stand);
             DoubleDownCommand = new CommandRelay(DoubleDown);
@@ -100,6 +102,16 @@ namespace Client.ViewModels
             }
         }
 
+        public bool RoundHasEnded
+        {
+            get => _roundHasEnded;
+            set
+            {
+                _roundHasEnded = value;
+                OnPropertyChanged(nameof(RoundHasEnded));
+            }
+        }
+
         public void DealCardToPlayer(CardDto cardDto)
         {
             Application.Current.Dispatcher.BeginInvoke(new Action(() =>
@@ -139,6 +151,22 @@ namespace Client.ViewModels
             }));
         }
 
+        private void UpdateRound(bool check)
+        {
+            if (check)
+            {
+                RoundHasEnded = false;
+                AllowDouble = true;
+                Task.Delay(1000).ContinueWith(_ =>  // 1 second delay
+                {
+                     Application.Current.Dispatcher.BeginInvoke(new Action(() =>
+                     {
+                         _showResults?.Invoke();
+                     }));
+                });
+            }
+        }
+
         private void Hit()
         {
             PlayerCommandDto playerCommandDto = new PlayerCommandDto();
@@ -157,7 +185,6 @@ namespace Client.ViewModels
             {
                 DealtPlayerCards.Clear();
                 DealtDealerCards.Clear();
-                IsFirstCard = true;
             }));
         }
 
@@ -197,15 +224,20 @@ namespace Client.ViewModels
 
             _client.Send(pkt.ToBytes());
 
-            Application.Current.Dispatcher.BeginInvoke(new Action(() =>
+            Task.Delay(500).ContinueWith(_ =>  // 0.5 second delay
             {
-                DealtPlayerCards.Clear();
-                DealtDealerCards.Clear();
-            }));
+                Application.Current.Dispatcher.BeginInvoke(new Action(() =>
+                {
+                    DealtPlayerCards.Clear();
+                    DealtDealerCards.Clear();
+                }));
+            });
+            
 
             OnPropertyChanged();
 
             AllowDouble = false;
+
         }
 
         public void Cleanup()
@@ -215,6 +247,7 @@ namespace Client.ViewModels
             _client.DealerCardUpdate -= DealCardToDealer;
             _client.PlayerMoneyUpdate -= UpdatePlayerMoney;
             _client.PlayerBetUpdate -= UpdateBetAmount;
+            _client.RoundCheckUpdate -= UpdateRound;
         }
 
     }

@@ -16,6 +16,8 @@ using System.Diagnostics;
 using System.Runtime.Serialization;
 using System.Security.Policy;
 using System.Text;
+using System.Xml.Linq;
+
 
 // Must be strictly defined as it can be "ambigous" with the primitive double 
 using Double = GameLogic.Actions.ActionTypes.Double;
@@ -31,9 +33,6 @@ namespace Server.GameControl
 
         // serializers
         private readonly GameUpdateSerializer _gameUpdateSerializer = new GameUpdateSerializer();
-        private readonly PlayerCommandSerializer _commandSerializer = new PlayerCommandSerializer();
-        private readonly PlayerSerializer _playerSerializer = new PlayerSerializer();
-        private readonly CardSerializer _cardSerializer = new CardSerializer();
         private readonly Action<string> _OnLog;
 
         public GameManager(ClientConnection connection, Action<string> OnLog)
@@ -135,7 +134,7 @@ namespace Server.GameControl
                 DealerLogic.DealInitialCards(_game);
             }
 
-            SendGameUpdate(IsEndRound);
+            SendGameUpdate(IsEndRound, _player);
         }
 
         private void ExecuteHit()
@@ -163,11 +162,11 @@ namespace Server.GameControl
                 }
             }
 
-            SendGameUpdate(IsEndRound);
-
             if (IsEndRound) {
                 _game.EndRound();
             }
+
+            SendGameUpdate(IsEndRound, _player);
         }
 
         private void ExecuteStand()
@@ -188,16 +187,14 @@ namespace Server.GameControl
                 DealerLogic.PlayTurn(_game);
             }
 
-            SendGameUpdate(IsEndRound);
+            _game.EndRound();
+            SendGameUpdate(IsEndRound, _player);
 
-            if (IsEndRound) {
-                _game.EndRound();
-            }
         }
 
         private void ExecuteDouble()
         {
-            bool IsEndRound = false;
+            bool IsEndRound = true;
             Double action = new Double(_player.Name);
             ActionResult actionResult = action.Execute(_game);
 
@@ -208,23 +205,13 @@ namespace Server.GameControl
 
             Debug.WriteLine($"Double: {_player.Name}");
 
-            // Check if bust
-            if (HandHelper.IsBust(_player.Hand)) {
-                Debug.WriteLine($"Bust: {_player.Name}");
-
-                // If its the last player who has now busted then the dealer shall go
-                if (_player.Name == _game.Players[_game.MaxPlayers - 1].Name) {
-                    DealerLogic.PlayTurn(_game);
-
-                    IsEndRound = true;
-                }
+            // If its the last player who has now busted then the dealer shall go
+            if (_player.Name == _game.Players[_game.MaxPlayers - 1].Name) {
+                DealerLogic.PlayTurn(_game);
             }
 
-            SendGameUpdate(IsEndRound);
-
-            if (IsEndRound) {
-                _game.EndRound();
-            }
+            _game.EndRound();
+            SendGameUpdate(IsEndRound, _player);
         }
 
         private void ExecuteInsure()
@@ -241,22 +228,13 @@ namespace Server.GameControl
 
             bool IsEndRound = false;
 
-            SendGameUpdate(IsEndRound);
+            SendGameUpdate(IsEndRound, _player);
         }
 
-        private void SendGameUpdate(bool IsEndRound)
+        private void SendGameUpdate(bool IsEndRound, Player player)
         {
-            List<CardDto> cards = new List<CardDto>();
             List<CardDto> dealerCards = new List<CardDto>();
-
-            foreach (Card card in _player.Hand.Cards) {
-                CardDto cardDto = new CardDto() {
-                    Rank = card.Rank,
-                    Suit = card.Suit,
-                };
-
-                cards.Add(cardDto);
-            }/// Object reference not set to an instance on an object
+            PlayerDto playerDto = new PlayerDto(player);
 
             foreach (Card card in _game.Dealer.Hand.Cards) {
                 CardDto cardDto = new CardDto() {
@@ -268,14 +246,9 @@ namespace Server.GameControl
             }
 
             GameUpdateDto dto = new GameUpdateDto() {
-                BetSize = _player.CurrentBet,
-
-                PlayerBalance = _player.Balance,
+                Player = playerDto,
 
                 IsEndRound = IsEndRound,
-
-                CardCount = HandHelper.CardCount(_player.Hand),
-                Cards = cards,
 
                 GameState = _game.GameState.State,
 

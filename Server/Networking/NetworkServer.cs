@@ -54,15 +54,17 @@ namespace Server.Networking
 
                 _clients[connection] = _session; // add connection to pool
 
-                PlayerDto playerDto = new PlayerDto();
-                playerDto.Name = "Evan Travis";
-                playerDto.CardCount = 0;
-                playerDto.Hand = null;
-                playerDto.CurrentBet = 0;
-                playerDto.HasDoubled = false;
-                playerDto.HasInsured = false;
-                playerDto.ActionCount = 0;
-                playerDto.Balance = 999.99;
+                // DO NOT SET THE HAND OR YOU WILL BREAK EVERYTHING
+                Player player = new Player() {
+                    Name = "Brodie Arkell",
+                    CurrentBet = 0,
+                    HasDoubled = false,
+                    HasInsured = false,
+                    ActionCount = 0,
+                    Balance = 999.99
+                };
+
+                PlayerDto playerDto = new PlayerDto(player);
 
                 Debug.WriteLine("Attempted to send player to client");
                 Log("Send Player Initialization");
