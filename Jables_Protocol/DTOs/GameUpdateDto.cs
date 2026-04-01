@@ -14,5 +14,7 @@ namespace Jables_Protocol.DTOs
         public int DealerCardCount {  get; set; }
         public List<CardDto>? DealerCards { get; set; }
         public int CurrentPlayerIndex { get; set; }
+        public bool ActionResult { get; set; }
+        public ROUND_RESULT RoundWin { get; set; }
     }
 }

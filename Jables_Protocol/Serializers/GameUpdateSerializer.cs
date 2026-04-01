@@ -41,6 +41,10 @@ namespace Jables_Protocol.Serializers
             // Player index
             bw.Write(dto.CurrentPlayerIndex);
 
+            bw.Write(dto.ActionResult);
+
+            bw.Write(dto.RoundWin);
+
             return ms.ToArray();
         }
 
@@ -76,6 +80,11 @@ namespace Jables_Protocol.Serializers
             }
 
             dto.CurrentPlayerIndex = br.ReadInt32();
+
+            dto.ActionResult = br.ReadBoolean();
+            dto.RoundWin = (ROUND_RESULT)br.ReadByte();
+
+            dto = new GameUpdateDto();
 
             return dto;
         }
