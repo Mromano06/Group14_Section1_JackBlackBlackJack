@@ -14,17 +14,19 @@ namespace Client.ViewModels
     public class ResultScreenViewModel : BaseModel
     {
         private readonly Action _showBetting;
+        private readonly Action _showMainMenu;
         private readonly NetworkClient _client;
         private String _resultMessage;
 
         public ICommand ContinueCommand { get; }
         public ICommand MainMenuCommand { get; }
 
-        public ResultScreenViewModel(NetworkClient client, Action ShowBetting, Action ShowMainMenu)
+        public ResultScreenViewModel(NetworkClient client, Action ShowBetting, Action ShowMainMenu, String resultMessage)
         {
             _client = client;
             _showBetting = ShowBetting;
-            _resultMessage = "Waiting for round result..."; // Default until a message is recieved
+            _showMainMenu = ShowMainMenu;
+            _resultMessage = resultMessage;
             ContinueCommand = new CommandRelay(Continue);
             MainMenuCommand = new CommandRelay(MainMenu);
         }
@@ -51,11 +53,9 @@ namespace Client.ViewModels
         {
             Application.Current.Dispatcher.BeginInvoke(new Action(() =>
             {
-                _showBetting?.Invoke();
+                _showMainMenu?.Invoke();
             }));
         }
-
-        // TODO: Update the result message based on the result
 
     }
 }
