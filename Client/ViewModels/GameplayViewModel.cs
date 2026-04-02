@@ -15,6 +15,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Threading;
+using System.Threading.Tasks;
 
 
 // Matthew Romano & Brodie Arkell - March 12th, 2026 - GamplayViewModel Implementation
@@ -30,6 +31,7 @@ namespace Client.ViewModels
         private double _playerMoney;
         private bool _isFirstCard;
         private bool _allowDouble = true;
+        private bool _isFirstTurn = true;
         private bool _roundHasEnded = false;
         private String _resultMessage;
         private readonly Action<String> _showResults;
@@ -115,6 +117,15 @@ namespace Client.ViewModels
             }
         }
 
+        public bool IsFirstTurn
+        {
+            get => _isFirstTurn;
+            set
+            {
+                _isFirstTurn = false;
+            }
+        }
+
         public String ResultMessage
         {
             set
@@ -127,7 +138,7 @@ namespace Client.ViewModels
 
         public void DealCardToPlayer(CardDto cardDto)
         {
-            Application.Current.Dispatcher.BeginInvoke(new Action(() =>
+            _ = Application.Current.Dispatcher.BeginInvoke(new Action(() =>
             {
                 Debug.WriteLine($"Attempting to deal card to player {cardDto.Rank}{cardDto.Suit}");
                 DealtPlayerCards.Add(new CardViewModel(cardDto));
@@ -135,9 +146,9 @@ namespace Client.ViewModels
 
         }
 
-        public void DealCardToDealer(CardDto cardDto)
+        public async void DealCardToDealer(CardDto cardDto)
         {
-            Application.Current.Dispatcher.BeginInvoke(new Action(() =>
+            _ = Application.Current.Dispatcher.BeginInvoke(new Action(() =>
             {
                 Debug.WriteLine($"Attempting to deal card to dealer {cardDto.Rank}{cardDto.Suit}");
                 DealtDealerCards.Add(new CardViewModel(cardDto));
@@ -170,7 +181,7 @@ namespace Client.ViewModels
             {
                 RoundHasEnded = false;
                 AllowDouble = true;
-                Task.Delay(250).ContinueWith(_ =>  // 1 second delay
+                Task.Delay(2000).ContinueWith(_ =>
                 {
                      Application.Current.Dispatcher.BeginInvoke(new Action(() =>
                      {
@@ -182,6 +193,7 @@ namespace Client.ViewModels
 
         private void Hit()
         {
+            IsFirstTurn = false;
             PlayerCommandDto playerCommandDto = new PlayerCommandDto();
             playerCommandDto.Action = PlayerAction.Hit;
             playerCommandDto.BetAmount = 0;
@@ -203,6 +215,7 @@ namespace Client.ViewModels
 
         private void Stand()
         {
+            IsFirstTurn = false;
             // End turn
             PlayerCommandDto playerCommandDto = new PlayerCommandDto();
             playerCommandDto.Action = PlayerAction.Stand;
@@ -224,6 +237,9 @@ namespace Client.ViewModels
 
         private void DoubleDown()
         {
+            if (!IsFirstTurn) { return; }
+
+            IsFirstTurn = false;
             // End turn
             PlayerCommandDto playerCommandDto = new PlayerCommandDto();
             playerCommandDto.Action = PlayerAction.Double;
