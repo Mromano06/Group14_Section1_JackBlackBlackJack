@@ -86,9 +86,9 @@ namespace Client.ViewModels
             CurrentViewModel = new RulesViewModel(ShowMenu);
         }
 
-        public void ShowResults()
+        public void ShowResults(String resultMessage)
         {
-            CurrentViewModel = new ResultScreenViewModel(_client, ShowBetting, ShowMenu);
+            CurrentViewModel = new ResultScreenViewModel(_client, ShowBetting, ShowMenu, resultMessage);
         }
 
         public void betUpdate(double betAmount)

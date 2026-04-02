@@ -121,8 +121,6 @@ namespace GameLogic.Core {
 
             // Player busted
             if (HandHelper.IsBust(player.Hand)) {
-                Loss(player, dealerValue);
-
                 return ROUND_RESULT.LOSS;
             }
 
