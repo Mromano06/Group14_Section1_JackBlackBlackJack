@@ -6,6 +6,7 @@
         xmlns:vm="clr-namespace:Client.ViewModels"
         mc:Ignorable="d"
         d:DataContext="{d:DesignInstance Type=vm:GameplayViewModel}">
+
     <Viewbox Stretch="Uniform">
         <Grid Width="1300" Height="720">
             <Grid.Background>
@@ -27,36 +28,46 @@
                 <TextBlock Name="Balance" FontSize="14" Text="{Binding PlayerMoney, StringFormat=Balance: ${0}}" Canvas.Left="16" Canvas.Top="9" HorizontalAlignment="Left" VerticalAlignment="Center"/>
                 <TextBlock Name="Bet" FontSize="14" Text="{Binding BetAmount, StringFormat=Current Bet: ${0}}" Canvas.Left="149" Canvas.Top="9" HorizontalAlignment="Left" VerticalAlignment="Center"/>
 
-                <ItemsControl ItemsSource="{Binding DealtDealerCards}" Canvas.Left="457"
-              Canvas.Top="51"
+                <ItemsControl ItemsSource="{Binding DealtPlayerCards}"
+              Canvas.Top="526"
               Width="394"
-              Height="137" HorizontalAlignment="Left" VerticalAlignment="Center">
+              Height="138"
+              HorizontalAlignment="Left" Canvas.Left="582" VerticalAlignment="Center">
+
                     <ItemsControl.ItemsPanel>
                         <ItemsPanelTemplate>
-                            <StackPanel Orientation="Horizontal" />
+                            <StackPanel Orientation="Horizontal"/>
                         </ItemsPanelTemplate>
                     </ItemsControl.ItemsPanel>
 
                     <ItemsControl.ItemTemplate>
                         <DataTemplate>
-                            <Image Source="{Binding CardImagePath}" Width="85" Height="128" Margin="4"/>
+                            <Image Source="{Binding CardImagePath}"
+                   Width="85"
+                   Height="128"
+                   Margin="0,0,-45,0"/>
                         </DataTemplate>
                     </ItemsControl.ItemTemplate>
                 </ItemsControl>
 
-                <ItemsControl ItemsSource="{Binding DealtPlayerCards}" Canvas.Left="457"
-              Canvas.Top="528"
-              Width="394"
-              Height="137" HorizontalAlignment="Left" VerticalAlignment="Center">
+                <ItemsControl ItemsSource="{Binding DealtDealerCards}"
+                    Canvas.Top="50"
+                    Width="394"
+                    Height="138"
+                    HorizontalAlignment="Left" Canvas.Left="582" VerticalAlignment="Center">
+
                     <ItemsControl.ItemsPanel>
                         <ItemsPanelTemplate>
-                            <StackPanel Orientation="Horizontal" />
+                            <StackPanel Orientation="Horizontal"/>
                         </ItemsPanelTemplate>
                     </ItemsControl.ItemsPanel>
 
                     <ItemsControl.ItemTemplate>
                         <DataTemplate>
-                            <Image Source="{Binding CardImagePath}" Width="85" Height="128" Margin="4"/>
+                            <Image Source="{Binding CardImagePath}"
+                                Width="85"
+                                Height="128"
+                                Margin="0,0,-45,0"/>
                         </DataTemplate>
                     </ItemsControl.ItemTemplate>
                 </ItemsControl>
