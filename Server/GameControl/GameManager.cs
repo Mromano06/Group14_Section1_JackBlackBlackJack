@@ -134,7 +134,9 @@ namespace Server.GameControl
                 DealerLogic.DealInitialCards(_game);
             }
 
-            SendGameUpdate(IsEndRound, _player);
+            ROUND_RESULT result = _game.RoundResult(_player);
+
+            SendGameUpdate(IsEndRound, _player, actionResult.Success, result);
         }
 
         private void ExecuteHit()
@@ -149,10 +151,12 @@ namespace Server.GameControl
             }
 
             Debug.WriteLine($"Hit: {_player.Name}");
+            _OnLog($"[Hit]: {_player.Name}");
 
             // Check if bust
             if (HandHelper.IsBust(_player.Hand)) {
                 Debug.WriteLine($"Bust: {_player.Name}");
+                _OnLog($"[Bust]: {_player.Name}");
 
                 // If its the last player who has now busted then the dealer shall go
                 if (_player.Name == _game.Players[_game.MaxPlayers - 1].Name) {
@@ -162,11 +166,15 @@ namespace Server.GameControl
                 }
             }
 
-            if (IsEndRound) {
+            ROUND_RESULT result = _game.RoundResult(_player);
+
+            SendGameUpdate(IsEndRound, _player, actionResult.Success, result);
+            if (IsEndRound)
+            {
                 _game.EndRound();
+                SendGameUpdate(IsEndRound, _player, actionResult.Success, result);
             }
 
-            SendGameUpdate(IsEndRound, _player);
         }
 
         private void ExecuteStand()
@@ -181,14 +189,18 @@ namespace Server.GameControl
             }
 
             Debug.WriteLine($"Stand: {_player.Name}");
+            _OnLog($"[Stand] {_player.Name}");
 
             // If its the last player who has now stood then the dealer shall go
             if (_player.Name == _game.Players[_game.MaxPlayers - 1].Name) {
                 DealerLogic.PlayTurn(_game);
             }
 
+            ROUND_RESULT result = _game.RoundResult(_player);
+
+            SendGameUpdate(IsEndRound, _player, actionResult.Success, result);
             _game.EndRound();
-            SendGameUpdate(IsEndRound, _player);
+            SendGameUpdate(IsEndRound, _player, actionResult.Success, result);
 
         }
 
@@ -204,14 +216,18 @@ namespace Server.GameControl
             }
 
             Debug.WriteLine($"Double: {_player.Name}");
+            _OnLog($"[Double] {_player.Name}");
 
             // If its the last player who has now busted then the dealer shall go
             if (_player.Name == _game.Players[_game.MaxPlayers - 1].Name) {
                 DealerLogic.PlayTurn(_game);
             }
 
+            ROUND_RESULT result = _game.RoundResult(_player);
+
+            SendGameUpdate(IsEndRound, _player, actionResult.Success, result);
             _game.EndRound();
-            SendGameUpdate(IsEndRound, _player);
+            SendGameUpdate(IsEndRound, _player, actionResult.Success, result);
         }
 
         private void ExecuteInsure()
@@ -225,13 +241,15 @@ namespace Server.GameControl
             }
 
             Debug.WriteLine($"Insure: {_player.Name}");
-
+            _OnLog($"[Insure] {_player.Name}");
             bool IsEndRound = false;
 
-            SendGameUpdate(IsEndRound, _player);
+            ROUND_RESULT result = _game.RoundResult(_player);
+
+            SendGameUpdate(IsEndRound, _player, actionResult.Success, result);
         }
 
-        private void SendGameUpdate(bool IsEndRound, Player player)
+        private void SendGameUpdate(bool IsEndRound, Player player, bool actionResult, ROUND_RESULT roundWin)
         {
             List<CardDto> dealerCards = new List<CardDto>();
             PlayerDto playerDto = new PlayerDto(player);
@@ -255,7 +273,10 @@ namespace Server.GameControl
                 DealerCardCount = HandHelper.CardCount(_game.Dealer.Hand),
                 DealerCards = dealerCards,
 
-                CurrentPlayerIndex = _game.CurrentPlayerIndex
+                CurrentPlayerIndex = _game.CurrentPlayerIndex,
+
+                ActionResult = actionResult,
+                RoundWin = roundWin
             };
 
             SendPacket(PacketType.GameUpdate, _gameUpdateSerializer.Serialize(dto));
