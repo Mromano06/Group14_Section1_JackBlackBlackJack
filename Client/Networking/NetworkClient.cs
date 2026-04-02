@@ -38,7 +38,6 @@ namespace Client.Networking
         public event Action<ROUND_RESULT> RoundResultUpdate;
         public event Action<int> PlayerIndexUpdate;
         public double LatestPlayerMoney { get; private set; }
-        public ROUND_RESULT LatestRoundResult { get; private set; }
 
         // Queue to hold outgoing commands/messages (thread-safe)
         // will change from string to command object once command object is implemented
@@ -224,7 +223,7 @@ namespace Client.Networking
         {
             // if player cards not null send them to UI
 
-            if (gameUpdateDto.ActionResult == true)
+            if (gameUpdateDto.ActionResult != false)
             {
 
                 if (gameUpdateDto.Player.Hand != null)
