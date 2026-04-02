@@ -43,7 +43,7 @@ namespace Jables_Protocol.Serializers
 
             bw.Write(dto.ActionResult);
 
-            bw.Write(dto.RoundWin);
+            bw.Write((byte)dto.RoundWin);
 
             return ms.ToArray();
         }
@@ -84,7 +84,7 @@ namespace Jables_Protocol.Serializers
             dto.ActionResult = br.ReadBoolean();
             dto.RoundWin = (ROUND_RESULT)br.ReadByte();
 
-            dto = new GameUpdateDto();
+            //dto = new GameUpdateDto();
 
             return dto;
         }
