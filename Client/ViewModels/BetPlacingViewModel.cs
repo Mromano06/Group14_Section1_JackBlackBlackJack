@@ -30,6 +30,7 @@ namespace Client.ViewModels
         public ICommand DecreaseBetCommand { get; }
         public ICommand MaxBetCommand { get; }
         public ICommand ConfirmBetCommand { get; }
+        public ICommand ResetBetCommand { get; }
 
         public BetPlacingViewModel(NetworkClient client, Action showGame)
         {
@@ -42,6 +43,7 @@ namespace Client.ViewModels
             DecreaseBetCommand = new CommandRelay(DecBet);
             MaxBetCommand = new CommandRelay(MaxBet);
             ConfirmBetCommand = new CommandRelay(Confirm);
+            ResetBetCommand new CommandRelay(Reset);
         }
 
         public double CurrentBet
@@ -85,6 +87,12 @@ namespace Client.ViewModels
         {
             CurrentBet = _playerMoney;
         }
+
+        private void Reset()
+        {
+            CurrentBet = 0;
+        }
+
         private void Confirm()
         {
             PlayerCommandDto cmd = new PlayerCommandDto();
