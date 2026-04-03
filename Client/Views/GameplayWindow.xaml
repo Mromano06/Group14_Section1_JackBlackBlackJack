@@ -29,10 +29,10 @@
                 <TextBlock Name="Bet" FontSize="14" Text="{Binding BetAmount, StringFormat=Current Bet: ${0}}" Canvas.Left="149" Canvas.Top="9" HorizontalAlignment="Left" VerticalAlignment="Center"/>
 
                 <ItemsControl ItemsSource="{Binding DealtPlayerCards}"
-              Canvas.Top="526"
-              Width="394"
-              Height="138"
-              HorizontalAlignment="Left" Canvas.Left="582" VerticalAlignment="Center">
+                      Canvas.Top="526"
+                      Width="394"
+                      Height="138"
+                      HorizontalAlignment="Left" Canvas.Left="582" VerticalAlignment="Center">
 
                     <ItemsControl.ItemsPanel>
                         <ItemsPanelTemplate>
@@ -43,9 +43,9 @@
                     <ItemsControl.ItemTemplate>
                         <DataTemplate>
                             <Image Source="{Binding CardImagePath}"
-                   Width="85"
-                   Height="128"
-                   Margin="0,0,-45,0"/>
+                           Width="85"
+                           Height="128"
+                           Margin="0,0,-45,0"/>
                         </DataTemplate>
                     </ItemsControl.ItemTemplate>
                 </ItemsControl>

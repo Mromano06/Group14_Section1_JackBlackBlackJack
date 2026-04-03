@@ -16,20 +16,22 @@
             </Grid.Background>
             <Canvas Background="Transparent" Grid.ColumnSpan="2">
                 <Rectangle Width="130" Height="37" Fill="White" HorizontalAlignment="Left" VerticalAlignment="Center" Stroke="Black" StrokeThickness="2" />
-                <Button Name="IncrementBet" Width="40" Height="40" Canvas.Left="600" Command="{Binding IncreaseBetCommand}" 
+                <Button Name="IncrementBet" Width="40" Height="40" Canvas.Left="573" Command="{Binding IncreaseBetCommand}" 
                     Canvas.Top="455" FontSize="28" FontWeight="Bold" Content="+" HorizontalContentAlignment="Center"
                         VerticalContentAlignment="Center" HorizontalAlignment="Center" VerticalAlignment="Top"></Button>
-                <Button Name="DecreaseBet" Width="40" Height="40" Canvas.Left="553" Command="{Binding DecreaseBetCommand}"
+                <Button Name="DecreaseBet" Width="40" Height="40" Canvas.Left="523" Command="{Binding DecreaseBetCommand}"
                     Canvas.Top="455" FontSize="28" FontWeight="Bold" Content="-" HorizontalContentAlignment="Center"
-                        VerticalContentAlignment="Center" HorizontalAlignment="Center" VerticalAlignment="Top"></Button>
-                <Button Name="BetMax" Width="40" Height="40" Canvas.Left="646" Command="{Binding MaxBetCommand}"
-                    Canvas.Top="455" FontSize="15" FontWeight="Bold" Content="Max" HorizontalAlignment="Center" VerticalAlignment="Top"></Button>
-                <Button x:Name="ConfirmBet" Width="40" Height="40" Canvas.Left="693" Command="{Binding ConfirmBetCommand}"
+                        VerticalContentAlignment="Center" HorizontalAlignment="Left" VerticalAlignment="Top"></Button>
+                <Button Name="BetMax" Width="40" Height="40" Canvas.Left="673" Command="{Binding MaxBetCommand}"
+                    Canvas.Top="455" FontSize="15" FontWeight="Bold" Content="Max" HorizontalAlignment="Left" VerticalAlignment="Center"></Button>
+                <Button x:Name="ConfirmBet" Width="40" Height="40" Canvas.Left="723" Command="{Binding ConfirmBetCommand}"
                     Canvas.Top="455" FontSize="11" FontWeight="Bold" Content="Ready" HorizontalAlignment="Center" VerticalAlignment="Top"></Button>
-                <Rectangle Canvas.Left="553" Canvas.Top="366" Width="180" Height="37" Fill="White" HorizontalAlignment="Center" VerticalAlignment="Top"/>
-                <Rectangle Canvas.Left="553" Canvas.Top="411" Width="180" Height="37" Fill="White" HorizontalAlignment="Center" VerticalAlignment="Top"/>
+                <Button x:Name="Resetbet" Width="40" Height="40" Canvas.Left="623" Command="{Binding ResetBetCommand}"
+                    Canvas.Top="455" FontSize="11" FontWeight="Bold" Content="Reset" HorizontalAlignment="Center" VerticalAlignment="Top"></Button>
+                <Rectangle Canvas.Left="543" Canvas.Top="366" Width="200" Height="37" Fill="White" HorizontalAlignment="Left" VerticalAlignment="Center"/>
+                <Rectangle Canvas.Left="543" Canvas.Top="411" Width="200" Height="37" Fill="White" HorizontalAlignment="Left" VerticalAlignment="Center"/>
                 <TextBlock Name="Instructions" FontSize="14" Text="Please place your bet." Canvas.Left="573" Canvas.Top="375" HorizontalAlignment="Center" VerticalAlignment="Top" ></TextBlock>
-                <TextBlock Name="Bet" FontSize="14" Text="{Binding CurrentBet, StringFormat=Current Bet: ${0}}" Canvas.Left="598" Canvas.Top="420" HorizontalAlignment="Left" VerticalAlignment="Center"/>
+                <TextBlock Name="Bet" FontSize="14" Text="{Binding CurrentBet, StringFormat=Current Bet: ${0}}" Canvas.Left="606" Canvas.Top="420" HorizontalAlignment="Left" VerticalAlignment="Center"/>
                 <TextBlock Name="Balance" FontSize="14" Text="{Binding PlayerMoney, StringFormat=Balance: ${0}}" Canvas.Left="16" Canvas.Top="9" HorizontalAlignment="Left" VerticalAlignment="Center"/>
             </Canvas>
         </Grid>

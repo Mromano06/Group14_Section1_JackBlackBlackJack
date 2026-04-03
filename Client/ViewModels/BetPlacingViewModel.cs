@@ -43,7 +43,7 @@ namespace Client.ViewModels
             DecreaseBetCommand = new CommandRelay(DecBet);
             MaxBetCommand = new CommandRelay(MaxBet);
             ConfirmBetCommand = new CommandRelay(Confirm);
-            ResetBetCommand new CommandRelay(Reset);
+            ResetBetCommand = new CommandRelay(Reset);
         }
 
         public double CurrentBet

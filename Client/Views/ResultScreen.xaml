@@ -18,9 +18,9 @@
                 <Rectangle Canvas.Left="560" Canvas.Top="375" Width="180" Height="37" Fill="White" HorizontalAlignment="Center" VerticalAlignment="Top"/>
                 <TextBlock Name="Balance" FontSize="14" Text="{Binding ResultMessage}" Canvas.Left="580" Canvas.Top="385" HorizontalAlignment="Center" VerticalAlignment="Top"/>
                 <Button x:Name="Continue" Width="80" Height="50" FontSize="12" Command="{Binding ContinueCommand}"
-                    FontWeight="Bold" Content="Play Again" Canvas.Left="654" Canvas.Top="417" HorizontalAlignment="Left" VerticalAlignment="Center"/>
+                    FontWeight="Bold" Content="Play Again" Canvas.Left="654" Canvas.Top="427" HorizontalAlignment="Left" VerticalAlignment="Center"/>
                 <Button x:Name="MainMenu" Width="80" Height="50" FontSize="12" Command="{Binding MainMenuCommand}"
-                    FontWeight="Bold" Content="Main Menu" Canvas.Left="565" Canvas.Top="417" HorizontalAlignment="Left" VerticalAlignment="Center"/>
+                    FontWeight="Bold" Content="Main Menu" Canvas.Left="560" Canvas.Top="427" HorizontalAlignment="Center" VerticalAlignment="Top"/>
             </Canvas>
         </Grid>
     </Viewbox>
