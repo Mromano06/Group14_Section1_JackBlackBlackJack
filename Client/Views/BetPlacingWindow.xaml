@@ -66,13 +66,13 @@
                         </ControlTemplate>
                     </Button.Template>
                 </Button>
-                <Button Width="70" Height="70"
+                <Button Width="65" Height="65"
                             Command="{Binding IncBetBy50Command}"
                             Content="$50"
-                            FontSize="16"
+                            FontSize="14"
                             FontWeight="Bold"
                             Foreground="White"
-                            Cursor="Hand" HorizontalAlignment="Center" Canvas.Left="660" Canvas.Top="408" VerticalAlignment="Top">
+                            Cursor="Hand" HorizontalAlignment="Center" Canvas.Left="660" Canvas.Top="409" VerticalAlignment="Top">
                     <Button.Template>
                         <ControlTemplate TargetType="{x:Type Button}">
                             <Grid>
@@ -83,13 +83,13 @@
                         </ControlTemplate>
                     </Button.Template>
                 </Button>
-                <Button Width="70" Height="70"
+                <Button Width="65" Height="65"
                             Command="{Binding IncBetBy100Command}"
                             Content="$100"
-                            FontSize="16"
+                            FontSize="14"
                             FontWeight="Bold"
                             Foreground="White"
-                            Cursor="Hand" HorizontalAlignment="Center" Canvas.Left="740" Canvas.Top="408" VerticalAlignment="Top">
+                            Cursor="Hand" HorizontalAlignment="Center" Canvas.Left="740" Canvas.Top="409" VerticalAlignment="Top">
                     <Button.Template>
                         <ControlTemplate TargetType="{x:Type Button}">
                             <Grid>
@@ -100,13 +100,13 @@
                         </ControlTemplate>
                     </Button.Template>
                 </Button>
-                <Button Width="70" Height="70"
+                <Button Width="65" Height="65"
                             Command="{Binding IncBetBy20Command}"
                             Content="$20"
-                            FontSize="16"
+                            FontSize="14"
                             FontWeight="Bold"
                             Foreground="White"
-                            Cursor="Hand" Click="Button_Click" HorizontalAlignment="Center" Canvas.Left="580" Canvas.Top="408" VerticalAlignment="Top">
+                            Cursor="Hand" Click="Button_Click" HorizontalAlignment="Center" Canvas.Left="580" Canvas.Top="409" VerticalAlignment="Top">
                     <Button.Template>
                         <ControlTemplate TargetType="{x:Type Button}">
                             <Grid>
@@ -117,12 +117,12 @@
                         </ControlTemplate>
                     </Button.Template>
                 </Button>
-                <Button Width="70" Height="70" Command="{Binding IncBetBy10Command}"
+                <Button Width="65" Height="65" Command="{Binding IncBetBy10Command}"
                             Content="$10"
-                            FontSize="16"
+                            FontSize="14"
                             FontWeight="Bold"
                             Foreground="White"
-                            Cursor="Hand" HorizontalAlignment="Center" Canvas.Left="500" Canvas.Top="408" VerticalAlignment="Top">
+                            Cursor="Hand" HorizontalAlignment="Center" Canvas.Left="500" Canvas.Top="409" VerticalAlignment="Top">
                     <Button.Template>
                         <ControlTemplate TargetType="{x:Type Button}">
                             <Grid>
@@ -133,16 +133,16 @@
                         </ControlTemplate>
                     </Button.Template>
                 </Button>
-                <Button Width="115" Height="45"
+                <Button Width="115" Height="35"
                             Command="{Binding MaxBetCommand}"
                             Content="MAX BET"
-                            FontSize="18"
+                            FontSize="16"
                             FontWeight="Bold"
                             Foreground="Black"
                             Background="#FFD54F"
                             BorderBrush="White"
                             BorderThickness="3"
-                            Cursor="Hand" HorizontalAlignment="Left" Canvas.Left="21" Canvas.Top="75" VerticalAlignment="Top">
+                            Cursor="Hand" HorizontalAlignment="Center" Canvas.Left="470" Canvas.Top="484" VerticalAlignment="Top" Click="Button_Click_2">
                     <Button.Template>
                         <ControlTemplate TargetType="{x:Type Button}">
                             <Border x:Name="maxBorder"
@@ -160,16 +160,16 @@
                         </ControlTemplate>
                     </Button.Template>
                 </Button>
-                <Button Width="115" Height="45"
+                <Button Width="116" Height="35"
                             Command="{Binding ResetBetCommand}"
                             Content="RESET BET"
-                            FontSize="18"
+                            FontSize="16"
                             FontWeight="Bold"
-                            Foreground="White"
+                            Foreground="Black"
                             Background="#8B0000"
                             BorderBrush="White"
                             BorderThickness="3"
-                            Cursor="Hand" Click="Button_Click_1" HorizontalAlignment="Left" Canvas.Left="141" Canvas.Top="75" VerticalAlignment="Top">
+                            Cursor="Hand" Click="Button_Click_1" HorizontalAlignment="Center" Canvas.Left="714" Canvas.Top="484" VerticalAlignment="Top">
                     <Button.Template>
                         <ControlTemplate TargetType="{x:Type Button}">
                             <Border x:Name="resetBorder"
@@ -187,16 +187,16 @@
                         </ControlTemplate>
                     </Button.Template>
                 </Button>
-                <Button Width="115" Height="45"
-                            Command="{Binding MaxBetCommand}"
+                <Button Width="116" Height="35"
+                            Command="{Binding ConfirmBetCommand}"
                             Content="PLACE BET"
-                            FontSize="18"
+                            FontSize="16"
                             FontWeight="Bold"
                             Foreground="Black"
                             Background="#229A22"
                             BorderBrush="White"
                             BorderThickness="3"
-                            Cursor="Hand" HorizontalAlignment="Left" Canvas.Left="54" Canvas.Top="202" VerticalAlignment="Top">
+                            Cursor="Hand" HorizontalAlignment="Center" Canvas.Left="592" Canvas.Top="484" VerticalAlignment="Top">
                     <Button.Template>
                         <ControlTemplate TargetType="{x:Type Button}">
                             <Border x:Name="maxBorder"
@@ -215,7 +215,7 @@
                     </Button.Template>
                 </Button>
 
-
+            
 
             </Canvas>
         </Grid>
