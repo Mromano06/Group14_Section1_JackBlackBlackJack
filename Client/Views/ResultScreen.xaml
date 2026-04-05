@@ -17,11 +17,80 @@
             <Canvas Background="Transparent" Grid.ColumnSpan="2">
                 <Rectangle Canvas.Left="560" Canvas.Top="375" Width="180" Height="37" Fill="White" HorizontalAlignment="Center" VerticalAlignment="Top"/>
                 <TextBlock Name="Balance" FontSize="14" Text="{Binding ResultMessage}" Canvas.Left="580" Canvas.Top="385" HorizontalAlignment="Center" VerticalAlignment="Top"/>
-                <Button x:Name="Continue" Width="80" Height="50" FontSize="12" Command="{Binding ContinueCommand}"
-                    FontWeight="Bold" Content="Play Again" Canvas.Left="654" Canvas.Top="427" HorizontalAlignment="Left" VerticalAlignment="Center"/>
-                <Button x:Name="MainMenu" Width="80" Height="50" FontSize="12" Command="{Binding MainMenuCommand}"
-                    FontWeight="Bold" Content="Main Menu" Canvas.Left="560" Canvas.Top="427" HorizontalAlignment="Center" VerticalAlignment="Top"/>
             </Canvas>
+
+            <Button Content="Main Menu"
+                    Width="95" Command="{Binding MainMenuCommand}"
+                    Height="37"
+                    FontSize="14"
+                    FontWeight="Bold"
+                    Foreground="#000000"
+                    Background="#FFFFFF"
+                    BorderBrush="#000000"
+                    BorderThickness="2"
+                    Cursor="Hand" HorizontalAlignment="Left" 
+                    Canvas.Left="1153" VerticalAlignment="Top" Margin="149,421,0,0" Grid.Column="1">
+                <Button.Template>
+                    <ControlTemplate TargetType="Button">
+                        <Border x:Name="border"
+                            Background="{TemplateBinding Background}"
+                            BorderBrush="{TemplateBinding BorderBrush}"
+                            BorderThickness="{TemplateBinding BorderThickness}">
+                            <ContentPresenter HorizontalAlignment="Center"
+                                    VerticalAlignment="Center"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter TargetName="border" Property="Opacity" Value="1"/>
+                            </Trigger>
+                            <Trigger Property="IsPressed" Value="True">
+                                <Setter TargetName="border" Property="RenderTransform">
+                                    <Setter.Value>
+                                        <ScaleTransform ScaleX="0.97" ScaleY="0.97"/>
+                                    </Setter.Value>
+                                </Setter>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Button.Template>
+            </Button>
+
+            <Button Content="Main Menu"
+         Width="95" Command="{Binding MainMenuCommand}"
+         Height="37"
+         FontSize="14"
+         FontWeight="Bold"
+         Foreground="#000000"
+         Background="#FFFFFF"
+         BorderBrush="#000000"
+         BorderThickness="2"
+         Cursor="Hand" HorizontalAlignment="Left" 
+         Canvas.Left="1153" VerticalAlignment="Top" Margin="149,421,0,0" Grid.Column="1">
+                <Button.Template>
+                    <ControlTemplate TargetType="Button">
+                        <Border x:Name="border"
+                 Background="{TemplateBinding Background}"
+                 BorderBrush="{TemplateBinding BorderBrush}"
+                 BorderThickness="{TemplateBinding BorderThickness}">
+                            <ContentPresenter HorizontalAlignment="Center"
+                         VerticalAlignment="Center"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter TargetName="border" Property="Opacity" Value="1"/>
+                            </Trigger>
+                            <Trigger Property="IsPressed" Value="True">
+                                <Setter TargetName="border" Property="RenderTransform">
+                                    <Setter.Value>
+                                        <ScaleTransform ScaleX="0.97" ScaleY="0.97"/>
+                                    </Setter.Value>
+                                </Setter>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Button.Template>
+            </Button>
+            
         </Grid>
     </Viewbox>
 </UserControl>

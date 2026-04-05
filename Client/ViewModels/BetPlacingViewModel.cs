@@ -22,28 +22,37 @@ namespace Client.ViewModels
     {
         private readonly NetworkClient _client;
         private readonly Action _showGame;
+        private readonly Action _showMainMenu;
         private double _playerMoney;
         private double _currentBet;
         private readonly PlayerCommandSerializer _commandSerializer = new PlayerCommandSerializer();
 
-        public ICommand IncreaseBetCommand { get; }
-        public ICommand DecreaseBetCommand { get; }
         public ICommand MaxBetCommand { get; }
         public ICommand ConfirmBetCommand { get; }
         public ICommand ResetBetCommand { get; }
+        public ICommand MainMenuCommand { get; }
+        public ICommand IncBetBy10Command { get; }
+        public ICommand IncBetBy20Command { get; }
+        public ICommand IncBetBy50Command { get; }
+        public ICommand IncBetBy100Command { get; }
 
-        public BetPlacingViewModel(NetworkClient client, Action showGame)
+
+        public BetPlacingViewModel(NetworkClient client, Action showGame, Action ShowMenu)
         {
             _client = client;
             _showGame = showGame;
+            _showMainMenu = ShowMenu;
             _playerMoney = _client.LatestPlayerMoney; // set backing field directly
             _client.PlayerMoneyUpdate += UpdatePlayerMoney;
             _client.PlayerBetUpdate += UpdateBetAmount;
-            IncreaseBetCommand = new CommandRelay(IncBet);
-            DecreaseBetCommand = new CommandRelay(DecBet);
             MaxBetCommand = new CommandRelay(MaxBet);
             ConfirmBetCommand = new CommandRelay(Confirm);
             ResetBetCommand = new CommandRelay(Reset);
+            MainMenuCommand = new CommandRelay(ShowMainMenu);
+            IncBetBy10Command = new CommandRelay(IncBetBy10);
+            IncBetBy20Command = new CommandRelay(IncBetBy20);
+            IncBetBy50Command = new CommandRelay(IncBetBy50);
+            IncBetBy100Command = new CommandRelay(IncBetBy100);
         }
 
         public double CurrentBet
@@ -71,16 +80,28 @@ namespace Client.ViewModels
             }
         }
 
-        private void IncBet()
+        private void IncBetBy10()
         {
             if (_currentBet + 10 <= _playerMoney)
                 CurrentBet += 10;
         }
 
-        private void DecBet()
+        private void IncBetBy20()
         {
-            if (_currentBet - 10 >= 0)
-                CurrentBet -= 10;
+            if (_currentBet + 20 <= _playerMoney)
+                CurrentBet += 20;
+        }
+
+        private void IncBetBy50()
+        {
+            if (_currentBet + 50 <= _playerMoney)
+                CurrentBet += 50;
+        }
+
+        private void IncBetBy100()
+        {
+            if (_currentBet + 100 <= _playerMoney)
+                CurrentBet += 100;
         }
 
         private void MaxBet()
@@ -130,6 +151,14 @@ namespace Client.ViewModels
             {
                 Debug.WriteLine($"updating the player's money to: {amount}");
                 CurrentBet = amount;
+            }));
+        }
+
+        public void ShowMainMenu()
+        {
+            Application.Current.Dispatcher.BeginInvoke(new Action(() =>
+            {
+                _showMainMenu?.Invoke();
             }));
         }
 

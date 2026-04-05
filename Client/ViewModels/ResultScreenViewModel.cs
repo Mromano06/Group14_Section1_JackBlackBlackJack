@@ -9,6 +9,9 @@ using System.Diagnostics;
 using System.Text;
 using System.Windows.Input;
 
+// Matthew Romano - April , 2026 - BetPlacingViewModel implementation
+// Handles the logic of the result screen view model
+
 namespace Client.ViewModels
 {
     public class ResultScreenViewModel : BaseModel

@@ -6,33 +6,217 @@
     <Viewbox Stretch="Uniform">
         <Grid Width="1300" Height="720">
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="41*"/>
-                <ColumnDefinition Width="89*"/>
+                <ColumnDefinition Width="194*"/>
+                <ColumnDefinition Width="11*"/>
+                <ColumnDefinition Width="445*"/>
             </Grid.ColumnDefinitions>
             <Grid.Background>
                 <ImageBrush
                     ImageSource="/Assets/Gameboard.jpg"
                     Stretch="Fill" />
             </Grid.Background>
-            <Canvas Background="Transparent" Grid.ColumnSpan="2">
+            <Canvas Background="Transparent" Grid.ColumnSpan="3">
                 <Rectangle Width="130" Height="37" Fill="White" HorizontalAlignment="Left" VerticalAlignment="Center" Stroke="Black" StrokeThickness="2" />
-                <Button Name="IncrementBet" Width="40" Height="40" Canvas.Left="573" Command="{Binding IncreaseBetCommand}" 
-                    Canvas.Top="455" FontSize="28" FontWeight="Bold" Content="+" HorizontalContentAlignment="Center"
-                        VerticalContentAlignment="Center" HorizontalAlignment="Center" VerticalAlignment="Top"></Button>
-                <Button Name="DecreaseBet" Width="40" Height="40" Canvas.Left="523" Command="{Binding DecreaseBetCommand}"
-                    Canvas.Top="455" FontSize="28" FontWeight="Bold" Content="-" HorizontalContentAlignment="Center"
-                        VerticalContentAlignment="Center" HorizontalAlignment="Left" VerticalAlignment="Top"></Button>
-                <Button Name="BetMax" Width="40" Height="40" Canvas.Left="673" Command="{Binding MaxBetCommand}"
-                    Canvas.Top="455" FontSize="15" FontWeight="Bold" Content="Max" HorizontalAlignment="Left" VerticalAlignment="Center"></Button>
-                <Button x:Name="ConfirmBet" Width="40" Height="40" Canvas.Left="723" Command="{Binding ConfirmBetCommand}"
-                    Canvas.Top="455" FontSize="11" FontWeight="Bold" Content="Ready" HorizontalAlignment="Center" VerticalAlignment="Top"></Button>
-                <Button x:Name="Resetbet" Width="40" Height="40" Canvas.Left="623" Command="{Binding ResetBetCommand}"
-                    Canvas.Top="455" FontSize="11" FontWeight="Bold" Content="Reset" HorizontalAlignment="Center" VerticalAlignment="Top"></Button>
-                <Rectangle Canvas.Left="543" Canvas.Top="366" Width="200" Height="37" Fill="White" HorizontalAlignment="Left" VerticalAlignment="Center"/>
-                <Rectangle Canvas.Left="543" Canvas.Top="411" Width="200" Height="37" Fill="White" HorizontalAlignment="Left" VerticalAlignment="Center"/>
-                <TextBlock Name="Instructions" FontSize="14" Text="Please place your bet." Canvas.Left="573" Canvas.Top="375" HorizontalAlignment="Center" VerticalAlignment="Top" ></TextBlock>
-                <TextBlock Name="Bet" FontSize="14" Text="{Binding CurrentBet, StringFormat=Current Bet: ${0}}" Canvas.Left="606" Canvas.Top="420" HorizontalAlignment="Left" VerticalAlignment="Center"/>
+                <Rectangle Canvas.Left="550" Canvas.Top="362" Width="200" Height="37" Fill="White"
+                           Stroke="Black" StrokeThickness="1" HorizontalAlignment="Center" VerticalAlignment="Top"/>
+                <TextBlock Name="Bet" FontSize="14" Text="{Binding CurrentBet, StringFormat=Current Bet: ${0}}" Canvas.Left="606" Canvas.Top="372" HorizontalAlignment="Center" VerticalAlignment="Top"/>
                 <TextBlock Name="Balance" FontSize="14" Text="{Binding PlayerMoney, StringFormat=Balance: ${0}}" Canvas.Left="16" Canvas.Top="9" HorizontalAlignment="Left" VerticalAlignment="Center"/>
+
+                <StackPanel HorizontalAlignment="Center"
+                    VerticalAlignment="Bottom"
+                    Margin="0,0,0,40">
+
+                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Center"/>
+                    <StackPanel Orientation="Horizontal"
+                        />
+                </StackPanel>
+
+                <Button Content="Main Menu"
+                    Width="147" Command="{Binding MainMenuCommand}"
+                    Height="37"
+                    FontSize="16"
+                    FontWeight="Bold"
+                    Foreground="#000000"
+                    Background="#FFFFFF"
+                    BorderBrush="#000000"
+                    BorderThickness="2"
+                    Cursor="Hand" HorizontalAlignment="Left" 
+                    Canvas.Left="1153" VerticalAlignment="Center">
+                    <Button.Template>
+                        <ControlTemplate TargetType="Button">
+                            <Border x:Name="border"
+                                Background="{TemplateBinding Background}"
+                                BorderBrush="{TemplateBinding BorderBrush}"
+                                BorderThickness="{TemplateBinding BorderThickness}">
+                                <ContentPresenter HorizontalAlignment="Center"
+                                    VerticalAlignment="Center"/>
+                            </Border>
+                            <ControlTemplate.Triggers>
+                                <Trigger Property="IsMouseOver" Value="True">
+                                    <Setter TargetName="border" Property="Opacity" Value="1"/>
+                                </Trigger>
+                                <Trigger Property="IsPressed" Value="True">
+                                    <Setter TargetName="border" Property="RenderTransform">
+                                        <Setter.Value>
+                                            <ScaleTransform ScaleX="0.97" ScaleY="0.97"/>
+                                        </Setter.Value>
+                                    </Setter>
+                                </Trigger>
+                            </ControlTemplate.Triggers>
+                        </ControlTemplate>
+                    </Button.Template>
+                </Button>
+                <Button Width="70" Height="70"
+                            Command="{Binding IncBetBy50Command}"
+                            Content="$50"
+                            FontSize="16"
+                            FontWeight="Bold"
+                            Foreground="White"
+                            Cursor="Hand" HorizontalAlignment="Center" Canvas.Left="660" Canvas.Top="408" VerticalAlignment="Top">
+                    <Button.Template>
+                        <ControlTemplate TargetType="{x:Type Button}">
+                            <Grid>
+                                <Ellipse Fill="#E53935" Stroke="White" StrokeThickness="5"/>
+                                <Ellipse Margin="10" Stroke="White" StrokeThickness="3" StrokeDashArray="2 2"/>
+                                <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                            </Grid>
+                        </ControlTemplate>
+                    </Button.Template>
+                </Button>
+                <Button Width="70" Height="70"
+                            Command="{Binding IncBetBy100Command}"
+                            Content="$100"
+                            FontSize="16"
+                            FontWeight="Bold"
+                            Foreground="White"
+                            Cursor="Hand" HorizontalAlignment="Center" Canvas.Left="740" Canvas.Top="408" VerticalAlignment="Top">
+                    <Button.Template>
+                        <ControlTemplate TargetType="{x:Type Button}">
+                            <Grid>
+                                <Ellipse Fill="#212121" Stroke="#FFD54F" StrokeThickness="5"/>
+                                <Ellipse Margin="10" Stroke="#FFD54F" StrokeThickness="3" StrokeDashArray="2 2"/>
+                                <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                            </Grid>
+                        </ControlTemplate>
+                    </Button.Template>
+                </Button>
+                <Button Width="70" Height="70"
+                            Command="{Binding IncBetBy20Command}"
+                            Content="$20"
+                            FontSize="16"
+                            FontWeight="Bold"
+                            Foreground="White"
+                            Cursor="Hand" Click="Button_Click" HorizontalAlignment="Center" Canvas.Left="580" Canvas.Top="408" VerticalAlignment="Top">
+                    <Button.Template>
+                        <ControlTemplate TargetType="{x:Type Button}">
+                            <Grid>
+                                <Ellipse Fill="#43A047" Stroke="White" StrokeThickness="5"/>
+                                <Ellipse Margin="10" Stroke="White" StrokeThickness="3" StrokeDashArray="2 2"/>
+                                <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                            </Grid>
+                        </ControlTemplate>
+                    </Button.Template>
+                </Button>
+                <Button Width="70" Height="70" Command="{Binding IncBetBy10Command}"
+                            Content="$10"
+                            FontSize="16"
+                            FontWeight="Bold"
+                            Foreground="White"
+                            Cursor="Hand" HorizontalAlignment="Center" Canvas.Left="500" Canvas.Top="408" VerticalAlignment="Top">
+                    <Button.Template>
+                        <ControlTemplate TargetType="{x:Type Button}">
+                            <Grid>
+                                <Ellipse Fill="#1E88E5" Stroke="White" StrokeThickness="5"/>
+                                <Ellipse Margin="10" Stroke="White" StrokeThickness="3" StrokeDashArray="2 2"/>
+                                <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                            </Grid>
+                        </ControlTemplate>
+                    </Button.Template>
+                </Button>
+                <Button Width="115" Height="45"
+                            Command="{Binding MaxBetCommand}"
+                            Content="MAX BET"
+                            FontSize="18"
+                            FontWeight="Bold"
+                            Foreground="Black"
+                            Background="#FFD54F"
+                            BorderBrush="White"
+                            BorderThickness="3"
+                            Cursor="Hand" HorizontalAlignment="Left" Canvas.Left="21" Canvas.Top="75" VerticalAlignment="Top">
+                    <Button.Template>
+                        <ControlTemplate TargetType="{x:Type Button}">
+                            <Border x:Name="maxBorder"
+                                        Background="{TemplateBinding Background}"
+                                        BorderBrush="{TemplateBinding BorderBrush}"
+                                        BorderThickness="{TemplateBinding BorderThickness}"
+                                        CornerRadius="16">
+                                <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                            </Border>
+                            <ControlTemplate.Triggers>
+                                <Trigger Property="IsMouseOver" Value="True">
+                                    <Setter TargetName="maxBorder" Property="Opacity" Value="0.9"/>
+                                </Trigger>
+                            </ControlTemplate.Triggers>
+                        </ControlTemplate>
+                    </Button.Template>
+                </Button>
+                <Button Width="115" Height="45"
+                            Command="{Binding ResetBetCommand}"
+                            Content="RESET BET"
+                            FontSize="18"
+                            FontWeight="Bold"
+                            Foreground="White"
+                            Background="#8B0000"
+                            BorderBrush="White"
+                            BorderThickness="3"
+                            Cursor="Hand" Click="Button_Click_1" HorizontalAlignment="Left" Canvas.Left="141" Canvas.Top="75" VerticalAlignment="Top">
+                    <Button.Template>
+                        <ControlTemplate TargetType="{x:Type Button}">
+                            <Border x:Name="resetBorder"
+                                        Background="{TemplateBinding Background}"
+                                        BorderBrush="{TemplateBinding BorderBrush}"
+                                        BorderThickness="{TemplateBinding BorderThickness}"
+                                        CornerRadius="16">
+                                <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                            </Border>
+                            <ControlTemplate.Triggers>
+                                <Trigger Property="IsMouseOver" Value="True">
+                                    <Setter TargetName="resetBorder" Property="Opacity" Value="0.9"/>
+                                </Trigger>
+                            </ControlTemplate.Triggers>
+                        </ControlTemplate>
+                    </Button.Template>
+                </Button>
+                <Button Width="115" Height="45"
+                            Command="{Binding MaxBetCommand}"
+                            Content="PLACE BET"
+                            FontSize="18"
+                            FontWeight="Bold"
+                            Foreground="Black"
+                            Background="#229A22"
+                            BorderBrush="White"
+                            BorderThickness="3"
+                            Cursor="Hand" HorizontalAlignment="Left" Canvas.Left="54" Canvas.Top="202" VerticalAlignment="Top">
+                    <Button.Template>
+                        <ControlTemplate TargetType="{x:Type Button}">
+                            <Border x:Name="maxBorder"
+                                        Background="{TemplateBinding Background}"
+                                        BorderBrush="{TemplateBinding BorderBrush}"
+                                        BorderThickness="{TemplateBinding BorderThickness}"
+                                        CornerRadius="16">
+                                <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                            </Border>
+                            <ControlTemplate.Triggers>
+                                <Trigger Property="IsMouseOver" Value="True">
+                                    <Setter TargetName="maxBorder" Property="Opacity" Value="0.9"/>
+                                </Trigger>
+                            </ControlTemplate.Triggers>
+                        </ControlTemplate>
+                    </Button.Template>
+                </Button>
+
+
+
             </Canvas>
         </Grid>
     </Viewbox>

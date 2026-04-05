@@ -3,6 +3,9 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
+// Matthew Romano - March 12th, 2026 - BetPlacingViewModel implementation
+// This creates the card to display based on the code
+
 namespace Client.ViewModels
 {
     public class CardViewModel : BaseModel
