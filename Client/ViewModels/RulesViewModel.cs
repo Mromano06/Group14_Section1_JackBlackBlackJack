@@ -7,7 +7,7 @@ using System.Windows;
 using System.Windows.Input;
 
 // Matthew Romano - March 12th, 2026 - RulesgViewModel implementation
-// Hnadles the logic of the rules view model
+// Handles the logic of the rules view model
 
 namespace Client.ViewModels
 {

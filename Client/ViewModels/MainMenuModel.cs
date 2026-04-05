@@ -23,7 +23,7 @@ namespace Client.ViewModels
 
         public MainMenuModel(NetworkClient client, Action ShowBetting, Action ShowRules)
         {
-            this._client = client;
+            _client = client;
             _showBetting = ShowBetting;
             _showRules = ShowRules;
 

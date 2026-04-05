@@ -15,7 +15,7 @@
                     Stretch="Fill" />
             </Grid.Background>
             <Canvas Background="Transparent" Grid.ColumnSpan="2">
-                <Rectangle Canvas.Left="560" Canvas.Top="375" Width="180" Height="37" Fill="White" HorizontalAlignment="Center" VerticalAlignment="Top"/>
+                <Rectangle Canvas.Left="560" Canvas.Top="375" Width="180" Height="37" Stroke="Black" StrokeThickness="1" Fill="White" HorizontalAlignment="Center" VerticalAlignment="Top"/>
                 <TextBlock Name="Balance" FontSize="14" Text="{Binding ResultMessage}" Canvas.Left="580" Canvas.Top="385" HorizontalAlignment="Center" VerticalAlignment="Top"/>
             </Canvas>
 
@@ -29,7 +29,7 @@
                     BorderBrush="#000000"
                     BorderThickness="2"
                     Cursor="Hand" HorizontalAlignment="Left" 
-                    Canvas.Left="1153" VerticalAlignment="Top" Margin="149,421,0,0" Grid.Column="1">
+                    Canvas.Left="1153" VerticalAlignment="Top" Margin="135,427,0,0" Grid.Column="1">
                 <Button.Template>
                     <ControlTemplate TargetType="Button">
                         <Border x:Name="border"
@@ -55,23 +55,23 @@
                 </Button.Template>
             </Button>
 
-            <Button Content="Main Menu"
-         Width="95" Command="{Binding MainMenuCommand}"
-         Height="37"
-         FontSize="14"
-         FontWeight="Bold"
-         Foreground="#000000"
-         Background="#FFFFFF"
-         BorderBrush="#000000"
-         BorderThickness="2"
-         Cursor="Hand" HorizontalAlignment="Left" 
-         Canvas.Left="1153" VerticalAlignment="Top" Margin="149,421,0,0" Grid.Column="1">
+            <Button Content="Next Round"
+                 Width="96" Command="{Binding ContinueCommand}"
+                 Height="37"
+                 FontSize="14"
+                 FontWeight="Bold"
+                 Foreground="#000000"
+                 Background="#FFFFFF"
+                 BorderBrush="#000000"
+                 BorderThickness="2"
+                 Cursor="Hand" HorizontalAlignment="Left" 
+                 Canvas.Left="1153" VerticalAlignment="Top" Margin="250,427,0,0" Grid.Column="1">
                 <Button.Template>
                     <ControlTemplate TargetType="Button">
                         <Border x:Name="border"
-                 Background="{TemplateBinding Background}"
-                 BorderBrush="{TemplateBinding BorderBrush}"
-                 BorderThickness="{TemplateBinding BorderThickness}">
+                             Background="{TemplateBinding Background}"
+                             BorderBrush="{TemplateBinding BorderBrush}"
+                             BorderThickness="{TemplateBinding BorderThickness}">
                             <ContentPresenter HorizontalAlignment="Center"
                          VerticalAlignment="Center"/>
                         </Border>
@@ -90,7 +90,7 @@
                     </ControlTemplate>
                 </Button.Template>
             </Button>
-            
+
         </Grid>
     </Viewbox>
 </UserControl>
