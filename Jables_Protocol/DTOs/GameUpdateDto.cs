@@ -16,5 +16,6 @@ namespace Jables_Protocol.DTOs
         public int CurrentPlayerIndex { get; set; }
         public bool ActionResult { get; set; }
         public ROUND_RESULT RoundWin { get; set; }
+        public GameResult gameResult { get; set; }
     }
 }
