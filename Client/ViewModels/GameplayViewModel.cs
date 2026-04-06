@@ -20,7 +20,6 @@ using System.Threading.Tasks;
 // Matthew Romano & Brodie Arkell - March 12th, 2026 - GamplayViewModel Implementation
 // The actual gameplay loop/aspects
 
-// TODO: Send cards to display them
 namespace Client.ViewModels
 {
     public class GameplayViewModel : BaseModel
@@ -55,6 +54,7 @@ namespace Client.ViewModels
             _client = client;
             _showResults = ShowResults;
             _showMainMenu = ShowMenu;
+            _client.GameResultUpdate += FinishGame;
             _client.PlayerCardUpdate += DealCardToPlayer; // subscribe to dealing player cards
             _client.DealerCardUpdate += DealCardToDealer; // subscribe to dealing dealer cards
             _client.PlayerMoneyUpdate += UpdatePlayerMoney;
@@ -66,6 +66,7 @@ namespace Client.ViewModels
             DoubleDownCommand = new CommandRelay(DoubleDown);
             MainMenuCommand = new CommandRelay(ShowMainMenu);
             _isFirstCard = true;
+
         }
 
         // Readonly so no setters
@@ -205,6 +206,7 @@ namespace Client.ViewModels
 
         private void Hit()
         {
+            if (RoundHasEnded) { return; }
             IsFirstTurn = false;
             PlayerCommandDto playerCommandDto = new PlayerCommandDto();
             playerCommandDto.Action = PlayerAction.Hit;
@@ -227,6 +229,7 @@ namespace Client.ViewModels
 
         private void Stand()
         {
+            if (RoundHasEnded) { return; }
             IsFirstTurn = false;
             // End turn
             PlayerCommandDto playerCommandDto = new PlayerCommandDto();
@@ -249,7 +252,9 @@ namespace Client.ViewModels
 
         private void DoubleDown()
         {
-            if (!IsFirstTurn) { return; }
+            if (!IsFirstTurn || RoundHasEnded) { return; }
+
+            if (PlayerMoney < BetAmount * 2) { return; } // double down should not work if the player is broke
 
             IsFirstTurn = false;
             // End turn
@@ -275,6 +280,22 @@ namespace Client.ViewModels
 
             AllowDouble = false;
 
+        }
+
+        private void FinishGame(GameResult result)
+        {
+            Application.Current.Dispatcher.BeginInvoke(new Action(() =>
+            {
+                if (result == GameResult.PLAYER_LOSE)
+                {
+                    _showMainMenu?.Invoke();
+                }
+
+                if (result == GameResult.PLAYER_WIN)
+                {
+                    _showMainMenu?.Invoke();
+                }
+            }));
         }
 
         public void RoundResult(ROUND_RESULT result)

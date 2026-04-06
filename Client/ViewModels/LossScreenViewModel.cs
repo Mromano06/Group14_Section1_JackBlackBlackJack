@@ -19,28 +19,28 @@ using System.Threading.Tasks;
 
 namespace Client.ViewModels
 {
-    public class VictoryScreenViewModel: BaseModel
+    public class LossScreenViewModel : BaseModel
     {
         private readonly Action _showMainMenu;
         private readonly NetworkClient _client;
-        private string _victoryImagePath;
+        private string _lossImagePath;
 
-        public VictoryScreenViewModel(NetworkClient client, Action showMainMenu)
+        public LossScreenViewModel(NetworkClient client, Action showMainMenu)
         {
             _client = client;
             _showMainMenu = showMainMenu;
-            _victoryImagePath = "Winner.jpg"; // Default winner image path
+            _lossImagePath = "Winner.jpg"; // Default winner image path
 
             StartAutoReturnTimer(); // navigates back to the main menu
         }
 
-        public string VictoryImagePath
+        public string LossImagePath
         {
-            get => _victoryImagePath;
+            get => _lossImagePath;
             set
             {
-                _victoryImagePath = value;
-                OnPropertyChanged(nameof(VictoryImagePath));
+                _lossImagePath = value;
+                OnPropertyChanged(nameof(LossImagePath));
             }
         }
 

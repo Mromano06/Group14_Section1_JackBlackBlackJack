@@ -36,6 +36,7 @@ namespace Client.Networking
         public event Action<double> PlayerBetUpdate;
         public event Action<bool> RoundCheckUpdate;
         public event Action<ROUND_RESULT> RoundResultUpdate;
+        public event Action<GameResult> GameResultUpdate;
         public event Action<int> PlayerIndexUpdate;
         public double LatestPlayerMoney { get; private set; }
 
@@ -263,6 +264,7 @@ namespace Client.Networking
                 {
                     sendRoundResult(gameUpdateDto.RoundWin);
                     sendRoundCheck(gameUpdateDto.IsEndRound);
+                    sendGameResult(gameUpdateDto.gameResult);
                 }
 
             }
@@ -328,6 +330,12 @@ namespace Client.Networking
         {
             Debug.WriteLine("Sending round result");
             RoundResultUpdate?.Invoke(result);
+        }
+
+        public void sendGameResult(GameResult result)
+        {
+            Debug.WriteLine("Sending game result");
+            GameResultUpdate?.Invoke(result);
         }
 
         public void sendPlayerIndex(int index)
