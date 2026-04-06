@@ -34,6 +34,9 @@ namespace Client.ViewModels
         private String _resultMessage;
         private readonly Action<String> _showResults;
         private readonly Action _showMainMenu;
+        private readonly Action _showLossScreen;
+        private readonly Action _showVictoryScreen;
+
 
 
         public ObservableCollection<CardViewModel> DealtPlayerCards { get; } =
@@ -48,12 +51,14 @@ namespace Client.ViewModels
 
         PlayerCommandSerializer _commandSerializer = new PlayerCommandSerializer();
 
-        public GameplayViewModel(NetworkClient client, Action<String> ShowResults, Action ShowMenu)
+        public GameplayViewModel(NetworkClient client, Action<String> ShowResults, Action ShowMenu, Action showLossScreen, Action showVictoryScreen)
         {
             _resultMessage = String.Empty;
             _client = client;
             _showResults = ShowResults;
             _showMainMenu = ShowMenu;
+            _showLossScreen = showLossScreen;
+            _showVictoryScreen = showVictoryScreen;
             _client.GameResultUpdate += FinishGame;
             _client.PlayerCardUpdate += DealCardToPlayer; // subscribe to dealing player cards
             _client.DealerCardUpdate += DealCardToDealer; // subscribe to dealing dealer cards
@@ -288,12 +293,12 @@ namespace Client.ViewModels
             {
                 if (result == GameResult.PLAYER_LOSE)
                 {
-                    _showMainMenu?.Invoke();
+                    _showLossScreen?.Invoke();
                 }
 
                 if (result == GameResult.PLAYER_WIN)
                 {
-                    _showMainMenu?.Invoke();
+                    _showVictoryScreen?.Invoke();
                 }
             }));
         }
