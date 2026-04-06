@@ -259,12 +259,14 @@ namespace Client.Networking
                 sendPlayerMoneyUpdate(gameUpdateDto.Player);
                 sendPlayerIndex(gameUpdateDto.CurrentPlayerIndex);
 
-
-                if (gameUpdateDto.IsEndRound)
+                if (gameUpdateDto.gameResult == GameResult.PLAYER_WIN || gameUpdateDto.gameResult == GameResult.PLAYER_LOSE)
+                {
+                    sendGameResult(gameUpdateDto.gameResult);
+                }
+                else if (gameUpdateDto.IsEndRound)
                 {
                     sendRoundResult(gameUpdateDto.RoundWin);
                     sendRoundCheck(gameUpdateDto.IsEndRound);
-                    sendGameResult(gameUpdateDto.gameResult);
                 }
 
             }
