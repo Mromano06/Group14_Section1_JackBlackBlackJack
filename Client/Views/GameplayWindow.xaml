@@ -15,24 +15,112 @@
                     Stretch="Fill" />
             </Grid.Background>
             <Canvas Background="Transparent">
-                <Rectangle Width="140" Height="37" Fill="White" HorizontalAlignment="Left" VerticalAlignment="Center" Stroke="Black" StrokeThickness="2" />
-                <Rectangle Width="134" Height="37" Fill="White" HorizontalAlignment="Left" VerticalAlignment="Center" Canvas.Left="140" Stroke="Black" StrokeThickness="2"/>
-                <Rectangle Canvas.Left="588" Canvas.Top="394" Width="124" Height="37" Fill="White" HorizontalAlignment="Left" VerticalAlignment="Center"/>
-                <Button x:Name="Hit" Width="50" Height="50" Canvas.Left="564" Command="{Binding HitCommand}"
-                Canvas.Top="454" FontSize="13" FontWeight="Bold" Content="Hit" HorizontalAlignment="Center" VerticalAlignment="Top"></Button>
-                <Button x:Name="Stand" Width="50" Height="50" Canvas.Left="624" Command="{Binding StandCommand}"
-                    Canvas.Top="454" FontSize="13" FontWeight="Bold" Content="Stand" HorizontalAlignment="Center" VerticalAlignment="Top"></Button>
-                <Button x:Name="DDButton" Width="50" Height="50" FontSize="12" Command="{Binding DoubleDownCommand}" IsEnabled="{Binding AllowDouble}"
-                    FontWeight="Bold" Content="Double" Canvas.Left="684" Canvas.Top="454" HorizontalAlignment="Center" VerticalAlignment="Top"/>
+                <Rectangle Width="150" Height="37" Fill="White" HorizontalAlignment="Left" VerticalAlignment="Center" Stroke="Black" StrokeThickness="2" />
+                <Rectangle Width="150" Height="37" Fill="White" HorizontalAlignment="Left" VerticalAlignment="Center" Canvas.Left="147" Stroke="Black" StrokeThickness="2"/>
+                <Rectangle Canvas.Left="588" Canvas.Top="394" Width="124" Height="37" Fill="White" Stroke="Black" StrokeThickness="2" HorizontalAlignment="Left" VerticalAlignment="Center"/>
                 <TextBlock Name="Instructions" FontSize="14" Text="It is your turn!" Canvas.Left="607" Canvas.Top="403" HorizontalAlignment="Left" VerticalAlignment="Center"/>
                 <TextBlock Name="Balance" FontSize="14" Text="{Binding PlayerMoney, StringFormat=Balance: ${0}}" Canvas.Left="16" Canvas.Top="9" HorizontalAlignment="Left" VerticalAlignment="Center"/>
-                <TextBlock Name="Bet" FontSize="14" Text="{Binding BetAmount, StringFormat=Current Bet: ${0}}" Canvas.Left="149" Canvas.Top="9" HorizontalAlignment="Left" VerticalAlignment="Center"/>
+                <TextBlock Name="Bet" FontSize="14" Text="{Binding BetAmount, StringFormat=Current Bet: ${0}}" Canvas.Left="163" Canvas.Top="9" HorizontalAlignment="Left" VerticalAlignment="Center"/>
+
+                <Button Width="68" Height="68"
+                    Content="Hit" Command="{Binding HitCommand}"
+                    FontSize="13"
+                    FontWeight="Bold"
+                    Foreground="White"
+                    BorderThickness="6"
+                    Cursor="Hand" Canvas.Left="616" Canvas.Top="445" HorizontalAlignment="Center" VerticalAlignment="Top">
+                    <Button.Template>
+                        <ControlTemplate TargetType="Button">
+                            <Grid>
+                                <Ellipse Fill="#C62828" Stroke="White" StrokeThickness="3"/>
+                                <Ellipse Margin="12" Stroke="White" StrokeThickness="3" StrokeDashArray="2 2"/>
+                                <ContentPresenter HorizontalAlignment="Center"
+                                  VerticalAlignment="Center"/>
+                            </Grid>
+                        </ControlTemplate>
+                    </Button.Template>
+                </Button>
+
+                <Button Width="68" Height="68"
+                    Content="Stand" Command="{Binding StandCommand}"
+                    FontSize="11"
+                    FontWeight="Bold"
+                    Foreground="White"
+                    BorderThickness="6"
+                    Cursor="Hand" Canvas.Left="533" Canvas.Top="445" HorizontalAlignment="Left" VerticalAlignment="Center">
+                    <Button.Template>
+                        <ControlTemplate TargetType="Button">
+                            <Grid>
+                                <Ellipse Fill="#212121" Stroke="#FFD54F" StrokeThickness="3"/>
+                                <Ellipse Margin="12" Stroke="#FFD54F" StrokeThickness="3" StrokeDashArray="2 2"/>
+                                <ContentPresenter HorizontalAlignment="Center"
+                                  VerticalAlignment="Center"/>
+                            </Grid>
+                        </ControlTemplate>
+                    </Button.Template>
+                </Button>
+
+                <Button Width="68" Height="68"
+                    Content="Double" Command="{Binding DoubleDownCommand}"
+                    FontSize="9" IsEnabled="{Binding AllowDouble}"
+                    FontWeight="Bold"
+                    Foreground="White"
+                    BorderThickness="6"
+                    Cursor="Hand" 
+                    Canvas.Left="699" Canvas.Top="445" HorizontalAlignment="Center" VerticalAlignment="Top">
+                    <Button.Template>
+                        <ControlTemplate TargetType="Button">
+                            <Grid>
+                                <Ellipse Fill="#0000FF" Stroke="#000000" StrokeThickness="3"/>
+                                <Ellipse Margin="12" Stroke="#000000" StrokeThickness="3" StrokeDashArray="2 2"/>
+                                <ContentPresenter HorizontalAlignment="Center"
+                                    VerticalAlignment="Center"/>
+                            </Grid>
+                        </ControlTemplate>
+                    </Button.Template>
+                </Button>
+
+                <Button Content="Main Menu"
+                    Width="147" Command="{Binding MainMenuCommand}"
+                    Height="37"
+                    FontSize="16"
+                    FontWeight="Bold"
+                    Foreground="#000000"
+                    Background="#FFFFFF"
+                    BorderBrush="#000000"
+                    BorderThickness="2"
+                    Cursor="Hand" HorizontalAlignment="Left" 
+                    Canvas.Left="1153" VerticalAlignment="Center">
+                    <Button.Template>
+                        <ControlTemplate TargetType="Button">
+                            <Border x:Name="border"
+                            Background="{TemplateBinding Background}"
+                            BorderBrush="{TemplateBinding BorderBrush}"
+                            BorderThickness="{TemplateBinding BorderThickness}">
+                                <ContentPresenter HorizontalAlignment="Center"
+                                    VerticalAlignment="Center"/>
+                            </Border>
+                            <ControlTemplate.Triggers>
+                                <Trigger Property="IsMouseOver" Value="True">
+                                    <Setter TargetName="border" Property="Opacity" Value="1"/>
+                                </Trigger>
+                                <Trigger Property="IsPressed" Value="True">
+                                    <Setter TargetName="border" Property="RenderTransform">
+                                        <Setter.Value>
+                                            <ScaleTransform ScaleX="0.97" ScaleY="0.97"/>
+                                        </Setter.Value>
+                                    </Setter>
+                                </Trigger>
+                            </ControlTemplate.Triggers>
+                        </ControlTemplate>
+                    </Button.Template>
+                </Button>
 
                 <ItemsControl ItemsSource="{Binding DealtPlayerCards}"
-              Canvas.Top="526"
-              Width="394"
-              Height="138"
-              HorizontalAlignment="Left" Canvas.Left="582" VerticalAlignment="Center">
+                      Canvas.Top="526"
+                      Width="394"
+                      Height="138"
+                      HorizontalAlignment="Left" Canvas.Left="582" VerticalAlignment="Center">
 
                     <ItemsControl.ItemsPanel>
                         <ItemsPanelTemplate>
@@ -43,9 +131,9 @@
                     <ItemsControl.ItemTemplate>
                         <DataTemplate>
                             <Image Source="{Binding CardImagePath}"
-                   Width="85"
-                   Height="128"
-                   Margin="0,0,-45,0"/>
+                           Width="85"
+                           Height="128"
+                           Margin="0,0,-45,0"/>
                         </DataTemplate>
                     </ItemsControl.ItemTemplate>
                 </ItemsControl>
@@ -70,8 +158,8 @@
                                 Margin="0,0,-45,0"/>
                         </DataTemplate>
                     </ItemsControl.ItemTemplate>
-                </ItemsControl>
 
+                </ItemsControl>
             </Canvas>
         </Grid>
     </Viewbox>

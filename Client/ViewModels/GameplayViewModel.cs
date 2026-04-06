@@ -17,7 +17,6 @@ using System.Windows.Input;
 using System.Windows.Threading;
 using System.Threading.Tasks;
 
-
 // Matthew Romano & Brodie Arkell - March 12th, 2026 - GamplayViewModel Implementation
 // The actual gameplay loop/aspects
 
@@ -35,6 +34,8 @@ namespace Client.ViewModels
         private bool _roundHasEnded = false;
         private String _resultMessage;
         private readonly Action<String> _showResults;
+        private readonly Action _showMainMenu;
+
 
         public ObservableCollection<CardViewModel> DealtPlayerCards { get; } =
             new ObservableCollection<CardViewModel>();
@@ -44,14 +45,16 @@ namespace Client.ViewModels
         public ICommand HitCommand { get; }
         public ICommand StandCommand { get; }
         public ICommand DoubleDownCommand { get; }
+        public ICommand MainMenuCommand { get; }
 
         PlayerCommandSerializer _commandSerializer = new PlayerCommandSerializer();
 
-        public GameplayViewModel(NetworkClient client, Action<String> ShowResults)
+        public GameplayViewModel(NetworkClient client, Action<String> ShowResults, Action ShowMenu)
         {
             _resultMessage = String.Empty;
             _client = client;
             _showResults = ShowResults;
+            _showMainMenu = ShowMenu;
             _client.PlayerCardUpdate += DealCardToPlayer; // subscribe to dealing player cards
             _client.DealerCardUpdate += DealCardToDealer; // subscribe to dealing dealer cards
             _client.PlayerMoneyUpdate += UpdatePlayerMoney;
@@ -61,6 +64,7 @@ namespace Client.ViewModels
             HitCommand = new CommandRelay(Hit);
             StandCommand = new CommandRelay(Stand);
             DoubleDownCommand = new CommandRelay(DoubleDown);
+            MainMenuCommand = new CommandRelay(ShowMainMenu);
             _isFirstCard = true;
         }
 
@@ -172,6 +176,14 @@ namespace Client.ViewModels
                 Debug.WriteLine($"updating the player's money to: {amount}");
                 BetAmount = amount;
                 OnPropertyChanged(nameof(BetAmount));
+            }));
+        }
+
+        public void ShowMainMenu()
+        {
+            Application.Current.Dispatcher.BeginInvoke(new Action(() =>
+            {
+                _showMainMenu?.Invoke();
             }));
         }
 
