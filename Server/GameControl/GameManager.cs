@@ -13,6 +13,7 @@ using SharedModels.Models;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Reflection.PortableExecutable;
 using System.Runtime.Serialization;
 using System.Security.Policy;
 using System.Text;
@@ -253,6 +254,8 @@ namespace Server.GameControl
         {
             List<CardDto> dealerCards = new List<CardDto>();
             PlayerDto playerDto = new PlayerDto(player);
+            GameResult gameresult = GameResult.DEFAULT_RESULT;
+
 
             foreach (Card card in _game.Dealer.Hand.Cards) {
                 CardDto cardDto = new CardDto() {
@@ -261,6 +264,14 @@ namespace Server.GameControl
                 };
 
                 dealerCards.Add(cardDto);
+            }
+
+            if (player.Balance >= 1200)
+            {
+                gameresult = GameResult.PLAYER_WIN;
+            }
+            else if (player.Balance <= 0) {
+                gameresult = GameResult.PLAYER_LOSE;
             }
 
             GameUpdateDto dto = new GameUpdateDto() {
@@ -276,7 +287,9 @@ namespace Server.GameControl
                 CurrentPlayerIndex = _game.CurrentPlayerIndex,
 
                 ActionResult = actionResult,
-                RoundWin = roundWin
+                RoundWin = roundWin,
+                
+                gameResult = gameresult
             };
 
             SendPacket(PacketType.GameUpdate, _gameUpdateSerializer.Serialize(dto));
