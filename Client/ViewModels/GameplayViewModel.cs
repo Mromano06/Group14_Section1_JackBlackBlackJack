@@ -30,14 +30,13 @@ namespace Client.ViewModels
         private bool _isFirstCard;
         private bool _allowDouble = true;
         private bool _isFirstTurn = true;
-        private bool _roundHasEnded = false;
+        private bool _roundHasEnded;
+        private bool _gameHasEnded = false;
         private String _resultMessage;
         private readonly Action<String> _showResults;
         private readonly Action _showMainMenu;
         private readonly Action _showLossScreen;
         private readonly Action _showVictoryScreen;
-
-
 
         public ObservableCollection<CardViewModel> DealtPlayerCards { get; } =
             new ObservableCollection<CardViewModel>();
@@ -71,7 +70,8 @@ namespace Client.ViewModels
             DoubleDownCommand = new CommandRelay(DoubleDown);
             MainMenuCommand = new CommandRelay(ShowMainMenu);
             _isFirstCard = true;
-
+            _roundHasEnded = false;
+            _gameHasEnded = false;
         }
 
         // Readonly so no setters
@@ -124,6 +124,16 @@ namespace Client.ViewModels
             {
                 _roundHasEnded = value;
                 OnPropertyChanged(nameof(RoundHasEnded));
+            }
+        }
+
+        public bool GameHasEnded
+        {
+            get => _gameHasEnded;
+            set
+            {
+                _gameHasEnded = value;
+                OnPropertyChanged(nameof(GameHasEnded));
             }
         }
 
@@ -193,22 +203,6 @@ namespace Client.ViewModels
             }));
         }
 
-        private void UpdateRound(bool check)
-        {
-            if (check)
-            {
-                RoundHasEnded = false;
-                AllowDouble = true;
-                Task.Delay(2000).ContinueWith(_ =>
-                {
-                     Application.Current.Dispatcher.BeginInvoke(new Action(() =>
-                     {
-                         _showResults?.Invoke(ResultMessage);
-                     }));
-                });
-            }
-        }
-
         private void Hit()
         {
             if (RoundHasEnded) { return; }
@@ -259,7 +253,7 @@ namespace Client.ViewModels
         {
             if (!IsFirstTurn || RoundHasEnded) { return; }
 
-            if (PlayerMoney < BetAmount * 2) { return; } // double down should not work if the player is broke
+            if (PlayerMoney < BetAmount) // double down should not work if the player is broke
 
             IsFirstTurn = false;
             // End turn
@@ -287,16 +281,26 @@ namespace Client.ViewModels
 
         }
 
+        private void UpdateRound(bool check)
+        {
+            if (check)
+            {
+                RoundHasEnded = false;
+                AllowDouble = true;
+            }
+        }
+
         private void FinishGame(GameResult result)
         {
+            GameHasEnded = true;
+
             Application.Current.Dispatcher.BeginInvoke(new Action(() =>
             {
                 if (result == GameResult.PLAYER_LOSE)
                 {
                     _showLossScreen?.Invoke();
                 }
-
-                if (result == GameResult.PLAYER_WIN)
+                else if (result == GameResult.PLAYER_WIN)
                 {
                     _showVictoryScreen?.Invoke();
                 }
@@ -310,19 +314,27 @@ namespace Client.ViewModels
                 case ROUND_RESULT.WIN:
                     ResultMessage = "You won the round!";
                     break;
-
                 case ROUND_RESULT.LOSS:
                     ResultMessage = "You lost the round :(";
                     break;
-
                 case ROUND_RESULT.PUSH:
                     ResultMessage = "You pushed.";
                     break;
-
-                // Should never get this
                 case ROUND_RESULT.DEFAULT:
                     ResultMessage = "Uh oh, bad things happened.";
                     break;
+            }
+
+            if (!GameHasEnded)
+            {
+                Task.Delay(2000).ContinueWith(_ =>
+                {
+                    Application.Current.Dispatcher.BeginInvoke(new Action(() =>
+                    {
+                        if (!GameHasEnded)
+                            _showResults?.Invoke(ResultMessage);
+                    }));
+                });
             }
         }
 
@@ -334,6 +346,8 @@ namespace Client.ViewModels
             _client.PlayerMoneyUpdate -= UpdatePlayerMoney;
             _client.PlayerBetUpdate -= UpdateBetAmount;
             _client.RoundCheckUpdate -= UpdateRound;
+            _client.RoundResultUpdate -= RoundResult;
+            _client.GameResultUpdate -= FinishGame;  
         }
 
     }

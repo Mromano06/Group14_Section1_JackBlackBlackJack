@@ -29,7 +29,7 @@ namespace Client.ViewModels
         {
             _client = client;
             _showMainMenu = showMainMenu;
-            _victoryImagePath = "Winner.jpg"; // Default winner image path
+            _victoryImagePath = "pack://application:,,,/Loser.jpg"; // Default winner image path
 
             StartAutoReturnTimer(); // navigates back to the main menu
         }

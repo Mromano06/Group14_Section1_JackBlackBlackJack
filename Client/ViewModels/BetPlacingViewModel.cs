@@ -44,7 +44,6 @@ namespace Client.ViewModels
             _showMainMenu = ShowMenu;
             _playerMoney = _client.LatestPlayerMoney; // set backing field directly
             _client.PlayerMoneyUpdate += UpdatePlayerMoney;
-            _client.GameResultUpdate += FinishGame;
             MaxBetCommand = new CommandRelay(MaxBet);
             ConfirmBetCommand = new CommandRelay(Confirm);
             ResetBetCommand = new CommandRelay(Reset);
