@@ -1,4 +1,47 @@
-﻿<UserControl x:Class="Client.Views.ResultScreen"
+﻿<!--
+/**
+ * @file ResultScreen.xaml
+ * @brief View displayed after a round to show the round result.
+ *
+ * @details
+ * This view presents the outcome of the most recent round and allows
+    the player to either continue or return to the main menu.
+ *
+ * Responsibilities:
+ * - Display the result message from the completed round
+ * - Provide navigation options for continuing or exiting
+ *
+ * Layout:
+ * - Uses a Viewbox for responsive scaling across screen sizes
+ * - Background uses the gameboard image for consistency with gameplay
+ * - Canvas is used for positioning result display elements
+ *
+ * Data Bindings:
+ * - ResultMessage → Displays the outcome of the round (e.g., win, loss, push)
+ *
+ * Commands:
+ * - ContinueCommand → Navigates to the betting screen for the next round
+ * - MainMenuCommand → Navigates back to the main menu
+ *
+ * UI Behavior:
+ * - Displays a centered result message inside a styled rectangle
+ * - Provides two action buttons:
+ *   • "Main Menu" for exiting the current game session
+ *   • "Next Round" for continuing gameplay
+ *
+ * MVVM Notes:
+ * - All actions are routed through ICommand bindings
+ * - Navigation logic is handled entirely in the ResultScreenViewModel
+ *
+ * Dependencies:
+ * - Requires DataContext to be set to ResultScreenViewModel
+ *
+ * @author Matthew Romano
+ * @date April 8th, 2026
+ */
+-->
+
+<UserControl x:Class="Client.Views.ResultScreen"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"

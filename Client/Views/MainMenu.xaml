@@ -1,4 +1,50 @@
-﻿<UserControl x:Class="Client.Views.MainMenu"
+﻿    <!--
+    /**
+     * @file MainMenu.xaml
+     * @brief Main menu view serving as the entry point of the application.
+     *
+     * @details
+     * This view provides the primary navigation interface for the user.
+     * It allows the player to:
+     * - Start the game
+     * - View the game rules
+     * - Exit the application
+     *
+     * Layout:
+     * - Uses a Viewbox for full-screen scaling across resolutions
+     * - Background uses a themed image for visual consistency
+     * - Grid layout with centered title and evenly spaced action buttons
+     *
+     * UI Structure:
+     * - Title displayed prominently at the top of the screen
+     * - Three large card-style buttons:
+     *   • PLAY → Starts the game
+     *   • RULES → Opens the rules screen
+     *   • EXIT → Closes the application
+     *
+     * Data Bindings:
+     * - PlayCommand → Navigates to the betting/game flow
+     * - RulesCommand → Navigates to the rules screen
+     * - ExitCommand → Terminates the application
+     *
+     * UI Behavior:
+     * - Buttons are styled as playing cards using image backgrounds
+     * - Rounded borders provide a polished, modern appearance
+     * - Large button size improves usability and accessibility
+     *
+     * MVVM Notes:
+     * - All navigation logic is handled through ICommand bindings
+     * - No code-behind logic is required for interaction
+     *
+     * Dependencies:
+     * - Requires DataContext to be set to MainMenuModel
+     *
+     * @author Matthew Romano
+     * @date April 8th, 2026
+     */
+    -->
+    
+    <UserControl x:Class="Client.Views.MainMenu"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"

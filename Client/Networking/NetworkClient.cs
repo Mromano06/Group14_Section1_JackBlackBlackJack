@@ -1,21 +1,23 @@
-﻿using System;
+﻿using Client.ViewModels;
+using Jables_Protocol;
+using Jables_Protocol.DTOs;
+using Jables_Protocol.Serializers;
+using SharedModels.Core;
+using SharedModels.Models;
+using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Net.Sockets;
 using System.Security.Policy;
+using System.Security.RightsManagement;
 using System.Text;
 using System.Threading;
+using System.Threading.Channels;
 using System.Threading.Tasks;
-using Jables_Protocol;
-using Jables_Protocol.Serializers;
-using Jables_Protocol.DTOs;
-using SharedModels.Core;
-using Client.ViewModels;
-using System.Windows.Threading;
 using System.Windows.Media.Converters;
-using System.Security.RightsManagement;
+using System.Windows.Threading;
 
 
 
@@ -25,26 +27,87 @@ using System.Security.RightsManagement;
 /// </summary>
 namespace Client.Networking
 {
+    /// <summary>
+    /// Network client responsible for handling all communication with the game server.
+    /// </summary>
+    /// <remarks>
+    /// This class serves as the central networking layer of the application.
+    /// It is responsible for:
+    /// <list type="bullet">
+    /// <item><description>Establishing TCP connections to the server</description></item>
+    /// <item><description>Sending serialized player commands</description></item>
+    /// <item><description>Receiving and deserializing server packets</description></item>
+    /// <item><description>Dispatching updates to the UI via events</description></item>
+    /// </list>
+    /// 
+    /// Uses background tasks and a thread-safe queue to prevent blocking the UI thread.
+    /// </remarks>
     public class NetworkClient
     {
-
+        /// <summary>
+        /// Underlying TCP client.
+        /// </summary>
         private TcpClient client;
+
+        /// <summary>
+        /// Network stream used for sending and receiving data.
+        /// </summary>
         private NetworkStream stream;
+
+        /// <summary>
+        /// Raised when a player card dto is received from the server.
+        /// </summary>
         public event Action<CardDto> PlayerCardUpdate;
+
+        /// <summary>
+        /// Raised when a dealer card dto is received from the server.
+        /// </summary>
         public event Action<CardDto> DealerCardUpdate;
+
+        /// <summary>
+        /// Raised when the player's money is updated.
+        /// </summary>
         public event Action<double> PlayerMoneyUpdate;
+
+        /// <summary>
+        /// Raised when the player's bet amount is updated.
+        /// </summary>
         public event Action<double> PlayerBetUpdate;
+
+        /// <summary>
+        /// Raised when the round state changes.
+        /// </summary>
         public event Action<bool> RoundCheckUpdate;
+
+        /// <summary>
+        /// Raised when a round result is received.
+        /// </summary>
         public event Action<ROUND_RESULT> RoundResultUpdate;
+
+        /// <summary>
+        /// Raised when a game result is received.
+        /// </summary>
         public event Action<GameResult> GameResultUpdate;
+
+        /// <summary>
+        /// Raised when the active player index changes.
+        /// </summary>
         public event Action<int> PlayerIndexUpdate;
+
+        /// <summary>
+        /// Stores the most recent player balance received from the server.
+        /// </summary>
         public double LatestPlayerMoney { get; private set; }
 
-        // Queue to hold outgoing commands/messages (thread-safe)
-        // will change from string to command object once command object is implemented
+        /// <summary>
+        /// Queue to hold outgoing commands/messages (thread-safe)
+        /// will change from string to command object once command object is implemented
+        /// </summary>
         private readonly ConcurrentQueue<byte[]> sendQueue = new();
 
-        // Token used to cancel the send/receive loops
+        /// <summary>
+        /// Token used to cancel the send/receive loops
+        /// </summary>
         private readonly CancellationTokenSource cancellation = new();
 
         /// <summary>
@@ -91,23 +154,16 @@ namespace Client.Networking
         /// </summary>
         private void HandleMessage(byte[] data)
         {
-            Console.WriteLine("Server:" + data); /// add better logging here
+            Console.WriteLine("Server:" + data);
 
             // Deserialize the packet
 
             // Sort data into player/dealer cards
 
-            // MainWindowViewModel _mainWindow = new MainWindowViewModel();
-            /// TODO:
-            /// parse message from server to handle message and update the UI
-            /// Example: if message starts with "Player_Hit", update player state
-
             Packet packet = Packet.FromBytes(data);
 
             switch (packet.Type)
             {
-                //case SharedModels.Core.PacketType.Error: // Not sure what to do with Error yet.
-                // Player
                 case PacketType.Player:
                     {
                         PlayerDto dto = PlayerSerializer.Deserialize(packet.Payload);
@@ -220,6 +276,10 @@ namespace Client.Networking
             client?.Close();
         }
 
+        /// <summary>
+        /// Handles game update packets and dispatches relevant UI updates.
+        /// </summary>
+        /// <param name="gameUpdateDto">Deserialized game update data.</param>
         public void handleGameUpdateDto(GameUpdateDto gameUpdateDto)
         {
             // if player cards not null send them to UI
@@ -277,17 +337,40 @@ namespace Client.Networking
 
         }
 
+        /// <summary>
+        /// Raises the <see cref="PlayerCardUpdate"/> event to notify subscribers of a new player card.
+        /// </summary>
+        /// <param name="cardDto">The card dto received from the server.</param>
+        /// <remarks>
+        /// This method acts as a bridge between the networking layer and the UI,
+        /// allowing ViewModels to update the player's hand when new cards are dealt.
+        /// </remarks>
         public void sendPlayerCardUpdate(CardDto cardDto)
         {
             PlayerCardUpdate?.Invoke(cardDto);
         }
 
+        /// <summary>
+        /// Raises the <see cref="DealerCardUpdate"/> event to notify subscribers of a new dealer card.
+        /// </summary>
+        /// <param name="cardDto">The card dto received from the server.</param>
+        /// <remarks>
+        /// Used to update the dealer's visible hand in the UI.
+        /// </remarks>
         public void sendDealerCardUpdate(CardDto cardDto)
         {
             // send card dto
             DealerCardUpdate?.Invoke(cardDto);
         }
 
+        /// <summary>
+        /// Raises the <see cref="PlayerMoneyUpdate"/> event to update the player's balance.
+        /// </summary>
+        /// <param name="player">The player dto containing updated balance information.</param>
+        /// <remarks>
+        /// Ensures the player object is valid and the balance is non-negative before dispatching.
+        /// Also updates the cached <see cref="LatestPlayerMoney"/> value.
+        /// </remarks>
         public void sendPlayerMoneyUpdate(PlayerDto player)
         {
             if (player == null)
@@ -306,6 +389,13 @@ namespace Client.Networking
 
         }
 
+        /// <summary>
+        /// Raises the <see cref="PlayerBetUpdate"/> event to update the player's current bet.
+        /// </summary>
+        /// <param name="amount">The updated bet amount.</param>
+        /// <remarks>
+        /// Only dispatches the update if the amount is non-negative.
+        /// </remarks>
         public void sendPlayerBetUpdate(double amount)
         {
 
@@ -319,6 +409,13 @@ namespace Client.Networking
 
         }
 
+        /// <summary>
+        /// Raises the <see cref="RoundCheckUpdate"/> event to indicate a round state change.
+        /// </summary>
+        /// <param name="roundCheck">Boolean indicating if the round has ended or reset.</param>
+        /// <remarks>
+        /// Typically used by ViewModels to reset round-specific UI state.
+        /// </remarks>
         public void sendRoundCheck(bool roundCheck)
         {
             if (roundCheck)
@@ -328,18 +425,39 @@ namespace Client.Networking
             }
         }
 
+        /// <summary>
+        /// Raises the <see cref="RoundResultUpdate"/> event to notify subscribers of the round result.
+        /// </summary>
+        /// <param name="result">The result of the round.</param>
+        /// <remarks>
+        /// Used to trigger result displays or transitions between rounds.
+        /// </remarks>
         public void sendRoundResult(ROUND_RESULT result)
         {
             Debug.WriteLine("Sending round result");
             RoundResultUpdate?.Invoke(result);
         }
 
+        /// <summary>
+        /// Raises the <see cref="GameResultUpdate"/> event to notify subscribers of the game outcome.
+        /// </summary>
+        /// <param name="result">The final result of the game.</param>
+        /// <remarks>
+        /// Typically triggers navigation to victory or loss screens.
+        /// </remarks>
         public void sendGameResult(GameResult result)
         {
             Debug.WriteLine("Sending game result");
             GameResultUpdate?.Invoke(result);
         }
 
+        /// <summary>
+        /// Raises the <see cref="PlayerIndexUpdate"/> event to indicate the active player index.
+        /// </summary>
+        /// <param name="index">The index of the current player.</param>
+        /// <remarks>
+        /// Useful for multiplayer or turn-based UI updates.
+        /// </remarks>
         public void sendPlayerIndex(int index)
         {
             Debug.WriteLine("Sending player index: " + index);
