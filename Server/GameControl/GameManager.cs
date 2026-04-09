@@ -19,7 +19,6 @@ using System.Security.Policy;
 using System.Text;
 using System.Xml.Linq;
 
-
 // Must be strictly defined as it can be "ambigous" with the primitive double 
 using Double = GameLogic.Actions.ActionTypes.Double;
 
