@@ -36,7 +36,7 @@ namespace Server.GameControl
     /// <item><description>Sending game state updates back to the client.</description></item>
     /// </list>
     /// </remarks>
-    /// <author>Evan Travis</author>
+    /// <author>Evan Travis, Brodie Arkell</author>
     public class GameManager
     {
         // create game
