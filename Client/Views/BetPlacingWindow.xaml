@@ -1,4 +1,48 @@
-﻿<UserControl x:Class="Client.Views.BetPlacingWindow"
+﻿    <!--
+    /**
+     * @file BetPlacingWindow.xaml
+     * @brief View responsible for handling player bet placement UI.
+     *
+     * @details
+     * This view is bound to the BetPlacingViewModel and provides the interface
+     * for users to:
+     * - View their current balance
+     * - Adjust bet amounts using preset increments
+     * - Reset or maximize bets
+     * - Confirm and submit a bet
+     * - Navigate back to the main menu
+     *
+     * Layout:
+     * - Uses a Viewbox for responsive scaling across resolutions
+     * - Background uses a gameboard image for visual consistency
+     * - Canvas is used for absolute positioning of UI elements
+     *
+     * Data Bindings:
+     * - CurrentBet → Displays the player's current bet amount
+     * - PlayerMoney → Displays the player's available balance
+     *
+     * Commands:
+     * - IncBetBy10Command / IncBetBy20Command / IncBetBy50Command / IncBetBy100Command
+     *   → Increment bet values using chip-style buttons
+     * - MaxBetCommand → Sets bet to maximum available balance
+     * - ResetBetCommand → Resets bet to zero
+     * - ConfirmBetCommand → Sends bet to server and proceeds to gameplay
+     * - MainMenuCommand → Returns user to main menu
+     *
+     * UI Notes:
+     * - Chip buttons are styled using Ellipse-based ControlTemplates
+     *   to simulate casino chips
+     * - Action buttons use bordered templates with hover/press effects
+     *
+     * Dependencies:
+     * - Requires DataContext to be set to BetPlacingViewModel
+     *
+     * @author Matthew Romano
+     * @date April 8th, 2026
+     */
+    -->
+    
+    <UserControl x:Class="Client.Views.BetPlacingWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"

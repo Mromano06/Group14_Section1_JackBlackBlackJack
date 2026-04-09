@@ -1,4 +1,54 @@
-﻿<UserControl x:Class="Client.Views.RulesWindow"
+﻿<!--
+/**
+ * @file RulesWindow.xaml
+ * @brief View displaying the rules and instructions for the blackjack game.
+ *
+ * @details
+ * This view provides a structured, scrollable interface presenting all relevant
+ * gameplay rules to the user. It is designed to be informative and easy to read.
+ *
+ * Responsibilities:
+ * - Display game rules, objectives, and mechanics
+ * - Allow the user to return to the main menu
+ *
+ * Layout:
+ * - Uses a Viewbox for responsive scaling across screen sizes
+ * - Background image matches the main menu for visual consistency
+ * - Canvas is used for precise positioning of UI elements
+ * - Central Border acts as a container for all rule content
+ *
+ * Content Structure:
+ * - Title section ("Blackjack Rules")
+ * - Scrollable rules panel divided into sections:
+ *   • Objective
+ *   • Deck Setup
+ *   • Card Values
+ *   • Player Actions
+ *   • Dealer Rules
+ *   • Winning Conditions
+ *   • Blackjack definition
+ *
+ * UI Behavior:
+ * - ScrollViewer allows vertical scrolling for long content
+ * - TextBlocks are used with wrapping for readability
+ * - Section headers are styled with larger, bold fonts
+ *
+ * Commands:
+ * - BackCommand → Navigates the user back to the main menu
+ *
+ * MVVM Notes:
+ * - View is purely presentational with no embedded logic
+ * - Navigation is handled through command binding
+ *
+ * Dependencies:
+ * - Requires DataContext to be set to RulesViewModel
+ *
+ * @author Matthew Romano
+ * @date April 8th, 2026
+ */
+-->
+
+<UserControl x:Class="Client.Views.RulesWindow"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"

@@ -1,4 +1,58 @@
-﻿<UserControl x:Class="Client.Views.GameplayWindow"
+﻿<!--
+/**
+ * @file GameplayWindow.xaml
+ * @brief Main gameplay view for the blackjack application.
+ *
+ * @details
+ * This view represents the active gameplay screen where the player interacts
+ * with the game. It is bound to the GameplayViewModel and reflects real-time
+ * updates received from the server via the NetworkClient.
+ *
+ * Responsibilities:
+ * - Display player and dealer hands dynamically
+ * - Show current player balance and bet amount
+ * - Provide gameplay controls (Hit, Stand, Double Down)
+ * - Handle navigation back to the main menu
+ *
+ * Layout:
+ * - Uses a Viewbox for responsive scaling across screen sizes
+ * - Canvas-based layout for precise positioning of gameplay elements
+ * - Background uses a gameboard image for consistent styling
+ *
+ * Data Bindings:
+ * - PlayerMoney → Displays current player balance
+ * - BetAmount → Displays current bet amount
+ * - DealtPlayerCards → Observable collection of player cards
+ * - DealtDealerCards → Observable collection of dealer cards
+ * - AllowDouble → Controls availability of the double down button
+ *
+ * Commands:
+ * - HitCommand → Requests a hit action from the server
+ * - StandCommand → Ends the player’s turn
+ * - DoubleDownCommand → Doubles bet and draws one final card
+ * - MainMenuCommand → Navigates back to the main menu
+ *
+ * UI Behavior:
+ * - Card displays use ItemsControl bound to observable collections
+ *   to dynamically render cards as they are received
+ * - Cards are visually overlapped using negative margins to mimic
+ *   real card stacking
+ * - Action buttons are styled as casino chips using Ellipse templates
+ *
+ * MVVM Notes:
+ * - No direct game logic exists in this view
+ * - All interactions are routed through ICommand bindings
+ * - Real-time updates are driven by event subscriptions in GameplayViewModel
+ *
+ * Dependencies:
+ * - Requires DataContext to be set to GameplayViewModel
+ *
+ * @author Matthew Romano
+ * @date April 8th, 2026
+ */
+-->
+    
+<UserControl x:Class="Client.Views.GameplayWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
