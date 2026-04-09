@@ -1,5 +1,53 @@
-﻿<!-- Matthew Romano - Feb 11th, 2026 - xmal file for main menu -->
-<!-- This is where the class name is defined. -->
+﻿<!--
+/**
+ * @file Blackjack.xaml
+ * @brief Root window of the application responsible for ViewModel-to-View mapping and navigation.
+ *
+ * @details
+ * This window serves as the main container for the entire applications UI.
+ * It uses WPF DataTemplates to map ViewModels to their corresponding Views,
+ * enabling seamless navigation without direct view switching logic.
+ *
+ * Responsibilities:
+ * - Define ViewModel → View mappings using DataTemplates
+ * - Host the currently active ViewModel via a ContentControl
+ * - Enable dynamic screen transitions driven by MainWindowViewModel
+ *
+ * Architecture:
+ * - Follows MVVM pattern with ViewModel-first navigation
+ * - The ContentControl binds to CurrentViewModel
+ * - WPF automatically selects the correct View based on DataTemplate matching
+ *
+ * DataTemplate Mappings:
+ * - MainMenuModel → MainMenu
+ * - BetPlacingViewModel → BetPlacingWindow
+ * - GameplayViewModel → GameplayWindow
+ * - RulesViewModel → RulesWindow
+ * - ResultScreenViewModel → ResultScreen
+ * - VictoryScreenViewModel → VictoryScreen
+ * - LossScreenViewModel → LossScreen
+ *
+ * Navigation Flow:
+ * - MainWindowViewModel updates CurrentViewModel
+ * - ContentControl reacts to the change
+ * - Corresponding View is rendered automatically via DataTemplates
+ *
+ * MVVM Notes
+ * - View switching is entirely data-driven
+ * - Promotes loose coupling between UI and logic
+ *
+ * UI Behavior:
+ * - Only one view is visible at a time
+ * - All screens are swapped within the same window context
+ *
+ * Dependencies:
+ * - Requires DataContext to be set to MainWindowViewModel
+ *
+ * @author Matthew Romano
+ * @date April 8th, 2026
+ */
+-->
+    
 <Window x:Class="Client.Blackjack"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"

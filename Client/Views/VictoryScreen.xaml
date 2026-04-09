@@ -1,4 +1,34 @@
-﻿<Page x:Class="Client.Views.VictoryScreen"
+﻿    <!--
+    /**
+     * @file VictoryScreen.xaml
+     * @brief View displayed when the player wins the game.
+     *
+     * @details
+     * This view presents a full-screen background image representing a victory state.
+     * It is bound to the VictoryScreenViewModel and relies on a single property.
+     *
+     * Layout:
+     * - Uses a Grid with an ImageBrush background
+     * - Image scales to fill the screen while maintaining aspect ratio
+     *
+     * Data Bindings:
+     * - VictoryImagePath → Provides the image displayed as the background
+     *
+     * UI Behavior:
+     * - No interactive elements are present
+     *
+     * MVVM Notes:
+     * - Purely visual view with no direct logic
+     *
+     * Dependencies:
+     * - Requires DataContext to be set to LossScreenViewModel
+     *
+     * @author Matthew Romano
+     * @date April 8th, 2026
+     */
+    -->
+    
+    <Page x:Class="Client.Views.VictoryScreen"
       xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
