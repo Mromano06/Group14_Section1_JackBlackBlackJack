@@ -25,17 +25,57 @@ using Double = GameLogic.Actions.ActionTypes.Double;
 
 namespace Server.GameControl
 {
+    /// <summary>
+    /// Manages the server-side game session for a connected client.
+    /// </summary>
+    /// <remarks>
+    /// Acts as the central controller for a single player's game session, responsible for:
+    /// <list type="bullet">
+    /// <item><description>Receiving and deserializing player commands from the client.</description></item>
+    /// <item><description>Executing game actions such as bet, hit, stand, double, and insure.</description></item>
+    /// <item><description>Coordinating dealer logic and round resolution.</description></item>
+    /// <item><description>Sending game state updates back to the client.</description></item>
+    /// </list>
+    /// </remarks>
+    /// <author>Evan Travis</author>
     public class GameManager
     {
         // create game
+        /// <summary>
+        /// The client connection associated with this game session.
+        /// </summary>
         private readonly ClientConnection _connection;
+
+        /// <summary>
+        /// The current game instance being managed.
+        /// </summary>
         private Game _game;
+
+        /// <summary>
+        /// The player participating in this game session.
+        /// </summary>
         private Player _player;
 
         // serializers
+        /// <summary>
+        /// Serializer used to convert game update data into network packets.
+        /// </summary>
         private readonly GameUpdateSerializer _gameUpdateSerializer = new GameUpdateSerializer();
+
+        /// <summary>
+        /// Callback action used to log game events.
+        /// </summary>
         private readonly Action<string> _OnLog;
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="GameManager"/> class.
+        /// </summary>
+        /// <param name="connection">The client connection for this game session.</param>
+        /// <param name="OnLog">A callback action for logging game events.</param>
+        /// <remarks>
+        /// Creates a new game with a minimum bet of 10 and a three-deck shoe,
+        /// and adds a default player to the game.
+        /// </remarks>
         public GameManager(ClientConnection connection, Action<string> OnLog)
         {
             _connection = connection;
@@ -52,6 +92,15 @@ namespace Server.GameControl
             _game.AddPlayer(_player);
         }
 
+        /// <summary>
+        /// Callback invoked when a message is received from the client.
+        /// </summary>
+        /// <param name="sender">The client connection that sent the message.</param>
+        /// <param name="data">The raw byte data received from the client.</param>
+        /// <remarks>
+        /// Deserializes the incoming packet using the Jables Protocol and
+        /// routes it to the appropriate handler based on packet type.
+        /// </remarks>
         // this is the callback function that will run when message received from client
         // we need to use the Jables_Protocol to deserialize the message here 
         public void OnMessageReceived(ClientConnection sender, byte[] data)
@@ -72,10 +121,14 @@ namespace Server.GameControl
             catch (Exception ex) {
                 Debug.WriteLine($"Error: {ex.Message}");
             }
-            
-            Debug.WriteLine("Client meassage received, size of: " +  data.Length + " bytes.");
+
+            Debug.WriteLine("Client meassage received, size of: " + data.Length + " bytes.");
         }
 
+        /// <summary>
+        /// Deserializes and routes a player command payload to the appropriate action handler.
+        /// </summary>
+        /// <param name="payload">The raw byte payload containing the player command.</param>
         private void HandlePlayerCommand(byte[] payload)
         {
             // Deserialize the payloads command
@@ -114,6 +167,14 @@ namespace Server.GameControl
             }
         }
 
+        /// <summary>
+        /// Executes a bet action for the current player.
+        /// </summary>
+        /// <param name="betAmount">The amount the player wishes to bet.</param>
+        /// <remarks>
+        /// If the betting player is the last in the player list, initial cards are dealt.
+        /// Sends a game update to the client after execution.
+        /// </remarks>
         /// TODO: I think all of these will need some sort of continue/update to tell the process to start again for the next player
         /// (Side note: they already move the player forward but they gotta tell the server with some sort of function)
         private void ExecuteBet(double betAmount)
@@ -140,6 +201,13 @@ namespace Server.GameControl
             SendGameUpdate(IsEndRound, _player, actionResult.Success, result);
         }
 
+        /// <summary>
+        /// Executes a hit action for the current player.
+        /// </summary>
+        /// <remarks>
+        /// If the player busts and is the last player, the dealer plays their turn
+        /// and the round is ended. Sends a game update to the client after execution.
+        /// </remarks>
         private void ExecuteHit()
         {
             bool IsEndRound = false;
@@ -170,14 +238,20 @@ namespace Server.GameControl
             ROUND_RESULT result = _game.RoundResult(_player);
 
             SendGameUpdate(IsEndRound, _player, actionResult.Success, result);
-            if (IsEndRound)
-            {
+            if (IsEndRound) {
                 _game.EndRound();
                 SendGameUpdate(IsEndRound, _player, actionResult.Success, result);
             }
 
         }
 
+        /// <summary>
+        /// Executes a stand action for the current player.
+        /// </summary>
+        /// <remarks>
+        /// If the standing player is the last in the player list, the dealer plays their turn.
+        /// Ends the round and sends a game update to the client after execution.
+        /// </remarks>
         private void ExecuteStand()
         {
             bool IsEndRound = true;
@@ -205,6 +279,13 @@ namespace Server.GameControl
 
         }
 
+        /// <summary>
+        /// Executes a double down action for the current player.
+        /// </summary>
+        /// <remarks>
+        /// If the doubling player is the last in the player list, the dealer plays their turn.
+        /// Ends the round and sends a game update to the client after execution.
+        /// </remarks>
         private void ExecuteDouble()
         {
             bool IsEndRound = true;
@@ -231,6 +312,12 @@ namespace Server.GameControl
             SendGameUpdate(IsEndRound, _player, actionResult.Success, result);
         }
 
+        /// <summary>
+        /// Executes an insurance action for the current player.
+        /// </summary>
+        /// <remarks>
+        /// Does not end the round. Sends a game update to the client after execution.
+        /// </remarks>
         private void ExecuteInsure()
         {
             Insure action = new Insure(_player.Name);
@@ -250,6 +337,17 @@ namespace Server.GameControl
             SendGameUpdate(IsEndRound, _player, actionResult.Success, result);
         }
 
+        /// <summary>
+        /// Builds and sends a game state update packet to the connected client.
+        /// </summary>
+        /// <param name="IsEndRound">Indicates whether the current round has ended.</param>
+        /// <param name="player">The player whose state is being reported.</param>
+        /// <param name="actionResult">Indicates whether the last action was successful.</param>
+        /// <param name="roundWin">The round result for the player.</param>
+        /// <remarks>
+        /// Constructs a <see cref="GameUpdateDto"/> containing player state, dealer cards,
+        /// game state, and round outcome, then serializes and sends it as a packet.
+        /// </remarks>
         private void SendGameUpdate(bool IsEndRound, Player player, bool actionResult, ROUND_RESULT roundWin)
         {
             List<CardDto> dealerCards = new List<CardDto>();
@@ -266,8 +364,7 @@ namespace Server.GameControl
                 dealerCards.Add(cardDto);
             }
 
-            if (player.Balance >= 1200)
-            {
+            if (player.Balance >= 1200) {
                 gameresult = GameResult.PLAYER_WIN;
             }
             else if (player.Balance <= 0) {
@@ -288,13 +385,18 @@ namespace Server.GameControl
 
                 ActionResult = actionResult,
                 RoundWin = roundWin,
-                
+
                 gameResult = gameresult
             };
 
             SendPacket(PacketType.GameUpdate, _gameUpdateSerializer.Serialize(dto));
         }
 
+        /// <summary>
+        /// Serializes and sends a packet of the specified type to the connected client.
+        /// </summary>
+        /// <param name="type">The type of packet to send.</param>
+        /// <param name="payload">The serialized byte payload to include in the packet.</param>
         private void SendPacket(PacketType type, byte[] payload)
         {
             Packet packet = new Packet {
