@@ -95,6 +95,11 @@ namespace Client.Networking
         public event Action<int> PlayerIndexUpdate;
 
         /// <summary>
+        /// Raised when the game ends.
+        /// </summary>
+        public event Action<string> EndGameUpdate;
+
+        /// <summary>
         /// Stores the most recent player balance received from the server.
         /// </summary>
         public double LatestPlayerMoney { get; private set; }
@@ -191,7 +196,14 @@ namespace Client.Networking
                 //Hand Dealt
                 case PacketType.HandDealt: { HandDto dto = HandSerializer.Deserialize(packet.Payload); break; }
 
-                    //Join request
+                //Join request
+                //End Game
+                case PacketType.EndGame: 
+                    { 
+                        string gameResult = PictureSerializer.DeserializePic(packet.Payload); 
+                        handleEndGame(gameResult);
+                        break; 
+                    }
             }
 
         }
@@ -463,6 +475,12 @@ namespace Client.Networking
             Debug.WriteLine("Sending player index: " + index);
             // send player index to UI
             PlayerIndexUpdate?.Invoke(index);
+        }
+
+        public void handleEndGame(string gameResult)
+        {
+            Debug.WriteLine("Sending end game result: " + gameResult);
+            EndGameUpdate?.Invoke(gameResult);
         }
     }
 }

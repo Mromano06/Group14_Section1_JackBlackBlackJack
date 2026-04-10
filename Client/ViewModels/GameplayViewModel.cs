@@ -174,6 +174,7 @@ namespace Client.ViewModels
             _client.PlayerBetUpdate += UpdateBetAmount;
             _client.RoundCheckUpdate += UpdateRound;
             _client.RoundResultUpdate += RoundResult;
+            //_client.EndGameUpdate += FinishGame;
             HitCommand = new CommandRelay(Hit);
             StandCommand = new CommandRelay(Stand);
             DoubleDownCommand = new CommandRelay(DoubleDown);
