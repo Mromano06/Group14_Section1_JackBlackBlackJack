@@ -249,7 +249,7 @@ namespace Client.Networking
         /// </summary>
         private async Task ReceiveLoop()
         {
-            byte[] buffer = new byte[4096]; // adjust size later
+            byte[] buffer = new byte[2048576]; // adjust size later
             try
             {
 
