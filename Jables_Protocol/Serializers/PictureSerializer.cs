@@ -9,7 +9,11 @@ namespace Jables_Protocol.Serializers
 
         static public byte[] SerializePic(string gameResult)
         {
-            string filePath = "Assets/" + gameResult + ".jpg";
+            //string filePath = "Assets/" + gameResult + ".jpg";
+            // Path.Combine constructs the file path in a platform-independent way
+            //string filePath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Assets", gameResult + ".jpg");
+            // uses the current working directory, which should be the project root, so we can just do Assets/filename.jpg
+            string filePath = Path.Combine("Assets", gameResult + ".jpg");
             try
             {
                 // Read the entire file content into a byte array
@@ -30,16 +34,35 @@ namespace Jables_Protocol.Serializers
 
         static public void DeserializePic(byte[] data, string gameResult)
         {
-            string filePath = "Assets/" + gameResult + ".jpg";
+
+            string assetsFolder = "Assets";
+            string filePath = Path.Combine(assetsFolder, gameResult + ".jpg");
+
             try
             {
+                Directory.CreateDirectory(assetsFolder);
+
+                Console.WriteLine("Current directory: " + Directory.GetCurrentDirectory());
+                Console.WriteLine("Writing to: " + Path.GetFullPath(filePath));
+
                 File.WriteAllBytes(filePath, data);
-                Console.WriteLine($"{gameResult} picture written to Assets folder successfully!");
+                Console.WriteLine($"{gameResult} picture written successfully.");
             }
-            catch (IOException ex)
+            catch (Exception ex)
             {
-                Console.WriteLine($"An error occurred while writing the file: {ex.Message}");
+                Console.WriteLine($"Error writing file: {ex.Message}");
             }
+
+            //string filePath = "Assets/" + gameResult + ".jpg";
+            //try
+            //{
+            //    File.WriteAllBytes(filePath, data);
+            //    Console.WriteLine($"{gameResult} picture written to Assets folder successfully!");
+            //}
+            //catch (IOException ex)
+            //{
+            //    Console.WriteLine($"An error occurred while writing the file: {ex.Message}");
+            //}
         }
     }
 }
