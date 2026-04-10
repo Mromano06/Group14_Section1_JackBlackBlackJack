@@ -91,6 +91,29 @@ namespace Server.Networking
                 Debug.WriteLine($"Player ActionCount: {decodedPlayer.ActionCount}");
 
                 connection.Send(packetBytes);
+
+
+                /// Send Win and loss Images to client at start
+                byte[] endGamePacketW = PictureSerializer.SerializePic("Winner");
+
+                Packet packetW = new Packet
+                {
+                    Type = PacketType.EndGame,
+                    PayloadSize = endGamePacketW.Length,
+                    Payload = endGamePacketW
+                };
+                byte[] endGamePacketL = PictureSerializer.SerializePic("Loser");
+
+                Packet packetL = new Packet
+                {
+                    Type = PacketType.EndGame,
+                    PayloadSize = endGamePacketL.Length,
+                    Payload = endGamePacketL
+                };
+
+                connection.Send(packetW.ToBytes());
+                connection.Send(packetL.ToBytes());
+
             }
         
         }
