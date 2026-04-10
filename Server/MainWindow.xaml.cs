@@ -44,7 +44,8 @@ namespace Server
         {
             Dispatcher.Invoke(() =>
             {
-                LogListBox.Items.Add($"{DateTime.Now:HH:mm:ss} - {message}"); // connects to the MainWindow.xaml 
+            LogListBox.Items.Add($"{DateTime.Now:HH:mm:ss} - {message}"); // connects to the MainWindow.xaml 
+            LogListBox.ScrollIntoView(LogListBox.Items[LogListBox.Items.Count - 1]);
             });
         }
 
