@@ -7,8 +7,32 @@ using SharedModels.Core;
 
 namespace Jables_Protocol.Serializers
 {
+    /// <summary>
+    /// Provides serialization and deserialization logic for <see cref="GameUpdateDto"/> objects.
+    /// Converts full game update data to and from a binary format suitable for network transmission.
+    /// </summary>
     public class GameUpdateSerializer : ISerializer<GameUpdateDto>
     {
+        /// <summary>
+        /// Serializes a <see cref="GameUpdateDto"/> into a byte array.
+        /// </summary>
+        /// <param name="dto">The game update data transfer object to serialize.</param>
+        /// <returns>A byte array containing the serialized game update.</returns>
+        /// <remarks>
+        /// The serialized format is written in the following order:
+        /// <list type="number">
+        /// <item><description>Player byte length (4 bytes)</description></item>
+        /// <item><description>Serialized player data (variable length)</description></item>
+        /// <item><description>End-of-round flag (1 byte)</description></item>
+        /// <item><description>Game state (1 byte)</description></item>
+        /// <item><description>Dealer card count (4 bytes)</description></item>
+        /// <item><description>Dealer cards (2 bytes per card)</description></item>
+        /// <item><description>Current player index (4 bytes)</description></item>
+        /// <item><description>Action result flag (1 byte)</description></item>
+        /// <item><description>Round result (1 byte)</description></item>
+        /// <item><description>Game result (1 byte)</description></item>
+        /// </list>
+        /// </remarks>
         public byte[] Serialize(GameUpdateDto dto) 
         { 
             using var ms = new MemoryStream();
@@ -50,6 +74,21 @@ namespace Jables_Protocol.Serializers
             return ms.ToArray();
         }
 
+        /// <summary>
+        /// Deserializes a byte array into a <see cref="GameUpdateDto"/>.
+        /// </summary>
+        /// <param name="data">
+        /// The byte array containing serialized game update data.
+        /// The data must follow the format defined in <see cref="Serialize(GameUpdateDto)"/>.
+        /// </param>
+        /// <returns>A <see cref="GameUpdateDto"/> reconstructed from the provided byte array.</returns>
+        /// <exception cref="EndOfStreamException">
+        /// Thrown if the byte array does not contain enough data to fully reconstruct the object.
+        /// </exception>
+        /// <remarks>
+        /// This method assumes the binary data is well-formed and that count fields
+        /// such as player size and dealer card count are valid.
+        /// </remarks>
         public static GameUpdateDto Deserialize(byte[] data)
         {
             GameUpdateDto dto = new GameUpdateDto();
