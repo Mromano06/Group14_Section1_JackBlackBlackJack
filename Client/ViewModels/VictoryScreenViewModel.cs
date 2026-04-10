@@ -16,6 +16,7 @@ using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Threading;
 using System.Threading.Tasks;
+using System.IO;
 
 namespace Client.ViewModels
 {
@@ -59,7 +60,11 @@ namespace Client.ViewModels
         {
             _client = client;
             _showMainMenu = showMainMenu;
-            _victoryImagePath = "pack://application:,,,/Loser.jpg"; // Default winner image path
+            _victoryImagePath = Path.Combine(
+                AppDomain.CurrentDomain.BaseDirectory,
+                "assets",
+                "Loser.jpg"
+            );
 
             StartAutoReturnTimer(); // navigates back to the main menu
         }
