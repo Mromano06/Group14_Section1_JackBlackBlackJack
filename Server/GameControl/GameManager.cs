@@ -389,7 +389,17 @@ namespace Server.GameControl
             };
 
             SendPacket(PacketType.GameUpdate, _gameUpdateSerializer.Serialize(dto));
+
+            if (gameresult == GameResult.PLAYER_WIN) {
+                SendPacket(PacketType.EndGame, PictureSerializer.SerializePic("Winner"));
+            }
+            else if (gameresult == GameResult.PLAYER_LOSE) {
+                SendPacket(PacketType.EndGame, PictureSerializer.SerializePic("Loser"));
+            }
         }
+
+
+
 
         /// <summary>
         /// Serializes and sends a packet of the specified type to the connected client.
