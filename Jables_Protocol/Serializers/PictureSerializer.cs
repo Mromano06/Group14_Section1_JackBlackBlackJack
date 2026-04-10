@@ -13,7 +13,8 @@ namespace Jables_Protocol.Serializers
             //string filePath = "Assets/" + gameResult + ".jpg";
             
             // uses the current working directory, which should be the project root, so we can just do Assets/filename.jpg
-            string filePath = Path.Combine("Assets", gameResult + ".jpg");
+            string filePath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory,"Assets", gameResult + ".jpg");
+
 
             // Path.Combine constructs the file path in a platform-independent way
             //string filePath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Assets", gameResult + ".jpg");
