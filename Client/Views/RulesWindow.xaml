@@ -58,7 +58,7 @@
     <Viewbox Stretch="Uniform">
         <Grid Width="1300" Height="720">
             <Grid.Background>
-                <ImageBrush ImageSource="/Assets/MainMenu.jpg"
+                <ImageBrush ImageSource="/ClientAssets/MainMenu.jpg"
                             Stretch="Fill" />
             </Grid.Background>
 

@@ -76,11 +76,6 @@ namespace Client.ViewModels
         private bool _roundHasEnded;
 
         /// <summary>
-        /// Tracks whether the full game session has ended.
-        /// </summary>
-        private bool _gameHasEnded = false;
-
-        /// <summary>
         /// Stores the round result message shown to the player.
         /// </summary>
         private String _resultMessage;
@@ -167,7 +162,6 @@ namespace Client.ViewModels
             _showMainMenu = ShowMenu;
             _showLossScreen = showLossScreen;
             _showVictoryScreen = showVictoryScreen;
-            _client.GameResultUpdate += FinishGame;
             _client.PlayerCardUpdate += DealCardToPlayer; // subscribe to dealing player cards
             _client.DealerCardUpdate += DealCardToDealer; // subscribe to dealing dealer cards
             _client.PlayerMoneyUpdate += UpdatePlayerMoney;
@@ -181,7 +175,6 @@ namespace Client.ViewModels
             MainMenuCommand = new CommandRelay(ShowMainMenu);
             _isFirstCard = true;
             _roundHasEnded = false;
-            _gameHasEnded = false;
         }
 
         /// <summary>
@@ -251,19 +244,6 @@ namespace Client.ViewModels
             {
                 _roundHasEnded = value;
                 OnPropertyChanged(nameof(RoundHasEnded));
-            }
-        }
-
-        /// <summary>
-        /// Gets or sets a value indicating whether the game has ended.
-        /// </summary>
-        public bool GameHasEnded
-        {
-            get => _gameHasEnded;
-            set
-            {
-                _gameHasEnded = value;
-                OnPropertyChanged(nameof(GameHasEnded));
             }
         }
 
@@ -485,28 +465,6 @@ namespace Client.ViewModels
         }
 
         /// <summary>
-        /// Handles full game completion and navigates to the appropriate end screen.
-        /// </summary>
-        /// <param name="result">The final game result reported by the server.
-        /// </param>
-        private void FinishGame(GameResult result)
-        {
-            GameHasEnded = true;
-
-            Application.Current.Dispatcher.BeginInvoke(new Action(() =>
-            {
-                if (result == GameResult.PLAYER_LOSE)
-                {
-                    _showLossScreen?.Invoke();
-                }
-                else if (result == GameResult.PLAYER_WIN)
-                {
-                    _showVictoryScreen?.Invoke();
-                }
-            }));
-        }
-
-        /// <summary>
         /// Processes the result of the current round and prepares the result message.
         /// </summary>
         /// <param name="result">The round result reported by the server.</param>
@@ -531,18 +489,13 @@ namespace Client.ViewModels
                     ResultMessage = "Uh oh, bad things happened.";
                     break;
             }
-
-            if (!GameHasEnded)
-            {
                 Task.Delay(2000).ContinueWith(_ =>
                 {
                     Application.Current.Dispatcher.BeginInvoke(new Action(() =>
                     {
-                        if (!GameHasEnded)
-                            _showResults?.Invoke(ResultMessage);
+                        _showResults?.Invoke(ResultMessage);
                     }));
                 });
-            }
         }
 
         /// <summary>
@@ -561,7 +514,6 @@ namespace Client.ViewModels
             _client.PlayerBetUpdate -= UpdateBetAmount;
             _client.RoundCheckUpdate -= UpdateRound;
             _client.RoundResultUpdate -= RoundResult;
-            _client.GameResultUpdate -= FinishGame;  
         }
 
     }

@@ -56,7 +56,7 @@
             </Grid.ColumnDefinitions>
             <Grid.Background>
                 <ImageBrush
-                    ImageSource="/Assets/Gameboard.jpg"
+                    ImageSource="/ClientAssets/Gameboard.jpg"
                     Stretch="Fill" />
             </Grid.Background>
             <Canvas Background="Transparent" Grid.ColumnSpan="3">

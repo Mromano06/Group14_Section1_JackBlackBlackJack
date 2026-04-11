@@ -65,7 +65,7 @@
         <Grid Width="1300" Height="720">
             <Grid.Background>
                 <ImageBrush
-                    ImageSource="/Assets/Gameboard.jpg"
+                    ImageSource="/ClientAssets/Gameboard.jpg"
                     Stretch="Fill" />
             </Grid.Background>
             <Canvas Background="Transparent">

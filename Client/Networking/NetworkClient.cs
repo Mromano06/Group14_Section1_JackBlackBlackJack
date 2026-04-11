@@ -105,6 +105,11 @@ namespace Client.Networking
         public double LatestPlayerMoney { get; private set; }
 
         /// <summary>
+        /// Stores the most recent game result.
+        /// </summary>
+        public GameResult? LastGameResult { get; set; }
+
+        /// <summary>
         /// Queue to hold outgoing commands/messages (thread-safe)
         /// will change from string to command object once command object is implemented
         /// </summary>
@@ -460,6 +465,7 @@ namespace Client.Networking
         public void sendGameResult(GameResult result)
         {
             Debug.WriteLine("Sending game result");
+            LastGameResult = result;
             GameResultUpdate?.Invoke(result);
         }
 

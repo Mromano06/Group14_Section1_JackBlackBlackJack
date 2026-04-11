@@ -60,13 +60,19 @@ namespace Client.ViewModels
         {
             _client = client;
             _showMainMenu = showMainMenu;
-            _victoryImagePath = Path.Combine(
+            _victoryImagePath = "";
+
+
+            VictoryImagePath = Path.Combine(
                 AppDomain.CurrentDomain.BaseDirectory,
-                "assets",
-                "Loser.jpg"
+                "Assets",
+                "Winner.jpg"
             );
 
-            StartAutoReturnTimer(); // navigates back to the main menu
+            Debug.WriteLine("Victory image path: " + VictoryImagePath);
+            Debug.WriteLine("Victory image exists: " + File.Exists(VictoryImagePath));
+
+            StartAutoReturnTimer();
         }
 
         /// <summary>

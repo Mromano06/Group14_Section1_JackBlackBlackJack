@@ -153,7 +153,7 @@ namespace Client.ViewModels
         ///<summary>
         public void ShowResults(String resultMessage)
         {
-            CurrentViewModel = new ResultScreenViewModel(_client, ShowBetting, ShowMenu, resultMessage);
+            CurrentViewModel = new ResultScreenViewModel(_client, ShowBetting, ShowMenu, resultMessage, ShowLoss, ShowVictory);
         }
 
         /// <summary>

@@ -59,13 +59,18 @@ namespace Client.ViewModels
         {
             _client = client;
             _showMainMenu = showMainMenu;
-            _lossImagePath = Path.Combine(
+            _lossImagePath = "";
+
+            LossImagePath = Path.Combine(
                 AppDomain.CurrentDomain.BaseDirectory,
-                "assets",
+                "Assets",
                 "Loser.jpg"
             );
 
-            StartAutoReturnTimer(); // navigates back to the main menu
+            Debug.WriteLine("Loss image path: " + LossImagePath);
+            Debug.WriteLine("Loss image exists: " + File.Exists(LossImagePath));
+
+            StartAutoReturnTimer();
         }
 
         /// <summary>
