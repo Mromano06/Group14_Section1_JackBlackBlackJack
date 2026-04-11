@@ -114,6 +114,9 @@ namespace Server.GameControl
 
                 if (packet.Type == PacketType.PlayerAction) {
                     HandlePlayerCommand(packet.Payload);
+                }else if (packet.Type == PacketType.Disconnect)
+                {
+                    HandleDisconnect();
                 }
             }
 
@@ -398,7 +401,12 @@ namespace Server.GameControl
             }
         }
 
-
+        private void HandleDisconnect()
+        {
+            Debug.WriteLine($"Client {_player.Name} disconnected.");
+            _OnLog($"Client {_player.Name} disconnected.");
+            _connection.Disconnect();  
+        }
 
 
         /// <summary>

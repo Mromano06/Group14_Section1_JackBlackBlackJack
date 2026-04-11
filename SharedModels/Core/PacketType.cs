@@ -10,6 +10,7 @@
         CardDealt,
         HandDealt,
         JoinRequest,
-        EndGame
+        EndGame,
+        Disconnect,
     }
 }

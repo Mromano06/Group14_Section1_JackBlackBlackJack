@@ -45,7 +45,7 @@ namespace Server.Networking
                 Log("Client Connected");
 
                 // create connection with a callback
-                ClientConnection connection = new ClientConnection(tcpClient, HandleClientMessage);
+                ClientConnection connection = new ClientConnection(tcpClient, HandleClientMessage, HandleClientDisconnect);
 
                 // start send receive
                 connection.Start();
@@ -131,6 +131,17 @@ namespace Server.Networking
             }
 
         }
+
+        private void HandleClientDisconnect(ClientConnection client)
+        {
+            if (_clients.TryGetValue(client, out var session))
+            {
+                _clients.Remove(client); // remove from pool
+                Debug.WriteLine("Client Disconnected");
+                Log("Client Disconnected");
+            }
+        }
+
 
         public void Stop()
         {

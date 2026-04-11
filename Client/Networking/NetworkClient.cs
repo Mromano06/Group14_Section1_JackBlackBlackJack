@@ -118,7 +118,7 @@ namespace Client.Networking
         /// <summary>
         /// Token used to cancel the send/receive loops
         /// </summary>
-        private readonly CancellationTokenSource cancellation = new();
+        private CancellationTokenSource cancellation = new();
 
         /// <summary>
         /// Event raised whenever a message is received from the server.
@@ -137,6 +137,8 @@ namespace Client.Networking
         /// </summary>
         public async Task Connect(string host, int port)
         {
+            cancellation = new CancellationTokenSource(); // reset cancellation token
+
             client = new TcpClient();
             await client.ConnectAsync(host, port); // attempt connection to server
 
@@ -203,11 +205,11 @@ namespace Client.Networking
 
                 //Join request
                 //End Game
-                case PacketType.EndGame: 
-                    { 
-                        string gameResult = PictureSerializer.DeserializePic(packet.Payload); 
+                case PacketType.EndGame:
+                    {
+                        string gameResult = PictureSerializer.DeserializePic(packet.Payload);
                         handleEndGame(gameResult);
-                        break; 
+                        break;
                     }
             }
 
@@ -487,6 +489,12 @@ namespace Client.Networking
         {
             Debug.WriteLine("Sending end game result: " + gameResult);
             EndGameUpdate?.Invoke(gameResult);
+        }
+
+        public void sendDisconnect()
+        {
+
+            Disconnect();
         }
     }
 }

@@ -138,6 +138,7 @@ namespace Client.ViewModels
         ///<summary>
         public void ShowMenu()
         {
+            _client.sendDisconnect(); // ensures client disconnects from server when returning to menu
             CurrentViewModel = new MainMenuModel(_client, ShowBetting, ShowRules);
         }
         /// <summary>

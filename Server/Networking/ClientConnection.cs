@@ -14,6 +14,7 @@ namespace Server.Networking
         private NetworkStream stream;
         private readonly CancellationTokenSource cancellation = new CancellationTokenSource();
         private readonly Action<ClientConnection, byte[]> _onMessageReceived; // callback function to send message to handler 
+        private readonly Action<ClientConnection> _onDisconnect; // callback function to notify handler of disconnection
 
         // queue for outgoing messages
         private ConcurrentQueue<byte[]> sendQueue = new();
@@ -21,11 +22,12 @@ namespace Server.Networking
         // check for connection
         public bool IsConnected => _client?.Connected ?? false;
 
-        public ClientConnection(TcpClient client, Action<ClientConnection, byte[]> onMessageReceived) // messagereceived is callback function
+        public ClientConnection(TcpClient client, Action<ClientConnection, byte[]> onMessageReceived, Action<ClientConnection> onDisconnect) // messagereceived is callback function
         {
             this._client = client ?? throw new ArgumentNullException(nameof(_client));
             this.stream = client.GetStream();
             _onMessageReceived = onMessageReceived ?? throw new ArgumentNullException(nameof(onMessageReceived)); // callback function
+            _onDisconnect = onDisconnect;
         }
 
         // start async tasks: the send/receive loops that run concurrently
@@ -95,6 +97,7 @@ namespace Server.Networking
             }
             finally
             {
+
                 Disconnect();
             }
         }
@@ -104,6 +107,7 @@ namespace Server.Networking
             cancellation.Cancel();
             try { stream?.Close(); } catch { }
             try { _client?.Close(); } catch { }
+            _onDisconnect?.Invoke(this); // notify handler of disconnection
 
         }
     }
