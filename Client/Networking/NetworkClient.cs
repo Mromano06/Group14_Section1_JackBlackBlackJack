@@ -493,7 +493,7 @@ namespace Client.Networking
 
         public void sendDisconnect()
         {
-
+            LastGameResult = GameResult.DEFAULT_RESULT;
             Disconnect();
         }
     }
