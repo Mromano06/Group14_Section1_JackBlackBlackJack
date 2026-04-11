@@ -45,7 +45,7 @@ namespace Server.Networking
                 Log("Client Connected");
 
                 // create connection with a callback
-                ClientConnection connection = new ClientConnection(tcpClient, HandleClientMessage, HandleClientDisconnect, Log);
+                ClientConnection connection = new ClientConnection(tcpClient, HandleClientMessage, HandleClientDisconnect);
 
                 // start send receive
                 connection.Start();
