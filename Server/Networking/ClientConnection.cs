@@ -12,9 +12,12 @@ namespace Server.Networking
     {
         private TcpClient _client;
         private NetworkStream stream;
+        private readonly NetworkServer _server;
         private readonly CancellationTokenSource cancellation = new CancellationTokenSource();
         private readonly Action<ClientConnection, byte[]> _onMessageReceived; // callback function to send message to handler 
         private readonly Action<ClientConnection> _onDisconnect; // callback function to notify handler of disconnection
+        private readonly Action<string> log;
+
 
         // queue for outgoing messages
         private ConcurrentQueue<byte[]> sendQueue = new();
@@ -22,12 +25,13 @@ namespace Server.Networking
         // check for connection
         public bool IsConnected => _client?.Connected ?? false;
 
-        public ClientConnection(TcpClient client, Action<ClientConnection, byte[]> onMessageReceived, Action<ClientConnection> onDisconnect) // messagereceived is callback function
+        public ClientConnection(TcpClient client, Action<ClientConnection, byte[]> onMessageReceived, Action<ClientConnection> onDisconnect, Action<string> onLog) // messagereceived is callback function
         {
             this._client = client ?? throw new ArgumentNullException(nameof(_client));
             this.stream = client.GetStream();
             _onMessageReceived = onMessageReceived ?? throw new ArgumentNullException(nameof(onMessageReceived)); // callback function
             _onDisconnect = onDisconnect;
+            log = onLog;
         }
 
         // start async tasks: the send/receive loops that run concurrently
