@@ -77,11 +77,11 @@
         </DataTemplate>
 
         <DataTemplate DataType="{x:Type viewModels:VictoryScreenViewModel}">
-            <views:ResultScreen />
+            <views:VictoryScreen />
         </DataTemplate>
 
         <DataTemplate DataType="{x:Type viewModels:LossScreenViewModel}">
-            <views:ResultScreen />
+            <views:LossScreen />
         </DataTemplate>
     </Window.Resources>
     <Grid>

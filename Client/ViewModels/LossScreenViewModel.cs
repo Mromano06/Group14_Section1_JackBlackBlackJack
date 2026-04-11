@@ -17,6 +17,8 @@ using System.Windows.Input;
 using System.Windows.Threading;
 using System.Threading.Tasks;
 using System.IO;
+using System.Windows.Media.Imaging;
+
 
 namespace Client.ViewModels
 {
@@ -44,7 +46,7 @@ namespace Client.ViewModels
         /// <summary>
         /// Stores the image path displayed on the loss screen.
         /// </summary>
-        private string _lossImagePath;
+        private BitmapImage _lossImagePath;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="VictoryScreenViewModel"/> class.
@@ -59,16 +61,19 @@ namespace Client.ViewModels
         {
             _client = client;
             _showMainMenu = showMainMenu;
-            _lossImagePath = "";
+            //_lossImagePath = "";
 
-            LossImagePath = Path.Combine(
+            var path = Path.Combine(
                 AppDomain.CurrentDomain.BaseDirectory,
                 "Assets",
                 "Loser.jpg"
             );
 
             Debug.WriteLine("Loss image path: " + LossImagePath);
-            Debug.WriteLine("Loss image exists: " + File.Exists(LossImagePath));
+            Debug.WriteLine("Loss image exists: " + File.Exists(path));
+
+            _lossImagePath = new BitmapImage(new Uri(path, UriKind.Absolute));
+
 
             StartAutoReturnTimer();
         }
@@ -80,7 +85,7 @@ namespace Client.ViewModels
         /// Updating this property notifies the UI so that the displayed image
         /// refreshes through data binding.
         /// </remarks>
-        public string LossImagePath
+        public BitmapImage LossImagePath
         {
             get => _lossImagePath;
             set

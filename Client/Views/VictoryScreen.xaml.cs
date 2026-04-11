@@ -16,7 +16,7 @@ namespace Client.Views
     /// <summary>
     /// Interaction logic for VictoryScreen.xaml
     /// </summary>
-    public partial class VictoryScreen : Page
+    public partial class VictoryScreen : UserControl
     {
         public VictoryScreen()
         {
