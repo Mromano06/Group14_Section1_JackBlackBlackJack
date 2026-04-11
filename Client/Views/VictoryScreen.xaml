@@ -44,16 +44,19 @@
         </Grid.Background>
 
         <Button Content="Main Menu"
-             Width="200" Command="{Binding ContinueCommand}"
-             Height="100"
-             FontSize="28"
-             FontWeight="Bold"
-             Foreground="#000000"
-             Background="#FFFFFF"
-             BorderBrush="#000000"
-             BorderThickness="2"
-             Cursor="Hand" HorizontalAlignment="Center" 
-             Canvas.Left="1153" VerticalAlignment="Top" Margin="614,620,0,0">
+            Width="200"
+            Height="100"
+            Command="{Binding ContinueCommand}"
+            FontSize="28"
+            FontWeight="Bold"
+            Foreground="#000000"
+            Background="#FFFFFF"
+            BorderBrush="#000000"
+            BorderThickness="2"
+            Cursor="Hand"
+            HorizontalAlignment="Center"
+            VerticalAlignment="Bottom"
+            Margin="0,0,0,50">
             <Button.Template>
                 <ControlTemplate TargetType="Button">
                     <Border x:Name="border"
