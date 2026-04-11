@@ -5,46 +5,87 @@ using System.Text;
 
 namespace Jables_Protocol.Serializers
 {
-    public class PictureSerializer    // don't think I need to implement the serializer interface
+    /// <summary>
+    /// Provides helper methods for serializing and deserializing result images
+    /// associated with a game outcome.
+    /// </summary>
+    /// <remarks>
+    /// This class differs from the other serializers in the project because it works with
+    /// both binary network data and file system operations. It serializes a game result name
+    /// together with the contents of a corresponding image file, and can reconstruct that image
+    /// on disk during deserialization.
+    /// </remarks>
+    public class PictureSerializer
     {
-
-        static public byte[] SerializePic(string gameResult)
+        /// <summary>
+        /// Serializes a game result identifier and its corresponding image file into a byte array.
+        /// </summary>
+        /// <param name="gameResult">
+        /// The game result name used to identify the image file.
+        /// The method expects a file named <c>{gameResult}.jpg</c> inside the <c>Assets</c> folder.
+        /// </param>
+        /// <returns>
+        /// A byte array containing the serialized game result string followed by the raw image bytes.
+        /// Returns an empty array if the file cannot be read.
+        /// </returns>
+        /// <remarks>
+        /// The serialized format is written in the following order:
+        /// <list type="number">
+        /// <item><description>Game result string, written using <see cref="BinaryWriter.Write(string)"/></description></item>
+        /// <item><description>Raw JPG image bytes (variable length)</description></item>
+        /// </list>
+        /// The image file is read from:
+        /// <c>AppDomain.CurrentDomain.BaseDirectory/Assets/{gameResult}.jpg</c>.
+        /// </remarks>
+        public static byte[] SerializePic(string gameResult)
         {
-            //string filePath = "Assets/" + gameResult + ".jpg";
-            
-            // uses the current working directory, which should be the project root, so we can just do Assets/filename.jpg
-            string filePath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory,"Assets", gameResult + ".jpg");
-
-
-            // Path.Combine constructs the file path in a platform-independent way
-            //string filePath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Assets", gameResult + ".jpg");
+            string filePath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Assets", gameResult + ".jpg");
 
             try
             {
                 using var ms = new MemoryStream();
                 using var bw = new BinaryWriter(ms);
-                //byte[] resultBytes = Encoding.UTF8.GetBytes(gameResult ?? string.Empty);
-                //bw.Write(resultBytes);
+
                 bw.Write(gameResult);
 
                 // Read the entire file content into a byte array
                 byte[] jpgBytes = File.ReadAllBytes(filePath);
                 bw.Write(jpgBytes);
 
-                // You can now use the byte array as needed (e.g., store in a database, send over a network)
                 Console.WriteLine($"Image successfully read. Total bytes: {jpgBytes.Length}");
-                
+
                 return ms.ToArray();
             }
             catch (IOException ex)
             {
-                // Handle file-related exceptions
                 Console.WriteLine($"An error occurred while reading the file: {ex.Message}");
                 return Array.Empty<byte>();
             }
         }
 
-        static public string DeserializePic(byte[] data)
+        /// <summary>
+        /// Deserializes a byte array containing a game result string and image data,
+        /// then writes the image file to disk.
+        /// </summary>
+        /// <param name="data">
+        /// The byte array containing serialized picture data.
+        /// The data must follow the format produced by <see cref="SerializePic(string)"/>.
+        /// </param>
+        /// <returns>
+        /// The deserialized game result string if the image is successfully written;
+        /// otherwise, <c>"NA"</c>.
+        /// </returns>
+        /// <remarks>
+        /// This method reads:
+        /// <list type="number">
+        /// <item><description>A string written using <see cref="BinaryWriter.Write(string)"/></description></item>
+        /// <item><description>All remaining bytes as image data</description></item>
+        /// </list>
+        /// The image is written to:
+        /// <c>Assets/{gameResult}.jpg</c>.
+        /// If the <c>Assets</c> directory does not exist, it is created automatically.
+        /// </remarks>
+        public static string DeserializePic(byte[] data)
         {
             using var ms = new MemoryStream(data);
             using var br = new BinaryReader(ms);
