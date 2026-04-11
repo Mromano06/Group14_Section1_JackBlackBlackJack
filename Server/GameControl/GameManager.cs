@@ -369,7 +369,7 @@ namespace Server.GameControl
             if (player.Balance >= 1200) {
                 gameresult = GameResult.PLAYER_WIN;
             }
-            else if (player.Balance <= 0) {
+            else if (player.Balance <= 0 && player.CurrentBet <= 0) {
                 gameresult = GameResult.PLAYER_LOSE;
             }
 
