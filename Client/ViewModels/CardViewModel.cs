@@ -54,7 +54,7 @@ namespace Client.ViewModels
         /// <remarks>
         /// Used when the card should be hidden (e.g., dealer's face-down card).
         /// </remarks>
-        public string BackImagePath => $"/Assets/BackOfCard.png";
+        public string BackImagePath => $"/ClientAssets/BackOfCard.png";
 
         /// <summary>
         /// Gets the image path for a specific card.
@@ -62,7 +62,7 @@ namespace Client.ViewModels
         /// <remarks>
         /// Used when the card should be displayed face-up.
         /// </remarks>
-        public string CardImagePath => $"/Assets/Cards/{CardCode}.png";
+        public string CardImagePath => $"/ClientAssets/Cards/{CardCode}.png";
 
 
         /// <summary>

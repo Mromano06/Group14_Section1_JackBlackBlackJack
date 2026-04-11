@@ -53,7 +53,7 @@
         <Grid>
             <Grid.Background>
                 <ImageBrush
-                    ImageSource="/Assets/MainMenu.jpg"
+                    ImageSource="/ClientAssets/MainMenu.jpg"
                     Stretch="UniformToFill" />
             </Grid.Background>
             <Rectangle Canvas.Left="0" Canvas.Top="0" Stroke="Black" StrokeThickness="3"
@@ -73,7 +73,7 @@
                             ClipToBounds="True">
 
                             <Grid>
-                                <Image Source="/Assets/BackOfCard.png" Stretch="Fill"/>
+                                <Image Source="/ClientAssets/BackOfCard.png" Stretch="Fill"/>
 
                                 <TextBlock Text="PLAY"
                                Foreground="Black"
@@ -98,7 +98,7 @@
                             ClipToBounds="True">
 
                             <Grid>
-                                <Image Source="/Assets/BackOfCard.png" Stretch="Fill"/>
+                                <Image Source="/ClientAssets/BackOfCard.png" Stretch="Fill"/>
 
                                 <TextBlock Text="EXIT"
                                    Foreground="Black"
@@ -123,7 +123,7 @@
                             ClipToBounds="True">    
 
                             <Grid>
-                                <Image Source="/Assets/BackOfCard.png" Stretch="Fill"/>
+                                <Image Source="/ClientAssets/BackOfCard.png" Stretch="Fill"/>
 
                                 <TextBlock Text="RULES"
                                    Foreground="Black"

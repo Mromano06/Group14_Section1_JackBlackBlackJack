@@ -13,7 +13,14 @@
             <Rectangle Width="800" Height="27" Fill="White" HorizontalAlignment="Left" VerticalAlignment="Center" Stroke="Black"/>
             <TextBlock Name="Instructions" FontSize="14" Text="Server Logs - Jack Black Blackjack" Canvas.Left="297" 
                        Canvas.Top="4" HorizontalAlignment="Left" VerticalAlignment="Center" RenderTransformOrigin="0.495,0.604" ></TextBlock>
-            <ListBox x:Name="LogListBox" Margin="0, 27, 0, 0" HorizontalAlignment="Center"/>
+            <ListBox x:Name="LogListBox" 
+                 Width="800" 
+                 Height="423" 
+                 Canvas.Left="0" 
+                 Canvas.Top="27"
+                 HorizontalAlignment="Left"
+                 ScrollViewer.VerticalScrollBarVisibility="Auto"
+                 ScrollViewer.HorizontalScrollBarVisibility="Disabled"/>
         </Canvas>
     </Grid>
 </Window>

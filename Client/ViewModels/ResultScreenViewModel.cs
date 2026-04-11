@@ -2,11 +2,12 @@
 using Client.Networking;
 using GameLogic.Actions.ActionTypes;
 using Jables_Protocol.DTOs;
+using SharedModels.Core;
 using System;
-using System.Windows;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Text;
+using System.Windows;
 using System.Windows.Input;
 
 // Matthew Romano - April , 2026 - BetPlacingViewModel implementation
@@ -24,6 +25,11 @@ namespace Client.ViewModels
     public class ResultScreenViewModel : BaseModel
     {
         /// <summary>
+        /// Tracks whether the full game session has ended.
+        /// </summary>
+        private bool _gameHasEnded;
+
+        /// <summary>
         /// Action used to navigate to the betting screen.
         /// </summary>
         private readonly Action _showBetting;
@@ -32,6 +38,16 @@ namespace Client.ViewModels
         /// Action used to navigate to the main menu.
         /// </summary>
         private readonly Action _showMainMenu;
+
+        /// <summary>
+        /// Action used to navigate to the betting screen.
+        /// </summary>
+        private readonly Action _showVictoryScreen;
+
+        /// <summary>
+        /// Action used to navigate to the main menu.
+        /// </summary>
+        private readonly Action _showLossScreen;
 
         /// <summary>
         /// Shared network client used by the application.
@@ -66,14 +82,61 @@ namespace Client.ViewModels
         /// <remarks>
         /// Binds commands and initializes the result message displayed on screen.
         /// </remarks>
-        public ResultScreenViewModel(NetworkClient client, Action ShowBetting, Action ShowMainMenu, String resultMessage)
+        public ResultScreenViewModel(NetworkClient client, Action ShowBetting, Action ShowMainMenu,
+            String resultMessage, Action showLossScreen, Action showVictoryScreen)
         {
             _client = client;
             _showBetting = ShowBetting;
             _showMainMenu = ShowMainMenu;
             _resultMessage = resultMessage;
+            _showVictoryScreen = showVictoryScreen;
+            _showLossScreen = showLossScreen;
+            _client.GameResultUpdate += FinishGame;
+            _gameHasEnded = false;
             ContinueCommand = new CommandRelay(Continue);
             MainMenuCommand = new CommandRelay(MainMenu);
+
+            if (_client.LastGameResult != null)
+            {
+                FinishGame(_client.LastGameResult.Value);
+            }
+
+        }
+
+        /// <summary>
+        /// Gets or sets a value indicating whether the game has ended.
+        /// </summary>
+        public bool GameHasEnded
+        {
+            get => _gameHasEnded;
+            set
+            {
+                _gameHasEnded = value;
+                OnPropertyChanged(nameof(GameHasEnded));
+            }
+        }
+
+
+        /// <summary>
+        /// Handles full game completion and navigates to the appropriate end screen.
+        /// </summary>
+        /// <param name="result">The final game result reported by the server.
+        /// </param>
+        private void FinishGame(GameResult result)
+        {
+            GameHasEnded = true;
+
+            Application.Current.Dispatcher.BeginInvoke(new Action(() =>
+            {
+                if (result == GameResult.PLAYER_LOSE)
+                {
+                    _showLossScreen?.Invoke();
+                }
+                else if (result == GameResult.PLAYER_WIN)
+                {
+                    _showVictoryScreen?.Invoke();
+                }
+            }));
         }
 
         /// <summary>
@@ -100,6 +163,7 @@ namespace Client.ViewModels
         /// </remarks>
         public void Continue()
         {
+            Cleanup();
             Application.Current.Dispatcher.BeginInvoke(new Action(() =>
             {
                 _showBetting?.Invoke();
@@ -114,11 +178,15 @@ namespace Client.ViewModels
         /// </remarks>
         public void MainMenu()
         {
+            Cleanup();
             Application.Current.Dispatcher.BeginInvoke(new Action(() =>
             {
                 _showMainMenu?.Invoke();
             }));
         }
-
+        public void Cleanup()
+        {
+            _client.GameResultUpdate -= FinishGame;
+        }
     }
 }

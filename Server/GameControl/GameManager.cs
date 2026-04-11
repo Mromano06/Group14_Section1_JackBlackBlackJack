@@ -114,6 +114,9 @@ namespace Server.GameControl
 
                 if (packet.Type == PacketType.PlayerAction) {
                     HandlePlayerCommand(packet.Payload);
+                }else if (packet.Type == PacketType.Disconnect)
+                {
+                    HandleDisconnect();
                 }
             }
 
@@ -366,7 +369,7 @@ namespace Server.GameControl
             if (player.Balance >= 1200) {
                 gameresult = GameResult.PLAYER_WIN;
             }
-            else if (player.Balance <= 0) {
+            else if (player.Balance <= 0 && player.CurrentBet <= 0) {
                 gameresult = GameResult.PLAYER_LOSE;
             }
 
@@ -389,7 +392,18 @@ namespace Server.GameControl
             };
 
             SendPacket(PacketType.GameUpdate, _gameUpdateSerializer.Serialize(dto));
+
+            _OnLog($"[PLAYR] Name: {dto.Player.Name}, Balance: {dto.Player.Balance}, CurrentBet: {dto.Player.CurrentBet}, ActionCount: {dto.Player.ActionCount}");
+            _OnLog($"[PKT  ] Pkt sent - Name: {dto.Player.Name}, ActionResult: {dto.ActionResult}, RoundWin: {dto.RoundWin}");
         }
+
+        private void HandleDisconnect()
+        {
+            Debug.WriteLine($"Client {_player.Name} disconnected.");
+            _OnLog($"Client {_player.Name} disconnected.");
+            _connection.Disconnect();  
+        }
+
 
         /// <summary>
         /// Serializes and sends a packet of the specified type to the connected client.

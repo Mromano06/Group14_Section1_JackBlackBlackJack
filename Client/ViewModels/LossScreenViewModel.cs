@@ -1,5 +1,6 @@
 ﻿using Client.Commands;
 using Client.Networking;
+using Client.Views;
 using Jables_Protocol;
 using Jables_Protocol.DTOs;
 using Jables_Protocol.Serializers;
@@ -10,12 +11,15 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
+using System.IO;
 using System.Text;
+using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
+using System.Windows.Media.Imaging;
 using System.Windows.Threading;
-using System.Threading.Tasks;
+
 
 namespace Client.ViewModels
 {
@@ -28,6 +32,12 @@ namespace Client.ViewModels
     /// </remarks>
     public class LossScreenViewModel : BaseModel
     {
+
+        /// <summary>
+        /// Command to continue to the next round (main menu).
+        /// </summary>
+        public ICommand ContinueCommand { get; }
+
         /// <summary>
         /// Action used to navigate back to the main menu.
         /// </summary>
@@ -43,7 +53,7 @@ namespace Client.ViewModels
         /// <summary>
         /// Stores the image path displayed on the loss screen.
         /// </summary>
-        private string _lossImagePath;
+        private BitmapImage _lossImagePath;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="VictoryScreenViewModel"/> class.
@@ -58,9 +68,20 @@ namespace Client.ViewModels
         {
             _client = client;
             _showMainMenu = showMainMenu;
-            _lossImagePath = "pack://application:,,,/Loser.jpg"; // Default winner image path
+            //_lossImagePath = "";
 
-            StartAutoReturnTimer(); // navigates back to the main menu
+            var path = Path.Combine(
+                AppDomain.CurrentDomain.BaseDirectory,
+                "Assets",
+                "Loser.jpg"
+            );
+
+            Debug.WriteLine("Loss image path: " + LossImagePath);
+            Debug.WriteLine("Loss image exists: " + File.Exists(path));
+
+            _lossImagePath = new BitmapImage(new Uri(path, UriKind.Absolute));
+
+            ContinueCommand = new CommandRelay(ShowMainMenu);
         }
 
         /// <summary>
@@ -70,7 +91,7 @@ namespace Client.ViewModels
         /// Updating this property notifies the UI so that the displayed image
         /// refreshes through data binding.
         /// </remarks>
-        public string LossImagePath
+        public BitmapImage LossImagePath
         {
             get => _lossImagePath;
             set
@@ -86,9 +107,8 @@ namespace Client.ViewModels
         /// <remarks>
         /// Waits for a fixed delay before navigating back to the main menu.
         /// </remarks>
-        private async void StartAutoReturnTimer()
+        private async void ShowMainMenu()
         {
-            await Task.Delay(12000); // 12 seconds, change to 10000 or 15000 if you want
 
             Application.Current.Dispatcher.Invoke(() =>
             {

@@ -45,7 +45,7 @@ namespace Server.Networking
                 Log("Client Connected");
 
                 // create connection with a callback
-                ClientConnection connection = new ClientConnection(tcpClient, HandleClientMessage);
+                ClientConnection connection = new ClientConnection(tcpClient, HandleClientMessage, HandleClientDisconnect, Log);
 
                 // start send receive
                 connection.Start();
@@ -91,6 +91,29 @@ namespace Server.Networking
                 Debug.WriteLine($"Player ActionCount: {decodedPlayer.ActionCount}");
 
                 connection.Send(packetBytes);
+
+
+                /// Send Win and loss Images to client at start
+                byte[] endGamePacketW = PictureSerializer.SerializePic("Winner");
+
+                Packet packetW = new Packet
+                {
+                    Type = PacketType.EndGame,
+                    PayloadSize = endGamePacketW.Length,
+                    Payload = endGamePacketW
+                };
+                byte[] endGamePacketL = PictureSerializer.SerializePic("Loser");
+
+                Packet packetL = new Packet
+                {
+                    Type = PacketType.EndGame,
+                    PayloadSize = endGamePacketL.Length,
+                    Payload = endGamePacketL
+                };
+
+                connection.Send(packetW.ToBytes());
+                connection.Send(packetL.ToBytes());
+
             }
         
         }
@@ -108,6 +131,17 @@ namespace Server.Networking
             }
 
         }
+
+        private void HandleClientDisconnect(ClientConnection client)
+        {
+            if (_clients.TryGetValue(client, out var session))
+            {
+                _clients.Remove(client); // remove from pool
+                Debug.WriteLine("Client Disconnected");
+                Log("Client Disconnected");
+            }
+        }
+
 
         public void Stop()
         {

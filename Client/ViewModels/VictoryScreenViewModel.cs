@@ -16,6 +16,9 @@ using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Threading;
 using System.Threading.Tasks;
+using System.IO;
+using System.Windows.Media.Imaging;
+
 
 namespace Client.ViewModels
 {
@@ -43,7 +46,12 @@ namespace Client.ViewModels
         /// <summary>
         /// Stores the image path displayed on the victory screen.
         /// </summary>
-        private string _victoryImagePath;
+        private BitmapImage _victoryImagePath;
+
+        /// <summary>
+        /// Command to continue to the next round (main menu).
+        /// </summary>
+        public ICommand ContinueCommand { get; }
 
 
         /// <summary>
@@ -59,9 +67,21 @@ namespace Client.ViewModels
         {
             _client = client;
             _showMainMenu = showMainMenu;
-            _victoryImagePath = "pack://application:,,,/Loser.jpg"; // Default winner image path
+            
+            
 
-            StartAutoReturnTimer(); // navigates back to the main menu
+            var path = Path.Combine(
+                AppDomain.CurrentDomain.BaseDirectory,
+                "Assets",
+                "Winner.jpg"
+            );
+
+            Debug.WriteLine("Victory image path: " + VictoryImagePath);
+            Debug.WriteLine("Victory image exists: " + File.Exists(path));
+
+            _victoryImagePath = new BitmapImage(new Uri(path, UriKind.Absolute));
+
+            ContinueCommand = new CommandRelay(ShowMainMenu);
         }
 
         /// <summary>
@@ -71,7 +91,7 @@ namespace Client.ViewModels
         /// Updating this property notifies the UI so that the displayed image
         /// refreshes automatically through data binding.
         /// </remarks>
-        public string VictoryImagePath
+        public BitmapImage VictoryImagePath
         {
             get => _victoryImagePath;
             set
@@ -87,10 +107,8 @@ namespace Client.ViewModels
         /// <remarks>
         /// Waits for a fixed delay before navigating back to the main menu.
         /// </remarks>
-        private async void StartAutoReturnTimer()
+        private async void ShowMainMenu()
         {
-            await Task.Delay(12000); // 12 seconds
-
             Application.Current.Dispatcher.Invoke(() =>
             {
                 _showMainMenu?.Invoke();

@@ -18,7 +18,7 @@ namespace Client.Views // sam + brodie <3
     /// <summary>
     /// Interaction logic for LossScreen.xaml
     /// </summary>
-    public partial class LossScreen : Page
+    public partial class LossScreen : UserControl
     {
         public LossScreen()
         {

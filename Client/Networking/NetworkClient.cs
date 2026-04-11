@@ -95,9 +95,19 @@ namespace Client.Networking
         public event Action<int> PlayerIndexUpdate;
 
         /// <summary>
+        /// Raised when the game ends.
+        /// </summary>
+        public event Action<string> EndGameUpdate;
+
+        /// <summary>
         /// Stores the most recent player balance received from the server.
         /// </summary>
         public double LatestPlayerMoney { get; private set; }
+
+        /// <summary>
+        /// Stores the most recent game result.
+        /// </summary>
+        public GameResult? LastGameResult { get; set; }
 
         /// <summary>
         /// Queue to hold outgoing commands/messages (thread-safe)
@@ -108,7 +118,7 @@ namespace Client.Networking
         /// <summary>
         /// Token used to cancel the send/receive loops
         /// </summary>
-        private readonly CancellationTokenSource cancellation = new();
+        private CancellationTokenSource cancellation = new();
 
         /// <summary>
         /// Event raised whenever a message is received from the server.
@@ -127,6 +137,8 @@ namespace Client.Networking
         /// </summary>
         public async Task Connect(string host, int port)
         {
+            cancellation = new CancellationTokenSource(); // reset cancellation token
+
             client = new TcpClient();
             await client.ConnectAsync(host, port); // attempt connection to server
 
@@ -191,7 +203,14 @@ namespace Client.Networking
                 //Hand Dealt
                 case PacketType.HandDealt: { HandDto dto = HandSerializer.Deserialize(packet.Payload); break; }
 
-                    //Join request
+                //Join request
+                //End Game
+                case PacketType.EndGame:
+                    {
+                        string gameResult = PictureSerializer.DeserializePic(packet.Payload);
+                        handleEndGame(gameResult);
+                        break;
+                    }
             }
 
         }
@@ -237,7 +256,7 @@ namespace Client.Networking
         /// </summary>
         private async Task ReceiveLoop()
         {
-            byte[] buffer = new byte[4096]; // adjust size later
+            byte[] buffer = new byte[2048576]; // adjust size later
             try
             {
 
@@ -448,6 +467,7 @@ namespace Client.Networking
         public void sendGameResult(GameResult result)
         {
             Debug.WriteLine("Sending game result");
+            LastGameResult = result;
             GameResultUpdate?.Invoke(result);
         }
 
@@ -463,6 +483,18 @@ namespace Client.Networking
             Debug.WriteLine("Sending player index: " + index);
             // send player index to UI
             PlayerIndexUpdate?.Invoke(index);
+        }
+
+        public void handleEndGame(string gameResult)
+        {
+            Debug.WriteLine("Sending end game result: " + gameResult);
+            EndGameUpdate?.Invoke(gameResult);
+        }
+
+        public void sendDisconnect()
+        {
+            LastGameResult = GameResult.DEFAULT_RESULT;
+            Disconnect();
         }
     }
 }
