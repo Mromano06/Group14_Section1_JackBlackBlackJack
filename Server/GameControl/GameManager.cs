@@ -393,12 +393,8 @@ namespace Server.GameControl
 
             SendPacket(PacketType.GameUpdate, _gameUpdateSerializer.Serialize(dto));
 
-            if (gameresult == GameResult.PLAYER_WIN) {
-                SendPacket(PacketType.EndGame, PictureSerializer.SerializePic("Winner"));
-            }
-            else if (gameresult == GameResult.PLAYER_LOSE) {
-                SendPacket(PacketType.EndGame, PictureSerializer.SerializePic("Loser"));
-            }
+            _OnLog($"[PLAYR] Name: {dto.Player.Name}, Balance: {dto.Player.Balance}, CurrentBet: {dto.Player.CurrentBet}, ActionCount: {dto.Player.ActionCount}");
+            _OnLog($"[PKT  ] Pkt sent - Name: {dto.Player.Name}, ActionResult: {dto.ActionResult}, RoundWin: {dto.RoundWin}");
         }
 
         private void HandleDisconnect()
