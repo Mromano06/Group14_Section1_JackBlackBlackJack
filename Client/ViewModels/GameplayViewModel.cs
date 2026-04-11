@@ -63,12 +63,12 @@ namespace Client.ViewModels
         /// <summary>
         /// Determines whether the double down action is currently allowed.
         /// </summary>
-        private bool _allowDouble = true;
+        private bool _allowDouble;
 
         /// <summary>
         /// Tracks whether the player is still on their first turn of the round.
         /// </summary>
-        private bool _isFirstTurn = true;
+        private bool _isFirstTurn;
 
         /// <summary>
         /// Tracks whether the current round has ended.
@@ -175,6 +175,8 @@ namespace Client.ViewModels
             MainMenuCommand = new CommandRelay(ShowMainMenu);
             _isFirstCard = true;
             _roundHasEnded = false;
+            _allowDouble = true;
+            _isFirstTurn = true;
         }
 
         /// <summary>
@@ -419,7 +421,7 @@ namespace Client.ViewModels
         {
             if (!IsFirstTurn || RoundHasEnded) { return; }
 
-            if (PlayerMoney < BetAmount) // double down should not work if the player is broke
+            if (PlayerMoney > BetAmount) // double down should not work if the player is broke
             { 
 
                 IsFirstTurn = false;
