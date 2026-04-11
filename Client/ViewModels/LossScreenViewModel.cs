@@ -1,5 +1,6 @@
 ﻿using Client.Commands;
 using Client.Networking;
+using Client.Views;
 using Jables_Protocol;
 using Jables_Protocol.DTOs;
 using Jables_Protocol.Serializers;
@@ -10,14 +11,14 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
+using System.IO;
 using System.Text;
+using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
-using System.Windows.Threading;
-using System.Threading.Tasks;
-using System.IO;
 using System.Windows.Media.Imaging;
+using System.Windows.Threading;
 
 
 namespace Client.ViewModels
@@ -31,6 +32,12 @@ namespace Client.ViewModels
     /// </remarks>
     public class LossScreenViewModel : BaseModel
     {
+
+        /// <summary>
+        /// Command to continue to the next round (main menu).
+        /// </summary>
+        public ICommand ContinueCommand { get; }
+
         /// <summary>
         /// Action used to navigate back to the main menu.
         /// </summary>
@@ -74,8 +81,7 @@ namespace Client.ViewModels
 
             _lossImagePath = new BitmapImage(new Uri(path, UriKind.Absolute));
 
-
-            StartAutoReturnTimer();
+            ContinueCommand = new CommandRelay(ShowMainMenu);
         }
 
         /// <summary>
@@ -101,9 +107,8 @@ namespace Client.ViewModels
         /// <remarks>
         /// Waits for a fixed delay before navigating back to the main menu.
         /// </remarks>
-        private async void StartAutoReturnTimer()
+        private async void ShowMainMenu()
         {
-            await Task.Delay(12000); // 12 seconds, change to 10000 or 15000 if you want
 
             Application.Current.Dispatcher.Invoke(() =>
             {

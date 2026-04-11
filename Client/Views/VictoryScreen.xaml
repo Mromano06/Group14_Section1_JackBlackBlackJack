@@ -1,4 +1,4 @@
-﻿    <!--
+﻿<!--
     /**
      * @file VictoryScreen.xaml
      * @brief View displayed when the player wins the game.
@@ -27,8 +27,8 @@
      * @date April 8th, 2026
      */
     -->
-    
-    <UserControl x:Class="Client.Views.VictoryScreen"
+
+<UserControl x:Class="Client.Views.VictoryScreen"
       xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
@@ -42,5 +42,42 @@
                 ImageSource="{Binding VictoryImagePath}"
                 Stretch="UniformToFill" />
         </Grid.Background>
+
+        <Button Content="Main Menu"
+             Width="200" Command="{Binding ContinueCommand}"
+             Height="100"
+             FontSize="28"
+             FontWeight="Bold"
+             Foreground="#000000"
+             Background="#FFFFFF"
+             BorderBrush="#000000"
+             BorderThickness="2"
+             Cursor="Hand" HorizontalAlignment="Center" 
+             Canvas.Left="1153" VerticalAlignment="Top" Margin="614,620,0,0">
+            <Button.Template>
+                <ControlTemplate TargetType="Button">
+                    <Border x:Name="border"
+                     Background="{TemplateBinding Background}"
+                     BorderBrush="{TemplateBinding BorderBrush}"
+                     BorderThickness="{TemplateBinding BorderThickness}">
+                        <ContentPresenter HorizontalAlignment="Center"
+                            VerticalAlignment="Center"/>
+                    </Border>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter TargetName="border" Property="Opacity" Value="1"/>
+                        </Trigger>
+                        <Trigger Property="IsPressed" Value="True">
+                            <Setter TargetName="border" Property="RenderTransform">
+                                <Setter.Value>
+                                    <ScaleTransform ScaleX="0.97" ScaleY="0.97"/>
+                                </Setter.Value>
+                            </Setter>
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Button.Template>
+        </Button>
+
     </Grid>
 </UserControl>

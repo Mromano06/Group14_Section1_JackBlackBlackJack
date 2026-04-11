@@ -48,6 +48,11 @@ namespace Client.ViewModels
         /// </summary>
         private BitmapImage _victoryImagePath;
 
+        /// <summary>
+        /// Command to continue to the next round (main menu).
+        /// </summary>
+        public ICommand ContinueCommand { get; }
+
 
         /// <summary>
         /// Initializes a new instance of the <see cref="VictoryScreenViewModel"/> class.
@@ -76,7 +81,7 @@ namespace Client.ViewModels
 
             _victoryImagePath = new BitmapImage(new Uri(path, UriKind.Absolute));
 
-            StartAutoReturnTimer();
+            ContinueCommand = new CommandRelay(ShowMainMenu);
         }
 
         /// <summary>
@@ -102,10 +107,8 @@ namespace Client.ViewModels
         /// <remarks>
         /// Waits for a fixed delay before navigating back to the main menu.
         /// </remarks>
-        private async void StartAutoReturnTimer()
+        private async void ShowMainMenu()
         {
-            await Task.Delay(12000); // 12 seconds
-
             Application.Current.Dispatcher.Invoke(() =>
             {
                 _showMainMenu?.Invoke();

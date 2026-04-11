@@ -227,23 +227,26 @@ namespace Client.ViewModels
         /// </remarks>e
         private void Confirm()
         {
-            PlayerCommandDto cmd = new PlayerCommandDto();
-            cmd.Action = PlayerAction.Bet;
-            cmd.BetAmount = CurrentBet;
-
-            byte[] commandBytes = _commandSerializer.Serialize(cmd);
-
-            Packet packetToSend = new Packet
+            if (CurrentBet >= 10)
             {
-                Type = PacketType.PlayerAction,
-                PayloadSize = commandBytes.Length,
-                Payload = commandBytes
-            };
+                PlayerCommandDto cmd = new PlayerCommandDto();
+                cmd.Action = PlayerAction.Bet;
+                cmd.BetAmount = CurrentBet;
 
-            byte[] bytesToSend = packetToSend.ToBytes();
+                byte[] commandBytes = _commandSerializer.Serialize(cmd);
 
-            _client.Send(bytesToSend);
-            _showGame?.Invoke();
+                Packet packetToSend = new Packet
+                {
+                    Type = PacketType.PlayerAction,
+                    PayloadSize = commandBytes.Length,
+                    Payload = commandBytes
+                };
+
+                byte[] bytesToSend = packetToSend.ToBytes();
+
+                _client.Send(bytesToSend);
+                _showGame?.Invoke();
+            }
 
         }
 
