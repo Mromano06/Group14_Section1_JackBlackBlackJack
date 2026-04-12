@@ -15,21 +15,54 @@ using System.Threading.Tasks;
 
 namespace Server.Networking
 {
+    /// <summary>
+    /// Represents the main TCP server responsible for handling client connections.
+    /// </summary>
+    /// <remarks>
+    /// This server listens for incoming client connections, creates a <see cref="ClientConnection"/>
+    /// for each client, and associates it with a <see cref="GameManager"/> session.
+    /// It also handles message routing, disconnections, and initial data transmission.
+    /// </remarks>
     public class NetworkServer
     {
+        /// <summary>
+        /// TCP listener used to accept incoming client connections.
+        /// </summary>
         private TcpListener _listener;
+
+        /// <summary>
+        /// Mapping of active client connections to their respective game sessions.
+        /// </summary>
         private Dictionary<ClientConnection, GameManager> _clients = new();
+
+        /// <summary>
+        /// Serializer used to convert player objects into byte arrays.
+        /// </summary>
         private readonly PlayerSerializer _playerSerializer = new PlayerSerializer();
 
-        // logger
-        public event Action<string> OnLog; 
+        /// <summary>
+        /// Event triggered when a log message is generated (logger).
+        /// </summary>
+        public event Action<string> OnLog;
 
-        // invoking the action for logging
+        /// <summary>
+        /// Invokes the logging event.
+        /// </summary>
+        /// <param name="message">The message to log.</param>
         private void Log(string message)
         {
             OnLog?.Invoke(message);
         }
 
+        /// <summary>
+        /// Starts the server and begins listening for client connections.
+        /// </summary>
+        /// <param name="port">The port number to listen on.</param>
+        /// <returns>A task representing the asynchronous operation.</returns>
+        /// <remarks>
+        /// This method runs indefinitely, accepting new clients and initializing
+        /// their corresponding game sessions.
+        /// </remarks>
         public async Task Start(int port)
         {
             _listener = new TcpListener(IPAddress.Any, port);
@@ -118,6 +151,11 @@ namespace Server.Networking
         
         }
 
+        /// <summary>
+        /// Handles incoming messages from a client.
+        /// </summary>
+        /// <param name="client">The client that tried to send the message.</param>
+        /// <param name="data">The raw byte, data buffer received.</param>
         private void HandleClientMessage(ClientConnection client, byte[] data)
         {
             if (_clients.TryGetValue(client, out var session)) {
@@ -132,6 +170,10 @@ namespace Server.Networking
 
         }
 
+        /// <summary>
+        /// Handles client disconnection events.
+        /// </summary>
+        /// <param name="client">The client that wants to disconnected.</param>
         private void HandleClientDisconnect(ClientConnection client)
         {
             if (_clients.TryGetValue(client, out var session))
@@ -142,7 +184,9 @@ namespace Server.Networking
             }
         }
 
-
+        /// <summary>
+        /// Stops the server by closing the listener.
+        /// </summary>
         public void Stop()
         {
             _listener.Stop();

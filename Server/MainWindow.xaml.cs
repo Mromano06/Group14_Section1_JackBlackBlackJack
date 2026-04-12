@@ -16,11 +16,26 @@ using System.Windows.Shapes;
 namespace Server
 {
     /// <summary>
-    /// Interaction logic for MainWindow.xaml
+    /// Represents the main window for the server application.
     /// </summary>
+    /// <remarks>
+    /// This window is responsible for initializing the server,
+    /// and displaying log messages in the UI as server events occur.
+    /// </remarks>
     public partial class MainWindow : Window
     {
+        /// <summary>
+        /// The network server instance used by the application.
+        /// </summary>
         private NetworkServer _server;
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="MainWindow"/> class.
+        /// </summary>
+        /// <remarks>
+        /// This constructor initializes the UI components, starts the server,
+        /// and subscribes to the server logging event.
+        /// </remarks>
         public MainWindow()
         {
             InitializeComponent();
@@ -30,6 +45,13 @@ namespace Server
             _server.OnLog += serverOnLog; // sibscribe to Logger
         }
 
+        /// <summary>
+        /// Starts the network server as a background task.
+        /// </summary>
+        /// <remarks>
+        /// The server is started asynchronously it listens
+        /// for incoming TCP client connections on port 27000.
+        /// </remarks>
         private async void StartServer()
         {
             Debug.WriteLine("Starting Server");
@@ -39,7 +61,14 @@ namespace Server
             _ = Task.Run(() => _server.Start(27000));
         }
 
-        // function to invoke when using the Log Action
+        /// <summary>
+        /// Handles log messages received from the server.
+        /// </summary>
+        /// <param name="message">The log message to display in the UI.</param>
+        /// <remarks>
+        /// This method  updates the UI thread using the dispatcher, appending
+        /// each new message to the log list.
+        /// </remarks>
         private void serverOnLog(string message)
         {
             Dispatcher.Invoke(() =>

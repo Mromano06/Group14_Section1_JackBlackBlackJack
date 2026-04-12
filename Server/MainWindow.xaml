@@ -1,4 +1,39 @@
-﻿<Window x:Class="Server.MainWindow"
+﻿<!--
+/**
+ * @file MainWindow.xaml
+ * @brief Main server UI window for displaying logs.
+ *
+ * @details
+ * This window is the primary interface for the server application.
+ * It provides a visual logging console where server events are
+ * displayed in real-time.
+ *
+ * Layout:
+ * - Root Grid containing a Canvas for absolute positioning
+ * - Background image used for branding
+ * - Header bar displaying application title
+ * - ListBox used for dynamic log output
+ *
+ * UI Elements:
+ * - Image: Displays JBLogger image in the background
+ * - Rectangle: Acts as a header bar
+ * - TextBlock: Displays the title of the log window
+ * - ListBox: Displays server log messages
+ *
+ * Behavior:
+ * - Log messages are appended dynamically via binding to the logger
+ * - Scrollbars automatically appear when logs exceed visible space
+ *
+ * Notes:
+ * - Uses Canvas for fixed positioning
+ * - Designed primarily as a debug/logging interface
+ *
+ * @author Matthew Romano
+ * @date April 2026
+ */
+-->
+
+<Window x:Class="Server.MainWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
