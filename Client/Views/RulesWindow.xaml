@@ -56,9 +56,9 @@
              mc:Ignorable="d">
 
     <Viewbox Stretch="Uniform">
-        <Grid Width="1300" Height="720">
+        <Grid Width="1280" Height="720">
             <Grid.Background>
-                <ImageBrush ImageSource="/ClientAssets/MainMenu.jpg"
+                <ImageBrush ImageSource="/ClientAssets/MainMenu.png"
                             Stretch="Fill" />
             </Grid.Background>
 

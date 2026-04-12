@@ -64,6 +64,7 @@
     <None Remove="ClientAssets\Cards\TS.png" />
     <None Remove="ClientAssets\Gameboard.jpg" />
     <None Remove="ClientAssets\MainMenu.jpg" />
+    <None Remove="ClientAssets\MainMenu.png" />
   </ItemGroup>
 
   <ItemGroup>
@@ -127,10 +128,7 @@
     <Resource Include="ClientAssets\Gameboard.jpg">
       <CopyToOutputDirectory>Never</CopyToOutputDirectory>
     </Resource>
-  </ItemGroup>
-
-  <ItemGroup>
-    <Resource Include="ClientAssets\MainMenu.jpg">
+    <Resource Include="ClientAssets\MainMenu.png">
       <CopyToOutputDirectory>Never</CopyToOutputDirectory>
     </Resource>
   </ItemGroup>

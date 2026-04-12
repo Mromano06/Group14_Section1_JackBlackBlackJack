@@ -45,5 +45,10 @@
         /// Unused in this implementation.
         /// </summary>
         EndGame,
+        /// <summary>
+        /// Packet that represents the client disconnecting
+        /// </summary>
+        Disconnect,
+
     }
 }

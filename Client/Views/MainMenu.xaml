@@ -49,21 +49,15 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006">
-    <Viewbox Stretch="Fill">
+    <Viewbox Stretch="UniformToFill">
         <Grid>
             <Grid.Background>
                 <ImageBrush
-                    ImageSource="/ClientAssets/MainMenu.jpg"
-                    Stretch="UniformToFill" />
+                    ImageSource="/ClientAssets/MainMenu.png"
+                    Stretch="Fill"/>
             </Grid.Background>
-            <Rectangle Canvas.Left="0" Canvas.Top="0" Stroke="Black" StrokeThickness="3"
-                       Width="575" Height="100"
-                       Fill="#009000" Margin="0,-450,0,0" />
-            <TextBlock Name="JackBlackBlackJack" FontSize="50"
-                       FontWeight="Bold" HorizontalAlignment="Center"
-                       VerticalAlignment="Top" Margin="0,134,0,0">Jack Black Blackjack</TextBlock>
 
-            <Button Width="200" Height="300" Margin="556,303,555,181" Command="{Binding PlayCommand}">
+            <Button Width="100" Height="150" Margin="556,454,556,30" Command="{Binding PlayCommand}">
                 <Button.Template>
                     <ControlTemplate TargetType="Button">
                         <Border CornerRadius="20"
@@ -77,7 +71,7 @@
 
                                 <TextBlock Text="PLAY"
                                Foreground="Black"
-                               FontSize="24"
+                               FontSize="20"
                                FontWeight="Bold"
                                HorizontalAlignment="Center"
                                VerticalAlignment="Center"/>
@@ -88,7 +82,7 @@
                 </Button.Template>
             </Button>
 
-            <Button Width="200" Height="300" Margin="275,303,836,181" Command="{Binding ExitCommand}">
+            <Button Width="100" Height="150" Margin="416,454,696,30" Command="{Binding ExitCommand}">
                 <Button.Template>
                     <ControlTemplate TargetType="Button">
                         <Border CornerRadius="20"
@@ -102,7 +96,7 @@
 
                                 <TextBlock Text="EXIT"
                                    Foreground="Black"
-                                   FontSize="24"
+                                   FontSize="20"
                                    FontWeight="Bold"
                                    HorizontalAlignment="Center"
                                    VerticalAlignment="Center"/>
@@ -113,7 +107,7 @@
                 </Button.Template>
             </Button>
 
-            <Button Width="200" Height="300" Margin="835,303,275,181" Command="{Binding RulesCommand}">
+            <Button Width="100" Height="150" Margin="696,454,418,30" Command="{Binding RulesCommand}">
                 <Button.Template>
                     <ControlTemplate TargetType="Button">
                         <Border CornerRadius="20"
@@ -127,7 +121,7 @@
 
                                 <TextBlock Text="RULES"
                                    Foreground="Black"
-                                   FontSize="24"
+                                   FontSize="20"
                                    FontWeight="Bold"
                                    HorizontalAlignment="Center"
                                    VerticalAlignment="Center"/>
