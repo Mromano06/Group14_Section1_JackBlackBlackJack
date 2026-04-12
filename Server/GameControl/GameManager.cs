@@ -75,7 +75,7 @@ namespace Server.GameControl
         /// Creates a new game with a minimum bet of 10 and a three-deck shoe,
         /// and adds a default player to the game.
         /// </remarks>
-        public GameManager(ClientConnection connection, Action<string> OnLog)
+        public GameManager(ClientConnection connection, Action<string> OnLog, string playerName = "Player")
         {
             _connection = connection;
             _OnLog = OnLog;
@@ -86,8 +86,8 @@ namespace Server.GameControl
             // initialize the new game
             _game = new Game(10, new Shoe(3));
 
-            // Add player to game
-            _player = new Player("Brodie Arkell", 1000);
+            // Add player to game using the authenticated name
+            _player = new Player(playerName, 1000);
             _game.AddPlayer(_player);
         }
 
@@ -114,8 +114,8 @@ namespace Server.GameControl
 
                 if (packet.Type == PacketType.PlayerAction) {
                     HandlePlayerCommand(packet.Payload);
-                }else if (packet.Type == PacketType.Disconnect)
-                {
+                }
+                else if (packet.Type == PacketType.Disconnect) {
                     HandleDisconnect();
                 }
             }
@@ -401,7 +401,7 @@ namespace Server.GameControl
         {
             Debug.WriteLine($"Client {_player.Name} disconnected.");
             _OnLog($"Client {_player.Name} disconnected.");
-            _connection.Disconnect();  
+            _connection.Disconnect();
         }
 
 

@@ -49,6 +49,14 @@
         /// Packet that represents the client disconnecting
         /// </summary>
         Disconnect,
+        /// <summary>
+        /// Packet sent by the client containing a passcode and player name for authentication.
+        /// </summary>
+        LoginRequest,
+        /// <summary>
+        /// Packet sent by the server indicating whether the login was accepted or denied.
+        /// </summary>
+        LoginResponse,
 
     }
 }
