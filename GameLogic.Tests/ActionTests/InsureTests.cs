@@ -54,6 +54,8 @@ public class InsureTests
         // Arrange
         Insure insure = new Insure(_player.Name);
 
+        _game.MaxPlayers = 2;
+
         Player player2 = new Player("notJohn", 100);
         _game.AddPlayer(player2);
 
@@ -120,7 +122,7 @@ public class InsureTests
         Insure insure = new Insure(_player.Name);
 
         // This bet * 1.5 is greater than players balance, therefore, action cannot execute
-        _player.CurrentBet = 80;
+        _player.CurrentBet = 100;
 
         // Act
         ActionResult actual = insure.Execute(_game);
@@ -174,7 +176,7 @@ public class InsureTests
 
         _player.Balance -= _player.CurrentBet; // bet action would typically decrease balance by initial bet
 
-        double expected = _player.Balance - (_player.CurrentBet * 0.5);
+        double expected = 100 - (_player.CurrentBet * 1.5);
 
         // Act
         insure.Execute(_game);
