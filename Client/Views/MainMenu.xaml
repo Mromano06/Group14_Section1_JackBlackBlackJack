@@ -84,7 +84,7 @@
                     <!-- Status message pill (wrong passcode, connecting, etc.) -->
                     <Border Background="#DD1a1a1a" CornerRadius="6" Padding="8,6">
                         <TextBlock Text="{Binding StatusMessage}"
-                                   Foreground="Blue" FontSize="13" FontWeight="Bold"
+                                   Foreground="Red" FontSize="13" FontWeight="Bold"
                                    HorizontalAlignment="Center" TextWrapping="Wrap"
                                    MinHeight="18"/>
                     </Border>
