@@ -57,34 +57,40 @@
                     Stretch="Fill"/>
             </Grid.Background>
 
-            <!-- Login input area: name + passcode stacked above the PLAY button -->
-            <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center"
-                        Margin="0,-60,0,0" Width="260">
+            <!-- Login input area: name + passcode with dark background panel -->
+            <Border HorizontalAlignment="Center" VerticalAlignment="Center"
+                    Margin="0,-60,0,0" Width="280"
+                    Background="#CC000000" CornerRadius="12" Padding="16">
+                <StackPanel>
 
-                <!-- Player Name -->
-                <TextBlock Text="Name"
-                           Foreground="White" FontSize="14" FontWeight="Bold"
-                           HorizontalAlignment="Center" Margin="0,0,0,4"/>
-                <TextBox Text="{Binding PlayerNameInput, UpdateSourceTrigger=PropertyChanged}"
-                         FontSize="14" Padding="6,4"
-                         HorizontalAlignment="Stretch" Margin="0,0,0,12"
-                         MaxLength="20"/>
+                    <!-- Player Name -->
+                    <TextBlock Text="Name"
+                               Foreground="White" FontSize="14" FontWeight="Bold"
+                               HorizontalAlignment="Center" Margin="0,0,0,4"/>
+                    <TextBox Text="{Binding PlayerNameInput, UpdateSourceTrigger=PropertyChanged}"
+                             FontSize="14" Padding="6,4"
+                             HorizontalAlignment="Stretch" Margin="0,0,0,12"
+                             MaxLength="20"/>
 
-                <!-- Passcode -->
-                <TextBlock Text="Passcode"
-                           Foreground="White" FontSize="14" FontWeight="Bold"
-                           HorizontalAlignment="Center" Margin="0,0,0,4"/>
-                <TextBox Text="{Binding PasscodeInput, UpdateSourceTrigger=PropertyChanged}"
-                         FontSize="14" Padding="6,4"
-                         HorizontalAlignment="Stretch" Margin="0,0,0,8"
-                         MaxLength="10"/>
+                    <!-- Passcode -->
+                    <TextBlock Text="Passcode"
+                               Foreground="White" FontSize="14" FontWeight="Bold"
+                               HorizontalAlignment="Center" Margin="0,0,0,4"/>
+                    <TextBox Text="{Binding PasscodeInput, UpdateSourceTrigger=PropertyChanged}"
+                             FontSize="14" Padding="6,4"
+                             HorizontalAlignment="Stretch" Margin="0,0,0,12"
+                             MaxLength="10"/>
 
-                <!-- Status message (wrong passcode, connecting, etc.) -->
-                <TextBlock Text="{Binding StatusMessage}"
-                           Foreground="Blue" FontSize="13" FontWeight="Bold"
-                           HorizontalAlignment="Center" TextWrapping="Wrap"
-                           Margin="0,0,0,0" MinHeight="20"/>
-            </StackPanel>
+                    <!-- Status message pill (wrong passcode, connecting, etc.) -->
+                    <Border Background="#DD1a1a1a" CornerRadius="6" Padding="8,6">
+                        <TextBlock Text="{Binding StatusMessage}"
+                                   Foreground="Blue" FontSize="13" FontWeight="Bold"
+                                   HorizontalAlignment="Center" TextWrapping="Wrap"
+                                   MinHeight="18"/>
+                    </Border>
+
+                </StackPanel>
+            </Border>
 
             <Button Width="100" Height="150" Margin="556,454,556,30" Command="{Binding PlayCommand}">
                 <Button.Template>

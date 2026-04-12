@@ -127,13 +127,13 @@ namespace Server.Networking
         /// </summary>
         private async Task HandleLoginAsync(TcpClient tcpClient)
         {
-            var loginSerializer = new LoginSerializer();
-            var loginResponseSerializer = new LoginResponseSerializer();
+            LoginSerializer loginSerializer = new LoginSerializer();
+            LoginResponseSerializer loginResponseSerializer = new LoginResponseSerializer();
 
             try {
                 NetworkStream stream = tcpClient.GetStream();
 
-                // Read the login packet (up to 256 bytes is plenty for name + int)
+                // Read the login packet
                 byte[] buffer = new byte[256];
                 int bytesRead = await stream.ReadAsync(buffer, 0, buffer.Length);
 
@@ -175,7 +175,10 @@ namespace Server.Networking
             }
             catch (Exception ex) {
                 Debug.WriteLine($"Login error: {ex.Message}");
-                try { tcpClient.Close(); } catch { }
+                try { 
+                    tcpClient.Close(); 
+                } 
+                catch { }
             }
         }
 
