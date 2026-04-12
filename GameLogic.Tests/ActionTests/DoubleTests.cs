@@ -59,6 +59,8 @@ public class DoubleTests
         // Arrange
         Double doubleAction = new Double(_player.Name);
 
+        _game.MaxPlayers = 2;
+
         Player player2 = new Player("notJohn", 100);
         _game.AddPlayer(player2);
 

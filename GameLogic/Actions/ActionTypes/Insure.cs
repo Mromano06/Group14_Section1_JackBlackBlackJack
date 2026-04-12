@@ -85,7 +85,7 @@ namespace GameLogic.Actions.ActionTypes
             if (player.ActionCount > 0)
                 return false;
             // Player can't insure if they dont have a high enough balance
-            if (player.Balance < (player.CurrentBet * 0.5))
+            if (player.Balance + player.CurrentBet < (player.CurrentBet * 1.5))
                 return false;
             return true;
         }

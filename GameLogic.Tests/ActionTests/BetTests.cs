@@ -204,6 +204,8 @@ public class BetTests
     public void Execute_MultiplePlayersExist_OnlyTargetPlayerBets()
     {
         // Arrange
+        _game.MaxPlayers = 2;
+
         Player player2 = new Player("notJohn", 100);
         _game.AddPlayer(player2);
 
