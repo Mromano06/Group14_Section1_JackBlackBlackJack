@@ -4,12 +4,32 @@ using System.Text;
 
 namespace SharedModels.Models 
 {
-    
+    /// <summary>
+    /// Represents a standard playing card.
+    /// </summary>
+    /// <remarks>
+    /// A card consists of a rank and a suit:
+    /// - Rank: A, 2–9, T (10), J, Q, K
+    /// - Suit: H (Hearts), D (Diamonds), C (Clubs), S (Spades)
+    /// </remarks>
     public class Card 
     {
-        private char _rank; // K, Q, J, T, 2-9, A
-        private char _suit; // H, D, C, S
+        /// <summary>
+        /// The rank of the card (e.g., A, 2–9, T, J, Q, K).
+        /// </summary>
+        private char _rank;
 
+        /// <summary>
+        /// The suit of the card (H, D, C, S).
+        /// </summary>
+        private char _suit;
+
+        /// <summary>
+        /// Gets or sets the rank of the card.
+        /// </summary>
+        /// <exception cref="ArgumentException">
+        /// Thrown when an invalid rank is assigned.
+        /// </exception>
         public char Rank
         {
             get => _rank;
@@ -20,6 +40,12 @@ namespace SharedModels.Models
             }
         }
 
+        /// <summary>
+        /// Gets or sets the suit of the card.
+        /// </summary>
+        /// <exception cref="ArgumentException">
+        /// Thrown when an invalid suit is assigned.
+        /// </exception>
         public char Suit
         {
             get => _suit;
@@ -31,7 +57,15 @@ namespace SharedModels.Models
             }
         }
 
-        // Overriding ToString to simplify the display of the cards (For testing)
+        /// <summary>
+        /// Returns a string representation of the card.
+        /// </summary>
+        /// <returns>
+        /// A two-character string combining rank and suit.
+        /// </returns>
+        /// <remarks>
+        /// This is primarily used for debugging/testing purposes.
+        /// </remarks>        
         public override string ToString()
         {
             return $"{Rank}{Suit}";
