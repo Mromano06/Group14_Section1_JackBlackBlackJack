@@ -15,18 +15,60 @@ namespace Client.ViewModels
     /// </summary>
     public class MainMenuModel : BaseModel
     {
+        /// <summary>
+        /// The network client shared between all screens.
+        /// </summary>
         private readonly NetworkClient _client;
+
+        /// <summary>
+        /// An action item used to navigate to the rules screen.
+        /// </summary>
         private readonly Action _showRules;
+
+        /// <summary>
+        /// An action item used to navigate to the rules screen.
+        /// </summary>
         private readonly Action _showBetting;
 
+        /// <summary>
+        /// The entered passcode by the user, used for authentication.
+        /// </summary>
         private string _passcodeInput = string.Empty;
+
+        /// <summary>
+        /// The entered name by the user, used for authentication.
+        /// </summary>
         private string _playerNameInput = string.Empty;
+
+        /// <summary>
+        /// The status of the connection attempt or errors.
+        /// </summary>
         private string _statusMessage = string.Empty;
 
+        /// <summary>
+        /// Command used to navigate to the betting screen.
+        /// </summary>
         public ICommand PlayCommand { get; }
+
+        /// <summary>
+        /// Command used to navigate to the rules screen.
+        /// </summary>
         public ICommand RulesCommand { get; }
+
+        /// <summary>
+        /// Exits the game safely, ensuring any necessary cleanup is performed.
+        /// </summary>
         public ICommand ExitCommand { get; }
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="MainMenuModel"/> class.
+        /// </summary>
+        /// <param name="client">Shared network client.</param>
+        /// <param name="ShowBetting">Action used to navigate to the betting screen.</param>
+        /// <param name="ShowRules">Action used to navigate to the rules screen.</param>
+        /// <remarks>
+        /// Subscribes to all relevant gameplay update events and initializes command bindings.
+        /// </remarks>
         public MainMenuModel(NetworkClient client, Action ShowBetting, Action ShowRules)
         {
             _client = client;
@@ -86,7 +128,7 @@ namespace Client.ViewModels
 
             try {
                 if (!_client.IsConnected) {
-                    await _client.Connect("127.0.0.1", 27000);
+                    await _client.Connect("127.0.0.1", 27000); 
                 }
             }
             catch (Exception) {
@@ -98,6 +140,9 @@ namespace Client.ViewModels
             // TaskCompletionSource so we can await it cleanly.
             var tcs = new TaskCompletionSource<(bool accepted, string message)>();
 
+            /// <summary>
+            /// Response handler for the server's login response. Unsubscribes itself.
+            /// </summary>
             void OnResponse(bool accepted, string message)
             {
                 _client.LoginResponseReceived -= OnResponse;
@@ -119,6 +164,7 @@ namespace Client.ViewModels
                 return;
             }
 
+            // Saves as a touple
             var (accepted, responseMessage) = tcs.Task.Result;
 
             if (!accepted) {

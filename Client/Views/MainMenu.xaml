@@ -58,8 +58,7 @@
             </Grid.Background>
 
             <!-- Login input area: name + passcode with dark background panel -->
-            <Border HorizontalAlignment="Center" VerticalAlignment="Center"
-                    Margin="0,-60,0,0" Width="280"
+            <Border HorizontalAlignment="Center" VerticalAlignment="Center" Width="280"
                     Background="#CC000000" CornerRadius="12" Padding="16">
                 <StackPanel>
 
@@ -92,7 +91,7 @@
                 </StackPanel>
             </Border>
 
-            <Button Width="100" Height="150" Margin="556,454,556,30" Command="{Binding PlayCommand}">
+            <Button Width="75" Height="112" Margin="560,411,558,73" Command="{Binding PlayCommand}">
                 <Button.Template>
                     <ControlTemplate TargetType="Button">
                         <Border CornerRadius="20"
@@ -106,7 +105,7 @@
 
                                 <TextBlock Text="PLAY"
                                Foreground="Black"
-                               FontSize="20"
+                               FontSize="16"
                                FontWeight="Bold"
                                HorizontalAlignment="Center"
                                VerticalAlignment="Center"/>
@@ -117,7 +116,7 @@
                 </Button.Template>
             </Button>
 
-            <Button Width="100" Height="150" Margin="416,454,696,30" Command="{Binding ExitCommand}">
+            <Button Width="75" Height="112" Margin="458,411,661,73" Command="{Binding ExitCommand}">
                 <Button.Template>
                     <ControlTemplate TargetType="Button">
                         <Border CornerRadius="20"
@@ -131,7 +130,7 @@
 
                                 <TextBlock Text="EXIT"
                                    Foreground="Black"
-                                   FontSize="20"
+                                   FontSize="16"
                                    FontWeight="Bold"
                                    HorizontalAlignment="Center"
                                    VerticalAlignment="Center"/>
@@ -142,7 +141,7 @@
                 </Button.Template>
             </Button>
 
-            <Button Width="100" Height="150" Margin="696,454,418,30" Command="{Binding RulesCommand}">
+            <Button Width="75" Height="112" Margin="662,411,456,73" Command="{Binding RulesCommand}">
                 <Button.Template>
                     <ControlTemplate TargetType="Button">
                         <Border CornerRadius="20"
@@ -156,7 +155,7 @@
 
                                 <TextBlock Text="RULES"
                                    Foreground="Black"
-                                   FontSize="20"
+                                   FontSize="16"
                                    FontWeight="Bold"
                                    HorizontalAlignment="Center"
                                    VerticalAlignment="Center"/>
