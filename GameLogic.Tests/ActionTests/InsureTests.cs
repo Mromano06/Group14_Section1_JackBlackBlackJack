@@ -108,6 +108,8 @@ public class InsureTests
 
         _player.CurrentBet = 80; // _player.Balance == 100
 
+        _player.Balance -= _player.CurrentBet;
+
         // Act
         bool actual = insure.IsExecutable(_game);
 
@@ -123,6 +125,8 @@ public class InsureTests
 
         // This bet * 1.5 is greater than players balance, therefore, action cannot execute
         _player.CurrentBet = 100;
+
+        _player.Balance -= _player.CurrentBet;
 
         // Act
         ActionResult actual = insure.Execute(_game);
