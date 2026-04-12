@@ -121,10 +121,10 @@ namespace Client.Networking
         private CancellationTokenSource cancellation = new();
 
         /// <summary>
-        /// Event raised whenever a message is received from the server.
-        /// Your ViewModel can subscribe to update UI/game state.
+        /// Raised when the server responds to a login attempt.
+        /// bool = accepted, string = message from server.
         /// </summary>
-        public event Action<string>? MessageReceived;
+        public event Action<bool, string>? LoginResponseReceived;
 
         /// <summary>
         /// Indicates if the client is currently connected to the server.
@@ -152,6 +152,26 @@ namespace Client.Networking
         }
 
         /// <summary>
+        /// Serializes and queues a login request packet to be sent to the server.
+        /// </summary>
+        /// <param name="passcode">The passcode the player entered.</param>
+        /// <param name="playerName">The player's chosen display name.</param>
+        public void SendLoginRequest(int passcode, string playerName)
+        {
+            var dto = new Jables_Protocol.DTOs.LoginDto { Passcode = passcode, PlayerName = playerName };
+            var serializer = new Jables_Protocol.Serializers.LoginSerializer();
+            byte[] payload = serializer.Serialize(dto);
+
+            Jables_Protocol.Packet pkt = new Jables_Protocol.Packet {
+                Type = SharedModels.Core.PacketType.LoginRequest,
+                PayloadSize = payload.Length,
+                Payload = payload
+            };
+
+            Send(pkt.ToBytes());
+        }
+
+        /// <summary>
         /// Enqueues a message/command to be sent to the server.
         /// </summary>
         public void Send(byte[] data)
@@ -174,10 +194,14 @@ namespace Client.Networking
 
             Packet packet = Packet.FromBytes(data);
 
-            switch (packet.Type)
-            {
-                case PacketType.Player:
-                    {
+            switch (packet.Type) {
+                case PacketType.LoginResponse: {
+                        LoginResponseDto dto = LoginResponseSerializer.Deserialize(packet.Payload);
+                        LoginResponseReceived?.Invoke(dto.Accepted, dto.Message);
+                        break;
+                    }
+
+                case PacketType.Player: {
                         PlayerDto dto = PlayerSerializer.Deserialize(packet.Payload);
                         sendPlayerMoneyUpdate(dto);
                         break;
@@ -190,8 +214,7 @@ namespace Client.Networking
                 case PacketType.StateUpdate: { GameStateDto dto = GameStateSerializer.Deserialize(packet.Payload); break; }
 
                 // GameUpdate
-                case PacketType.GameUpdate:
-                    {
+                case PacketType.GameUpdate: {
                         GameUpdateDto dto = GameUpdateSerializer.Deserialize(packet.Payload);
                         handleGameUpdateDto(dto);
                         break;
@@ -205,8 +228,7 @@ namespace Client.Networking
 
                 //Join request
                 //End Game
-                case PacketType.EndGame:
-                    {
+                case PacketType.EndGame: {
                         string gameResult = PictureSerializer.DeserializePic(packet.Payload);
                         handleEndGame(gameResult);
                         break;
@@ -221,30 +243,24 @@ namespace Client.Networking
         /// </summary>
         private async Task SendLoop()
         {
-            try
-            {
+            try {
 
-                while (!cancellation.Token.IsCancellationRequested && IsConnected)
-                {
-                    if (sendQueue.TryDequeue(out byte[]? data))
-                    {
+                while (!cancellation.Token.IsCancellationRequested && IsConnected) {
+                    if (sendQueue.TryDequeue(out byte[]? data)) {
                         if (data == null || data.Length == 0)
                             continue;
                         // send() to the client
                         await stream.WriteAsync(data, 0, data.Length, cancellation.Token);
                     }
-                    else
-                    {
+                    else {
                         await Task.Delay(5, cancellation.Token); // delay if nothing to send
                     }
                 }
             }
-            catch (Exception ex)
-            {
+            catch (Exception ex) {
                 Debug.WriteLine(ex.ToString());
             }
-            finally
-            {
+            finally {
                 Disconnect();
             }
 
@@ -257,11 +273,9 @@ namespace Client.Networking
         private async Task ReceiveLoop()
         {
             byte[] buffer = new byte[2048576]; // adjust size later
-            try
-            {
+            try {
 
-                while (!cancellation.Token.IsCancellationRequested && IsConnected)
-                {
+                while (!cancellation.Token.IsCancellationRequested && IsConnected) {
                     int bytesRead = await stream.ReadAsync(buffer, 0, buffer.Length, cancellation.Token);
                     if (bytesRead == 0)
                         break; // connection closed
@@ -274,12 +288,10 @@ namespace Client.Networking
                     HandleMessage(data);
                 }
             }
-            catch (Exception ex)
-            {
+            catch (Exception ex) {
                 Debug.WriteLine(ex.ToString());
             }
-            finally
-            {
+            finally {
                 Disconnect();
             }
         }
@@ -303,14 +315,11 @@ namespace Client.Networking
         {
             // if player cards not null send them to UI
 
-            if (gameUpdateDto.ActionResult != false)
-            {
+            if (gameUpdateDto.ActionResult != false) {
 
-                if (gameUpdateDto.Player.Hand != null)
-                {
+                if (gameUpdateDto.Player.Hand != null) {
                     // send all cards in the update
-                    for (int i = 0; i < gameUpdateDto.Player.CardCount; i++)
-                    {
+                    for (int i = 0; i < gameUpdateDto.Player.CardCount; i++) {
 
                         CardDto cardDto = new CardDto();
                         cardDto.Rank = gameUpdateDto.Player.Hand[i].Rank; // get the first card rank and suit
@@ -321,11 +330,9 @@ namespace Client.Networking
                 }
 
                 // if dealer cards not null send them to UI
-                if (gameUpdateDto.DealerCards != null)
-                {
+                if (gameUpdateDto.DealerCards != null) {
                     // send all cards in the update
-                    for (int i = 0; i < gameUpdateDto.DealerCardCount; i++)
-                    {
+                    for (int i = 0; i < gameUpdateDto.DealerCardCount; i++) {
 
                         CardDto cardDto = new CardDto();
                         cardDto.Rank = gameUpdateDto.DealerCards[i].Rank; // get the first card rank and suit
@@ -338,19 +345,16 @@ namespace Client.Networking
                 sendPlayerMoneyUpdate(gameUpdateDto.Player);
                 sendPlayerIndex(gameUpdateDto.CurrentPlayerIndex);
 
-                if (gameUpdateDto.gameResult == GameResult.PLAYER_WIN || gameUpdateDto.gameResult == GameResult.PLAYER_LOSE)
-                {
+                if (gameUpdateDto.gameResult == GameResult.PLAYER_WIN || gameUpdateDto.gameResult == GameResult.PLAYER_LOSE) {
                     sendGameResult(gameUpdateDto.gameResult);
                 }
-                else if (gameUpdateDto.IsEndRound)
-                {
+                else if (gameUpdateDto.IsEndRound) {
                     sendRoundResult(gameUpdateDto.RoundWin);
                     sendRoundCheck(gameUpdateDto.IsEndRound);
                 }
 
             }
-            else
-            {
+            else {
                 Debug.WriteLine("Action result was false, not sending updates to dispatcher");
             }
 
@@ -392,14 +396,12 @@ namespace Client.Networking
         /// </remarks>
         public void sendPlayerMoneyUpdate(PlayerDto player)
         {
-            if (player == null)
-            {
+            if (player == null) {
                 Debug.WriteLine("Player Dto Was Empty");
                 return;
             }
 
-            if (player.Balance >= 0)
-            {
+            if (player.Balance >= 0) {
                 Debug.WriteLine("sending player balance to dispatcher");
                 LatestPlayerMoney = player.Balance;
                 // send player money to UI
@@ -419,8 +421,7 @@ namespace Client.Networking
         {
 
 
-            if (amount >= 0)
-            {
+            if (amount >= 0) {
                 Debug.WriteLine("sending player bet amount to dispatcher");
                 // send player bet to UI
                 PlayerBetUpdate?.Invoke(amount);
@@ -437,8 +438,7 @@ namespace Client.Networking
         /// </remarks>
         public void sendRoundCheck(bool roundCheck)
         {
-            if (roundCheck)
-            {
+            if (roundCheck) {
                 Debug.WriteLine("Sending round check");
                 RoundCheckUpdate?.Invoke(roundCheck);
             }

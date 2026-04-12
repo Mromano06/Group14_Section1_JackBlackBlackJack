@@ -26,6 +26,12 @@ namespace Server.Networking
     public class NetworkServer
     {
         /// <summary>
+        /// The passcode clients must provide to join the game.
+        /// Change this to whatever code you want players to enter.
+        /// </summary>
+        private const int ServerPasscode = 1234;
+
+        /// <summary>
         /// TCP listener used to accept incoming client connections.
         /// </summary>
         private TcpListener _listener;
@@ -70,85 +76,18 @@ namespace Server.Networking
 
             Debug.WriteLine("Server listening...");
             Log("Server listening...");
-        
-            while (true)
-            {
+
+            while (true) {
                 TcpClient tcpClient = await _listener.AcceptTcpClientAsync();
-                Debug.WriteLine("Client Connected");
-                Log("Client Connected");
+                Debug.WriteLine("Client Connected - awaiting login");
+                Log("Client Connected - awaiting login");
 
-                // create connection with a callback
-                ClientConnection connection = new ClientConnection(tcpClient, HandleClientMessage, HandleClientDisconnect);
-
-                // start send receive
-                connection.Start();
-
-                GameManager _session = new GameManager(connection, OnLog); // create a game manager for this connection
-
-                _clients[connection] = _session; // add connection to pool
-
-                // DO NOT SET THE HAND OR YOU WILL BREAK EVERYTHING
-                Player player = new Player() {
-                    Name = "Brodie Arkell",
-                    CurrentBet = 0,
-                    HasDoubled = false,
-                    HasInsured = false,
-                    ActionCount = 0,
-                    Balance = 1000
-                };
-
-                PlayerDto playerDto = new PlayerDto(player);
-
-                Debug.WriteLine("Attempted to send player to client");
-                Log("Send Player Initialization");
-
-                byte[] buffer = _playerSerializer.Serialize(playerDto);
-
-                Packet packetToSend = new Packet {
-                    Type = PacketType.Player,
-                    PayloadSize = buffer.Length,
-                    Payload = buffer
-                };
-
-                byte[] packetBytes = packetToSend.ToBytes();
-
-                Packet newPacket = Packet.FromBytes(packetBytes);
-                PlayerDto decodedPlayer = PlayerSerializer.Deserialize(newPacket.Payload);
-                Debug.WriteLine($"TESTING TYPE: {newPacket.Type}");
-                Debug.WriteLine($"Player Name: {decodedPlayer.Name}");
-                Debug.WriteLine($"Player Balance: {decodedPlayer.Balance}");
-                Debug.WriteLine($"Player CardCount: {decodedPlayer.CardCount}");
-                Debug.WriteLine($"Player CurrentBet: {decodedPlayer.CurrentBet}");
-                Debug.WriteLine($"Player HasDoubled: {decodedPlayer.HasDoubled}");
-                Debug.WriteLine($"Player HasInsured: {decodedPlayer.HasInsured}");
-                Debug.WriteLine($"Player ActionCount: {decodedPlayer.ActionCount}");
-
-                connection.Send(packetBytes);
-
-
-                /// Send Win and loss Images to client at start
-                byte[] endGamePacketW = PictureSerializer.SerializePic("Winner");
-
-                Packet packetW = new Packet
-                {
-                    Type = PacketType.EndGame,
-                    PayloadSize = endGamePacketW.Length,
-                    Payload = endGamePacketW
-                };
-                byte[] endGamePacketL = PictureSerializer.SerializePic("Loser");
-
-                Packet packetL = new Packet
-                {
-                    Type = PacketType.EndGame,
-                    PayloadSize = endGamePacketL.Length,
-                    Payload = endGamePacketL
-                };
-
-                connection.Send(packetW.ToBytes());
-                connection.Send(packetL.ToBytes());
+                // Handle each client's login on its own background task so the
+                // accept loop can keep receiving new connections while we wait.
+                _ = Task.Run(() => HandleLoginAsync(tcpClient));
 
             }
-        
+
         }
 
         /// <summary>
@@ -162,8 +101,7 @@ namespace Server.Networking
 
                 session.OnMessageReceived(client, data); // send message to game manager
             }
-            else
-            {
+            else {
                 Debug.WriteLine("No session found for client");
                 Log("No Session Found for Client");
             }
@@ -176,12 +114,131 @@ namespace Server.Networking
         /// <param name="client">The client that wants to disconnected.</param>
         private void HandleClientDisconnect(ClientConnection client)
         {
-            if (_clients.TryGetValue(client, out var session))
-            {
+            if (_clients.TryGetValue(client, out var session)) {
                 _clients.Remove(client); // remove from pool
                 Debug.WriteLine("Client Disconnected");
                 Log("Client Disconnected");
             }
+        }
+
+        /// <summary>
+        /// Reads the first packet from a newly connected TCP client, checks the passcode,
+        /// and either admits the client into a game session or sends a denial and closes the socket.
+        /// </summary>
+        private async Task HandleLoginAsync(TcpClient tcpClient)
+        {
+            LoginSerializer loginSerializer = new LoginSerializer();
+            LoginResponseSerializer loginResponseSerializer = new LoginResponseSerializer();
+
+            try {
+                NetworkStream stream = tcpClient.GetStream();
+
+                // Read the login packet
+                byte[] buffer = new byte[256];
+                int bytesRead = await stream.ReadAsync(buffer, 0, buffer.Length);
+
+                if (bytesRead == 0) {
+                    Debug.WriteLine("Client disconnected before sending login");
+                    tcpClient.Close();
+                    return;
+                }
+
+                byte[] raw = new byte[bytesRead];
+                Array.Copy(buffer, raw, bytesRead);
+
+                Packet loginPacket = Packet.FromBytes(raw);
+
+                if (loginPacket.Type != PacketType.LoginRequest) {
+                    Debug.WriteLine("First packet was not a LoginRequest — rejecting");
+                    SendLoginResponse(stream, loginResponseSerializer, false, "Expected a login request.");
+                    tcpClient.Close();
+                    return;
+                }
+
+                LoginDto loginDto = LoginSerializer.Deserialize(loginPacket.Payload);
+                Debug.WriteLine($"Login attempt — Name: '{loginDto.PlayerName}', Passcode: {loginDto.Passcode}");
+                Log($"Login attempt from '{loginDto.PlayerName}'");
+
+                if (loginDto.Passcode != ServerPasscode) {
+                    Debug.WriteLine("Wrong passcode — rejecting client");
+                    Log($"Login denied for '{loginDto.PlayerName}' — wrong passcode");
+                    SendLoginResponse(stream, loginResponseSerializer, false, "Wrong passcode. Access denied.");
+                    tcpClient.Close();
+                    return;
+                }
+
+                // Passcode correct — send acceptance and set up game session
+                SendLoginResponse(stream, loginResponseSerializer, true, "Welcome to JackBlack!");
+                Log($"Login accepted for '{loginDto.PlayerName}'");
+
+                AcceptClient(tcpClient, loginDto.PlayerName);
+            }
+            catch (Exception ex) {
+                Debug.WriteLine($"Login error: {ex.Message}");
+                try { 
+                    tcpClient.Close(); 
+                } 
+                catch { }
+            }
+        }
+
+        /// <summary>
+        /// Writes a <see cref="LoginResponseDto"/> directly to the stream before handing
+        /// the socket off to a <see cref="ClientConnection"/> (which takes over the stream).
+        /// </summary>
+        private static void SendLoginResponse(NetworkStream stream, LoginResponseSerializer serializer, bool accepted, string message)
+        {
+            var dto = new LoginResponseDto { Accepted = accepted, Message = message };
+            byte[] payload = serializer.Serialize(dto);
+            Packet pkt = new Packet {
+                Type = PacketType.LoginResponse,
+                PayloadSize = payload.Length,
+                Payload = payload
+            };
+            byte[] pktBytes = pkt.ToBytes();
+            stream.Write(pktBytes, 0, pktBytes.Length);
+        }
+
+        /// <summary>
+        /// Finishes setting up a verified client: creates the <see cref="ClientConnection"/>,
+        /// <see cref="GameManager"/>, and sends the initial player/image packets.
+        /// </summary>
+        private void AcceptClient(TcpClient tcpClient, string playerName)
+        {
+            ClientConnection connection = new ClientConnection(tcpClient, HandleClientMessage, HandleClientDisconnect);
+            connection.Start();
+
+            GameManager session = new GameManager(connection, OnLog, playerName);
+            _clients[connection] = session;
+
+            // Send initial player state
+            Player player = new Player() {
+                Name = playerName,
+                CurrentBet = 0,
+                HasDoubled = false,
+                HasInsured = false,
+                ActionCount = 0,
+                Balance = 1000
+            };
+
+            PlayerDto playerDto = new PlayerDto(player);
+            byte[] playerPayload = _playerSerializer.Serialize(playerDto);
+            Packet playerPacket = new Packet {
+                Type = PacketType.Player,
+                PayloadSize = playerPayload.Length,
+                Payload = playerPayload
+            };
+            connection.Send(playerPacket.ToBytes());
+
+            // Send win/loss images
+            byte[] winPayload = PictureSerializer.SerializePic("Winner");
+            connection.Send(new Packet { Type = PacketType.EndGame, PayloadSize = winPayload.Length, Payload = winPayload }.ToBytes());
+
+            byte[] lossPayload = PictureSerializer.SerializePic("Loser");
+            connection.Send(new Packet { Type = PacketType.EndGame, PayloadSize = lossPayload.Length, Payload = lossPayload }.ToBytes());
+
+            Debug.WriteLine($"Client '{playerName}' fully admitted to game session");
+            Log($"Client '{playerName}' admitted to game session");
         }
 
         /// <summary>

@@ -1,4 +1,4 @@
-﻿    <!--
+﻿<!--
     /**
      * @file MainMenu.xaml
      * @brief Main menu view serving as the entry point of the application.
@@ -43,8 +43,8 @@
      * @date April 8th, 2026
      */
     -->
-    
-    <UserControl x:Class="Client.Views.MainMenu"
+
+<UserControl x:Class="Client.Views.MainMenu"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
@@ -57,7 +57,41 @@
                     Stretch="Fill"/>
             </Grid.Background>
 
-            <Button Width="100" Height="150" Margin="556,454,556,30" Command="{Binding PlayCommand}">
+            <!-- Login input area: name + passcode with dark background panel -->
+            <Border HorizontalAlignment="Center" VerticalAlignment="Center" Width="280"
+                    Background="#CC000000" CornerRadius="12" Padding="16">
+                <StackPanel>
+
+                    <!-- Player Name -->
+                    <TextBlock Text="Name"
+                               Foreground="White" FontSize="14" FontWeight="Bold"
+                               HorizontalAlignment="Center" Margin="0,0,0,4"/>
+                    <TextBox Text="{Binding PlayerNameInput, UpdateSourceTrigger=PropertyChanged}"
+                             FontSize="14" Padding="6,4"
+                             HorizontalAlignment="Stretch" Margin="0,0,0,12"
+                             MaxLength="20"/>
+
+                    <!-- Passcode -->
+                    <TextBlock Text="Passcode"
+                               Foreground="White" FontSize="14" FontWeight="Bold"
+                               HorizontalAlignment="Center" Margin="0,0,0,4"/>
+                    <TextBox Text="{Binding PasscodeInput, UpdateSourceTrigger=PropertyChanged}"
+                             FontSize="14" Padding="6,4"
+                             HorizontalAlignment="Stretch" Margin="0,0,0,12"
+                             MaxLength="10"/>
+
+                    <!-- Status message pill (wrong passcode, connecting, etc.) -->
+                    <Border Background="#DD1a1a1a" CornerRadius="6" Padding="8,6">
+                        <TextBlock Text="{Binding StatusMessage}"
+                                   Foreground="Red" FontSize="13" FontWeight="Bold"
+                                   HorizontalAlignment="Center" TextWrapping="Wrap"
+                                   MinHeight="18"/>
+                    </Border>
+
+                </StackPanel>
+            </Border>
+
+            <Button Width="75" Height="112" Margin="560,411,558,73" Command="{Binding PlayCommand}">
                 <Button.Template>
                     <ControlTemplate TargetType="Button">
                         <Border CornerRadius="20"
@@ -71,7 +105,7 @@
 
                                 <TextBlock Text="PLAY"
                                Foreground="Black"
-                               FontSize="20"
+                               FontSize="16"
                                FontWeight="Bold"
                                HorizontalAlignment="Center"
                                VerticalAlignment="Center"/>
@@ -82,7 +116,7 @@
                 </Button.Template>
             </Button>
 
-            <Button Width="100" Height="150" Margin="416,454,696,30" Command="{Binding ExitCommand}">
+            <Button Width="75" Height="112" Margin="458,411,661,73" Command="{Binding ExitCommand}">
                 <Button.Template>
                     <ControlTemplate TargetType="Button">
                         <Border CornerRadius="20"
@@ -96,7 +130,7 @@
 
                                 <TextBlock Text="EXIT"
                                    Foreground="Black"
-                                   FontSize="20"
+                                   FontSize="16"
                                    FontWeight="Bold"
                                    HorizontalAlignment="Center"
                                    VerticalAlignment="Center"/>
@@ -107,21 +141,21 @@
                 </Button.Template>
             </Button>
 
-            <Button Width="100" Height="150" Margin="696,454,418,30" Command="{Binding RulesCommand}">
+            <Button Width="75" Height="112" Margin="662,411,456,73" Command="{Binding RulesCommand}">
                 <Button.Template>
                     <ControlTemplate TargetType="Button">
                         <Border CornerRadius="20"
                             Background="{TemplateBinding Background}"
                             BorderBrush="{TemplateBinding BorderBrush}"
                             BorderThickness="1"
-                            ClipToBounds="True">    
+                            ClipToBounds="True">
 
                             <Grid>
                                 <Image Source="/ClientAssets/BackOfCard.png" Stretch="Fill"/>
 
                                 <TextBlock Text="RULES"
                                    Foreground="Black"
-                                   FontSize="20"
+                                   FontSize="16"
                                    FontWeight="Bold"
                                    HorizontalAlignment="Center"
                                    VerticalAlignment="Center"/>
