@@ -4,14 +4,15 @@ using Jables_Protocol;
 using Jables_Protocol.DTOs;
 using Jables_Protocol.Serializers;
 using SharedModels.Core;
+using SharedModels.Logging;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.Text;
+using System.Windows;
 using System.Windows.Input;
 using System.Windows.Threading;
-using System.Windows;
 
 // Matthew Romano - March 12th, 2026 - BetPlacingViewModel implementation
 // Handles the logic of the bet placing view model
@@ -229,6 +230,7 @@ namespace Client.ViewModels
         {
             if (CurrentBet >= 10)
             {
+                FileLogger.Log($"[BET] Confirmed - Amount: {CurrentBet}, Balance: {PlayerMoney}");
                 PlayerCommandDto cmd = new PlayerCommandDto();
                 cmd.Action = PlayerAction.Bet;
                 cmd.BetAmount = CurrentBet;
