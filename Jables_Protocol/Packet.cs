@@ -4,6 +4,7 @@ using SharedModels.Models;
 using SharedModels.Core;
 using GameLogic.Core;
 using System.Security.Cryptography.X509Certificates;
+using System.Diagnostics.CodeAnalysis;
 
 // Sam Pelot
 
@@ -16,6 +17,8 @@ namespace Jables_Protocol
     /// <summary>
     /// Gets or sets the type of the packet, indicating how the payload should be interpreted.
     /// </summary>
+
+    [ExcludeFromCodeCoverage]
     public class Packet
     {
         /// <summary>

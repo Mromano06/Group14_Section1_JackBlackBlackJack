@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Text;
+using System.Diagnostics.CodeAnalysis;
 
 namespace Jables_Protocol.Serializers
 {
@@ -15,6 +16,9 @@ namespace Jables_Protocol.Serializers
     /// together with the contents of a corresponding image file, and can reconstruct that image
     /// on disk during deserialization.
     /// </remarks>
+    /// 
+
+    [ExcludeFromCodeCoverage]
     public class PictureSerializer
     {
         /// <summary>

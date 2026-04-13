@@ -4,10 +4,12 @@ using SharedModels.Models;
 using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Diagnostics.CodeAnalysis;
 
 // TODO: If we want split, a players hand has to be a List<Hand> hands so we can track multiple hands
 //       Also, we will have to track doubling by hand since each hand in a split could double (or split again)
 //       Therefore.... scoped to V2
+
 
 namespace GameLogic.Actions.ActionTypes
 {
@@ -24,6 +26,7 @@ namespace GameLogic.Actions.ActionTypes
     /// </para>
     /// </remarks>
     /// <author>Evan Travis</author>
+    [ExcludeFromCodeCoverage]
     public class Split : IAction
     {
         /// <summary>
