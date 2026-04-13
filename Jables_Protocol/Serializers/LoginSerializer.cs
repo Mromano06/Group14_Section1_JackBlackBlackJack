@@ -1,6 +1,8 @@
 ﻿using Jables_Protocol.DTOs;
+using System.Diagnostics.CodeAnalysis;
 using System.IO;
 using System.Text;
+
 
 namespace Jables_Protocol.Serializers
 {
@@ -14,6 +16,8 @@ namespace Jables_Protocol.Serializers
     /// - 4 bytes: PlayerName length prefix (int)
     /// - N bytes: PlayerName (UTF-8 string)
     /// </remarks>
+
+    [ExcludeFromCodeCoverage]
     public class LoginSerializer : ISerializer<LoginDto>
     {
         /// <summary>Serializes a <see cref="LoginDto"/> into a byte array.</summary>

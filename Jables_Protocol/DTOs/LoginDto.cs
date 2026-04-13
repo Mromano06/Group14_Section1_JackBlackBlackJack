@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics.CodeAnalysis;
 
 namespace Jables_Protocol.DTOs
 {
@@ -6,6 +7,8 @@ namespace Jables_Protocol.DTOs
     /// Data transfer object sent by the client when requesting to join a game session.
     /// Contains the player's chosen name and the server passcode.
     /// </summary>
+    
+    [ExcludeFromCodeCoverage]
     public class LoginDto
     {
         /// <summary>
