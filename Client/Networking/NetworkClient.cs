@@ -18,6 +18,7 @@ using System.Threading.Channels;
 using System.Threading.Tasks;
 using System.Windows.Media.Converters;
 using System.Windows.Threading;
+using SharedModels.Logging;
 
 
 
@@ -197,12 +198,14 @@ namespace Client.Networking
             switch (packet.Type) {
                 case PacketType.LoginResponse: {
                         LoginResponseDto dto = LoginResponseSerializer.Deserialize(packet.Payload);
+                        FileLogger.Log($"[LOGIN] Accepted: {dto.Accepted}, Message: {dto.Message}");
                         LoginResponseReceived?.Invoke(dto.Accepted, dto.Message);
                         break;
                     }
 
                 case PacketType.Player: {
                         PlayerDto dto = PlayerSerializer.Deserialize(packet.Payload);
+                        FileLogger.Log($"[PLAYER] Balance: {dto.Balance}");
                         sendPlayerMoneyUpdate(dto);
                         break;
                     }
@@ -216,6 +219,7 @@ namespace Client.Networking
                 // GameUpdate
                 case PacketType.GameUpdate: {
                         GameUpdateDto dto = GameUpdateSerializer.Deserialize(packet.Payload);
+                        FileLogger.Log($"[GAME UPDATE] Balance: {dto.Player.Balance}, Bet: {dto.Player.CurrentBet}, RoundWin: {dto.RoundWin}, GameResult: {dto.gameResult}, IsEndRound: {dto.IsEndRound}");
                         handleGameUpdateDto(dto);
                         break;
                     }
@@ -230,6 +234,7 @@ namespace Client.Networking
                 //End Game
                 case PacketType.EndGame: {
                         string gameResult = PictureSerializer.DeserializePic(packet.Payload);
+                        FileLogger.Log($"[END GAME] Result: {gameResult}");
                         handleEndGame(gameResult);
                         break;
                     }

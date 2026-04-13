@@ -10,6 +10,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using SharedModels.Logging;
 
 // Brodie Arkell & Matthew Romano - Feb 11th, 2026 - Main Menu for Server Application
 
@@ -39,10 +40,7 @@ namespace Server
         public MainWindow()
         {
             InitializeComponent();
-
-
             StartServer();
-            _server.OnLog += serverOnLog; // sibscribe to Logger
         }
 
         /// <summary>
@@ -56,6 +54,8 @@ namespace Server
         {
             Debug.WriteLine("Starting Server");
             _server = new NetworkServer();
+            _server.OnLog += FileLogger.Log;
+            _server.OnLog += serverOnLog; // sibscribe to Logger
 
             // avoid blocking UI
             _ = Task.Run(() => _server.Start(27000));
