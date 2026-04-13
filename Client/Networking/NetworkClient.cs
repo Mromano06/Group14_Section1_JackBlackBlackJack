@@ -219,7 +219,7 @@ namespace Client.Networking
                 // GameUpdate
                 case PacketType.GameUpdate: {
                         GameUpdateDto dto = GameUpdateSerializer.Deserialize(packet.Payload);
-                        FileLogger.Log($"[GAME UPDATE] Balance: {dto.Player.Balance}, Bet: {dto.Player.CurrentBet}, RoundWin: {dto.RoundWin}, GameResult: {dto.gameResult}, IsEndRound: {dto.IsEndRound}");
+                        FileLogger.Log($"[GAME UPDATE] Balance: {dto.Player.Balance}, Bet: {dto.Player.CurrentBet}, RoundResult: {dto.RoundWin}, GameResult: {dto.gameResult}, IsEndRound: {dto.IsEndRound}");
                         handleGameUpdateDto(dto);
                         break;
                     }
