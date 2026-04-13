@@ -4,6 +4,7 @@ using Jables_Protocol;
 using Jables_Protocol.DTOs;
 using Jables_Protocol.Serializers;
 using SharedModels.Core;
+using SharedModels.Logging;
 using SharedModels.Models;
 using System;
 using System;
@@ -11,11 +12,11 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.Text;
+using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Threading;
-using System.Threading.Tasks;
 
 // Matthew Romano & Brodie Arkell - March 12th, 2026 - GamplayViewModel Implementation
 // The actual gameplay loop/aspects
@@ -359,6 +360,7 @@ namespace Client.ViewModels
         private void Hit()
         {
             if (RoundHasEnded) { return; }
+            FileLogger.Log($"[ACTION] Hit - Balance: {PlayerMoney}, Bet: {BetAmount}");
             IsFirstTurn = false;
             PlayerCommandDto playerCommandDto = new PlayerCommandDto();
             playerCommandDto.Action = PlayerAction.Hit;
@@ -389,6 +391,7 @@ namespace Client.ViewModels
         private void Stand()
         {
             if (RoundHasEnded) { return; }
+            FileLogger.Log($"[ACTION] Stand - Balance: {PlayerMoney}, Bet: {BetAmount}");
             IsFirstTurn = false;
             // End turn
             PlayerCommandDto playerCommandDto = new PlayerCommandDto();
@@ -422,8 +425,8 @@ namespace Client.ViewModels
             if (!IsFirstTurn || RoundHasEnded) { return; }
 
             if (PlayerMoney > BetAmount) // double down should not work if the player is broke
-            { 
-
+            {
+                FileLogger.Log($"[ACTION] DoubleDown - Balance: {PlayerMoney}, Bet: {BetAmount}");
                 IsFirstTurn = false;
                 // End turn
                 PlayerCommandDto playerCommandDto = new PlayerCommandDto();
@@ -476,6 +479,7 @@ namespace Client.ViewModels
         /// </remarks>
         public void RoundResult(ROUND_RESULT result)
         {
+            FileLogger.Log($"[ROUND RESULT] {result} - Balance: {PlayerMoney}");
             switch (result)
             {
                 case ROUND_RESULT.WIN:
