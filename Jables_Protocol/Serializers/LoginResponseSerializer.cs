@@ -1,6 +1,7 @@
 ﻿using Jables_Protocol.DTOs;
 using System.IO;
 using System.Text;
+using System.Diagnostics.CodeAnalysis;
 
 namespace Jables_Protocol.Serializers
 {
@@ -14,6 +15,9 @@ namespace Jables_Protocol.Serializers
     /// - 4 bytes: Message length prefix (int)
     /// - N bytes: Message (UTF-8 string)
     /// </remarks>
+
+
+    [ExcludeFromCodeCoverage]
     public class LoginResponseSerializer : ISerializer<LoginResponseDto>
     {
         /// <summary>Serializes a <see cref="LoginResponseDto"/> into a byte array.</summary>

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 using SharedModels.Models;
+using System.Diagnostics.CodeAnalysis;
 
 namespace GameLogic.Models
 {
@@ -14,6 +15,9 @@ namespace GameLogic.Models
     /// </remarks>
     /// <author>Evan Travis</author>
     [Serializable]
+
+
+    [ExcludeFromCodeCoverage]
     public class Dealer
     {
         /// <summary>

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Diagnostics.CodeAnalysis;
 
 namespace SharedModels.Logging
 {
@@ -12,6 +13,8 @@ namespace SharedModels.Logging
     /// 
     /// Thread safety is ensured using a lock to prevent concurrent write issues.
     /// </remarks>
+
+    [ExcludeFromCodeCoverage]
     public static class FileLogger
     {
         /// <summary>

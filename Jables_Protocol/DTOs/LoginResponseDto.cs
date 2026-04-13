@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics.CodeAnalysis;
 
 namespace Jables_Protocol.DTOs
 {
@@ -6,6 +7,8 @@ namespace Jables_Protocol.DTOs
     /// Data transfer object sent by the server in response to a login request.
     /// Tells the client whether access was granted or denied, with a reason.
     /// </summary>
+    
+    [ExcludeFromCodeCoverage]
     public class LoginResponseDto
     {
         /// <summary>

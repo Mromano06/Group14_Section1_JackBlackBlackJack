@@ -4,6 +4,7 @@ using SharedModels.Models;
 using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Diagnostics.CodeAnalysis;
 
 namespace Jables_Protocol.DTOs
 {
@@ -12,6 +13,8 @@ namespace Jables_Protocol.DTOs
     /// Contains player identity, hand data, betting state, and round-specific action flags
     /// for transmission between server and client.
     /// </summary>
+
+    [ExcludeFromCodeCoverage]
     public class PlayerDto
     {
         /// <summary>
